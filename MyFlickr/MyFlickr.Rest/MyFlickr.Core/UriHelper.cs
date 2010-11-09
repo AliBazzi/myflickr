@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MD5;
 
-namespace MyFlickr.Rest
+namespace MyFlickr.Core
 {
     public static class UriHelper
     {
@@ -13,9 +13,7 @@ namespace MyFlickr.Rest
         public static Uri BuildUri(IEnumerable<Parameter> parameters,string sharedSecret="")
         {
             if (parameters == null)
-            {
                 throw new ArgumentNullException("parameters");
-            }
 
             string str = BaseServiceUrl + "?";
 
@@ -28,16 +26,12 @@ namespace MyFlickr.Rest
             return new Uri(str);
         }
 
-        public static Uri CalculateRedirectionUrl(IEnumerable<Parameter> parameters, string sharedSecret)
+        public static Uri CalculateRedirectionUrl(string sharedSecret,params Parameter[] parameters)
         {
             if (parameters == null)
-            {
                 throw new ArgumentNullException("parameters");
-            }
             if (string.IsNullOrEmpty(sharedSecret))
-            {
                 throw new ArgumentException("sharedSecret");
-            }
 
             string str = AuthServiceUrl + "?";
 

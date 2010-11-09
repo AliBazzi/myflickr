@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 
-namespace MyFlickr.Rest
+namespace MyFlickr.Core
 {
     public class FlickrException :Exception
     {
