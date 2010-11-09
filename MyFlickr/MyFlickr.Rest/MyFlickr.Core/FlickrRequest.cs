@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace MyFlickr.Rest
+namespace MyFlickr.Core
 {
     public static class FlickrCore
     {
-        public static void IntiateRequest(IEnumerable<Parameter> parameters , string sharedSecret
-            , Action<XElement> downloadCallBack , Action<Exception> downloadErrorCallBack)
+        public static void IntiateRequest(Action<XElement> downloadCallBack,Action<Exception> downloadErrorCallBack,string sharedSecret,params Parameter[] parameters)
         {
             if (parameters == null)
                 throw new ArgumentNullException("parameters");

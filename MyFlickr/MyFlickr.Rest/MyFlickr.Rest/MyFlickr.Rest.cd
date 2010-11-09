@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="MyFlickr.Rest.Authinticate">
+    <Position X="0.5" Y="0.5" Width="5.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgACAAAAAABAAAQAAAAAAAAAAAAAAAAAAAAAMAAAA=</HashCode>
+      <FileName>Authinticate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.AuthinticationTokens">
+    <Position X="10.25" Y="3.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAgAAgAAAAAAAQAAAAABAAA=</HashCode>
+      <FileName>AuthinticationTokens.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="MyFlickr.Core.Token">
+    <Position X="10.25" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAgAAAAAAAAAAABIAAAAAAAAAAAiA=</HashCode>
+      <FileName>Token.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Struct>
+  <Enum Name="MyFlickr.Rest.AccessPermission">
+    <Position X="10.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAEAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>AccessPermission.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

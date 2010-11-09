@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyFlickr.Rest
+namespace MyFlickr.Core
 {
     public class Parameter
     {

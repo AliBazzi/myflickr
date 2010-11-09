@@ -44,16 +44,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FlickrExcpetion.cs" />
-    <Compile Include="FlickrRequest.cs" />
+    <Compile Include="MyFlickr.Rest\AccessPermission.cs" />
+    <Compile Include="MyFlickr.Rest\Authinticate.cs" />
+    <Compile Include="MyFlickr.Rest\AuthinticationTokens.cs" />
+    <Compile Include="MyFlickr.Rest\EventArgsBase.cs" />
+    <Compile Include="MyFlickr.Core\FlickrExcpetion.cs" />
+    <Compile Include="MyFlickr.Core\FlickrRequest.cs" />
     <Compile Include="MD5Helper.cs" />
-    <Compile Include="Parameter.cs" />
+    <Compile Include="MyFlickr.Core\Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UriHelper.cs" />
-    <Compile Include="WebClient.cs" />
+    <Compile Include="MyFlickr.Core\UriHelper.cs" />
+    <Compile Include="MyFlickr.Core\WebClient.cs" />
+    <Compile Include="MyFlickr.Core\Token.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <None Include="MyFlickr.Core\MyFlickr.Core.cd" />
+    <None Include="MyFlickr.Rest\MyFlickr.Rest.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
