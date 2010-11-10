@@ -3,7 +3,7 @@ namespace MyFlickr.Rest
 {
     public enum AccessPermission
     {
-        Read=0,Write=1,Delete=2
+        None=-1,Read=0,Write=1,Delete=2
     }
 
     internal static class AccessPermissionExtensions
@@ -12,6 +12,8 @@ namespace MyFlickr.Rest
         {
             switch (value)
             {
+                case "none":
+                    return AccessPermission.None;
                 case "read":
                     return AccessPermission.Read;
                 case "write":

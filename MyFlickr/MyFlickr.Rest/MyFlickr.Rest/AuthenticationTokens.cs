@@ -1,6 +1,6 @@
 ﻿namespace MyFlickr.Rest
 {
-    public class AuthinticationTokens
+    public class AuthenticationTokens
     {
         public string Token { get; private set; }
         public AccessPermission AccessPermission { get; private set; }
@@ -8,7 +8,7 @@
         public string UserName { get; private set; }
         public string FullName { get; private set; }
 
-        internal AuthinticationTokens(string token, AccessPermission accessPermission
+        internal AuthenticationTokens(string token, AccessPermission accessPermission
             , string userID, string userName, string fullName)
         {
             this.AccessPermission = accessPermission;

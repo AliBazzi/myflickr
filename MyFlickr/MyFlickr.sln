@@ -1,21 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFlickr", "MyFlickr\MyFlickr.csproj", "{ED48A1AD-E567-4A91-BEB6-D527D7201320}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlSerialization", "XmlSerialization\XmlSerialization.csproj", "{1807A50D-DFE9-4AA8-AB81-57300D567D4A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlSerializationTest", "XmlSerializationTest\XmlSerializationTest.csproj", "{4A54A9AE-8F10-449C-AA41-D8BAF3D2415B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFlickrLibrary", "MyFlickrLibrary\MyFlickrLibrary.csproj", "{6AA46012-A66C-4C09-A4E6-675D81DF61B2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APITest", "APITest\APITest.csproj", "{64FDB5C5-77C9-45ED-BEE3-2F27A900E627}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFlickr.Rest", "MyFlickr.Rest\MyFlickr.Rest.csproj", "{E0BF18A4-70D9-4EC9-A4D2-B7D54EBDADC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFlickr.Rest.Test", "MyFlickr.Rest.Test\MyFlickr.Rest.Test.csproj", "{9114B8DC-5723-45CA-9F8B-AD5957CFAF93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFlickr.Rest.Synchronous", "MyFlickr.Rest.synchronous\MyFlickr.Rest.Synchronous.csproj", "{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
+		SccNumberOfProjects = 5
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs04
 		SccLocalPath0 = .
@@ -25,6 +21,12 @@ Global
 		SccProjectUniqueName2 = MyFlickr.Rest\\MyFlickr.Rest.csproj
 		SccProjectName2 = MyFlickr.Rest
 		SccLocalPath2 = MyFlickr.Rest
+		SccProjectUniqueName3 = MyFlickr.Rest.Test\\MyFlickr.Rest.Test.csproj
+		SccProjectName3 = MyFlickr.Rest.Test
+		SccLocalPath3 = MyFlickr.Rest.Test
+		SccProjectUniqueName4 = MyFlickr.Rest.synchronous\\MyFlickr.Rest.synchronous.csproj
+		SccProjectName4 = MyFlickr.Rest.synchronous
+		SccLocalPath4 = MyFlickr.Rest.synchronous
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,46 +37,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{ED48A1AD-E567-4A91-BEB6-D527D7201320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED48A1AD-E567-4A91-BEB6-D527D7201320}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED48A1AD-E567-4A91-BEB6-D527D7201320}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{ED48A1AD-E567-4A91-BEB6-D527D7201320}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{ED48A1AD-E567-4A91-BEB6-D527D7201320}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{ED48A1AD-E567-4A91-BEB6-D527D7201320}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED48A1AD-E567-4A91-BEB6-D527D7201320}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED48A1AD-E567-4A91-BEB6-D527D7201320}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{ED48A1AD-E567-4A91-BEB6-D527D7201320}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{ED48A1AD-E567-4A91-BEB6-D527D7201320}.Release|x86.ActiveCfg = Release|Any CPU
-		{1807A50D-DFE9-4AA8-AB81-57300D567D4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1807A50D-DFE9-4AA8-AB81-57300D567D4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1807A50D-DFE9-4AA8-AB81-57300D567D4A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{1807A50D-DFE9-4AA8-AB81-57300D567D4A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{1807A50D-DFE9-4AA8-AB81-57300D567D4A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1807A50D-DFE9-4AA8-AB81-57300D567D4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1807A50D-DFE9-4AA8-AB81-57300D567D4A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1807A50D-DFE9-4AA8-AB81-57300D567D4A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{1807A50D-DFE9-4AA8-AB81-57300D567D4A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{1807A50D-DFE9-4AA8-AB81-57300D567D4A}.Release|x86.ActiveCfg = Release|Any CPU
-		{4A54A9AE-8F10-449C-AA41-D8BAF3D2415B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A54A9AE-8F10-449C-AA41-D8BAF3D2415B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A54A9AE-8F10-449C-AA41-D8BAF3D2415B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{4A54A9AE-8F10-449C-AA41-D8BAF3D2415B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{4A54A9AE-8F10-449C-AA41-D8BAF3D2415B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4A54A9AE-8F10-449C-AA41-D8BAF3D2415B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A54A9AE-8F10-449C-AA41-D8BAF3D2415B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4A54A9AE-8F10-449C-AA41-D8BAF3D2415B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4A54A9AE-8F10-449C-AA41-D8BAF3D2415B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{4A54A9AE-8F10-449C-AA41-D8BAF3D2415B}.Release|x86.ActiveCfg = Release|Any CPU
-		{6AA46012-A66C-4C09-A4E6-675D81DF61B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6AA46012-A66C-4C09-A4E6-675D81DF61B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6AA46012-A66C-4C09-A4E6-675D81DF61B2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6AA46012-A66C-4C09-A4E6-675D81DF61B2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6AA46012-A66C-4C09-A4E6-675D81DF61B2}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6AA46012-A66C-4C09-A4E6-675D81DF61B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6AA46012-A66C-4C09-A4E6-675D81DF61B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6AA46012-A66C-4C09-A4E6-675D81DF61B2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6AA46012-A66C-4C09-A4E6-675D81DF61B2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6AA46012-A66C-4C09-A4E6-675D81DF61B2}.Release|x86.ActiveCfg = Release|Any CPU
 		{64FDB5C5-77C9-45ED-BEE3-2F27A900E627}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{64FDB5C5-77C9-45ED-BEE3-2F27A900E627}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{64FDB5C5-77C9-45ED-BEE3-2F27A900E627}.Debug|Mixed Platforms.Build.0 = Debug|x86
@@ -95,6 +57,26 @@ Global
 		{E0BF18A4-70D9-4EC9-A4D2-B7D54EBDADC7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E0BF18A4-70D9-4EC9-A4D2-B7D54EBDADC7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E0BF18A4-70D9-4EC9-A4D2-B7D54EBDADC7}.Release|x86.ActiveCfg = Release|Any CPU
+		{9114B8DC-5723-45CA-9F8B-AD5957CFAF93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9114B8DC-5723-45CA-9F8B-AD5957CFAF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9114B8DC-5723-45CA-9F8B-AD5957CFAF93}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9114B8DC-5723-45CA-9F8B-AD5957CFAF93}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9114B8DC-5723-45CA-9F8B-AD5957CFAF93}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9114B8DC-5723-45CA-9F8B-AD5957CFAF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9114B8DC-5723-45CA-9F8B-AD5957CFAF93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9114B8DC-5723-45CA-9F8B-AD5957CFAF93}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9114B8DC-5723-45CA-9F8B-AD5957CFAF93}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9114B8DC-5723-45CA-9F8B-AD5957CFAF93}.Release|x86.ActiveCfg = Release|Any CPU
+		{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
