@@ -2,7 +2,7 @@
 
 namespace MyFlickr.Core
 {
-    public struct Token : IEquatable<Token>
+    public class Token
     {
         private Guid Guid;
 
@@ -18,7 +18,15 @@ namespace MyFlickr.Core
 
         public static bool operator == (Token left, Token right)
         {
-            return left.Guid == right.Guid;
+            if (left is Token)
+            {
+                return left.Equals(right);
+            }
+            if (right is Token)
+            {
+                return right.Equals(left);
+            }
+            return false;
         }
 
         public static bool operator !=(Token left, Token right)
@@ -26,14 +34,9 @@ namespace MyFlickr.Core
             return !(left == right);
         }
 
-        public bool Equals(Token other)
-        {
-            return this == other;
-        }
-
         public override bool Equals(object obj)
         {
-            return this == (Token)obj;
+            return obj is Token && this.Guid == ((Token)obj).Guid;
         }
 
         public override int GetHashCode()

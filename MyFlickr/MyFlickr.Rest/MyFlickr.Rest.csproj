@@ -45,9 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyFlickr.Rest\AccessPermission.cs" />
-    <Compile Include="MyFlickr.Rest\Authinticate.cs" />
-    <Compile Include="MyFlickr.Rest\AuthinticationTokens.cs" />
-    <Compile Include="MyFlickr.Rest\EventArgsBase.cs" />
+    <Compile Include="MyFlickr.Rest\Authenticator.cs" />
+    <Compile Include="MyFlickr.Rest\AuthenticationTokens.cs" />
+    <Compile Include="MyFlickr.Rest\EventArgs.cs" />
     <Compile Include="MyFlickr.Core\FlickrExcpetion.cs" />
     <Compile Include="MyFlickr.Core\FlickrRequest.cs" />
     <Compile Include="MD5Helper.cs" />

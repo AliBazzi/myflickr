@@ -2,7 +2,7 @@
 
 namespace MyFlickr.Core
 {
-    public abstract class EventArgsBase : EventArgs
+    public class EventArgs<T>: EventArgs
     {
         public bool Successful { get; private set; }
 
@@ -10,15 +10,18 @@ namespace MyFlickr.Core
 
         public Token Token { get; private set; }
 
-        internal EventArgsBase(Token token,Exception excpetion)
+        public T Result { get; private set; }
+
+        internal EventArgs(Token token,Exception excpetion)
         {
             this.Token = token;
             this.Excpetion = excpetion;
         }
 
-        internal EventArgsBase(Token token) 
+        internal EventArgs(Token token,T result) 
         {
             this.Token = token;
+            this.Result = result;
             this.Successful = true;
         }
     }

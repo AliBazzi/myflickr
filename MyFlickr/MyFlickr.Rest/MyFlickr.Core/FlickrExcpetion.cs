@@ -7,9 +7,9 @@ namespace MyFlickr.Core
     {
         public int Code { get; private set; }
         internal FlickrException(XElement element)
-            :base(element.Element("err").Attribute("code").Value)
+            :base(element.Element("err").Attribute("msg").Value)
         {
-            this.Code = int.Parse(element.Element("err").Attribute("message").Value);
+            this.Code = int.Parse(element.Element("err").Attribute("code").Value);
         }
     }
 }
