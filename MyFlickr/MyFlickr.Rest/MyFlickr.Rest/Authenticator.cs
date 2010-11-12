@@ -74,14 +74,14 @@ namespace MyFlickr.Rest
 
             FlickrCore.IntiateRequest(element =>
                 {
-                    this.InvokeGetTokenCompleted(new EventArgs<GetTokenResult>(token,new GetTokenResult(
-                        new AuthenticationTokens(element.Element("auth").Element("token").Value
+                    this.InvokeGetTokenCompleted(new EventArgs<AuthenticationTokens>(token ,new AuthenticationTokens
+                             (element.Element("auth").Element("token").Value
                             , element.Element("auth").Element("perms").Value.GetValue()
                             , element.Element("auth").Element("user").Attribute("nsid").Value
                             , element.Element("auth").Element("user").Attribute("username").Value
-                            , element.Element("auth").Element("user").Attribute("fullname").Value))));
+                            , element.Element("auth").Element("user").Attribute("fullname").Value)));
                 }
-            , e => this.InvokeGetTokenCompleted(new EventArgs<GetTokenResult>(token,e))
+            , e => this.InvokeGetTokenCompleted(new EventArgs<AuthenticationTokens>(token,e))
             , this.SharedSecret,new Parameter("method", "flickr.auth.getToken"), new Parameter("api_key", this.ApiKey), new Parameter("frob", frob));
 
             return token;
@@ -101,14 +101,14 @@ namespace MyFlickr.Rest
 
             FlickrCore.IntiateRequest(element =>
             {
-                this.InvokeCheckTokenCompleted(new EventArgs<CheckTokenResult>(token, new CheckTokenResult(
-                    new AuthenticationTokens(element.Element("auth").Element("token").Value
+                this.InvokeCheckTokenCompleted(new EventArgs<AuthenticationTokens>(token, new AuthenticationTokens
+                         (element.Element("auth").Element("token").Value
                         , element.Element("auth").Element("perms").Value.GetValue()
                         , element.Element("auth").Element("user").Attribute("nsid").Value
                         , element.Element("auth").Element("user").Attribute("username").Value
-                        , element.Element("auth").Element("user").Attribute("fullname").Value))));
+                        , element.Element("auth").Element("user").Attribute("fullname").Value)));
             }
-            , e => this.InvokeCheckTokenCompleted(new EventArgs<CheckTokenResult>(token, e))
+            , e => this.InvokeCheckTokenCompleted(new EventArgs<AuthenticationTokens>(token, e))
             , this.SharedSecret, new Parameter("method", "flickr.auth.checkToken"), new Parameter("api_key", this.ApiKey), new Parameter("auth_token", authenticationToken));
 
             return token;
@@ -128,14 +128,14 @@ namespace MyFlickr.Rest
 
             FlickrCore.IntiateRequest(element =>
             {
-                this.InvokeGetFullTokenCompleted(new EventArgs<GetFullTokenResult>(token, new GetFullTokenResult(
-                    new AuthenticationTokens(element.Element("auth").Element("token").Value
+                this.InvokeGetFullTokenCompleted(new EventArgs<AuthenticationTokens>(token, new AuthenticationTokens
+                         (element.Element("auth").Element("token").Value
                         , element.Element("auth").Element("perms").Value.GetValue()
                         , element.Element("auth").Element("user").Attribute("nsid").Value
                         , element.Element("auth").Element("user").Attribute("username").Value
-                        , element.Element("auth").Element("user").Attribute("fullname").Value))));
+                        , element.Element("auth").Element("user").Attribute("fullname").Value)));
             }
-            , e => this.InvokeGetFullTokenCompleted(new EventArgs<GetFullTokenResult>(token, e))
+            , e => this.InvokeGetFullTokenCompleted(new EventArgs<AuthenticationTokens>(token, e))
             , this.SharedSecret, new Parameter("method", "flickr.auth.getFullToken"), new Parameter("api_key", this.ApiKey), new Parameter("mini_token", miniToken));
 
 
@@ -143,32 +143,32 @@ namespace MyFlickr.Rest
         }
 
         #region Events
-        private void InvokeGetFullTokenCompleted(EventArgs<GetFullTokenResult> args)
+        private void InvokeGetFullTokenCompleted(EventArgs<AuthenticationTokens> args)
         {
             if (GetFullTokenCompleted !=null)
             {
                 GetFullTokenCompleted.Invoke(null, args);
             }
         }
-        public event EventHandler<EventArgs<GetFullTokenResult>> GetFullTokenCompleted;
+        public event EventHandler<EventArgs<AuthenticationTokens>> GetFullTokenCompleted;
 
-        private void InvokeCheckTokenCompleted(EventArgs<CheckTokenResult> args)
+        private void InvokeCheckTokenCompleted(EventArgs<AuthenticationTokens> args)
         {
             if (CheckTokenCompleted != null)
             {
                 CheckTokenCompleted.Invoke(null,args);
             }
         }
-        public event EventHandler<EventArgs<CheckTokenResult>> CheckTokenCompleted;
+        public event EventHandler<EventArgs<AuthenticationTokens>> CheckTokenCompleted;
 
-        private void InvokeGetTokenCompleted(EventArgs<GetTokenResult> args)
+        private void InvokeGetTokenCompleted(EventArgs<AuthenticationTokens> args)
         {
             if (GetTokenCompleted !=null)
             {
                 GetTokenCompleted.Invoke(null, args);
             }
         }
-        public event EventHandler<EventArgs<GetTokenResult>> GetTokenCompleted;
+        public event EventHandler<EventArgs<AuthenticationTokens>> GetTokenCompleted;
 
         private void InvokeGetFrobCompleted(EventArgs<GetFrobResult> args)
         {
@@ -179,36 +179,6 @@ namespace MyFlickr.Rest
         }
         public event EventHandler<EventArgs<GetFrobResult>> GetFrobCompleted;
         #endregion
-    }
-
-    public class GetFullTokenResult
-    {
-        public AuthenticationTokens AuthinticationTokens { get; private set; }
-
-        internal GetFullTokenResult(AuthenticationTokens tokens)
-        {
-            this.AuthinticationTokens = tokens;
-        }
-    }
-
-    public class CheckTokenResult
-    {
-        public AuthenticationTokens AuthinticationTokens { get; private set; }
-
-        internal CheckTokenResult(AuthenticationTokens tokens)
-        {
-            this.AuthinticationTokens = tokens;
-        }
-    }
-
-    public class GetTokenResult
-    {
-        public AuthenticationTokens AuthinticationTokens { get; private set; }
-
-        internal GetTokenResult(AuthenticationTokens tokens)
-        {
-            this.AuthinticationTokens = tokens;
-        }
     }
 
     public class GetFrobResult
