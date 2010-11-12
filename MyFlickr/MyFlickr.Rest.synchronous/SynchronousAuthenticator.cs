@@ -12,7 +12,7 @@ namespace MyFlickr.Rest.Synchronous
         /// </summary>
         /// <param name="authenticator">instance</param>
         /// <param name="accessPermission">the permission your want to acquires</param>
-        /// <returns></returns>
+        /// <returns>GetFrobResult object</returns>
         public static GetFrobResult GetFrob(this Authenticator authenticator,AccessPermission accessPermission)
         {
             FlickrSynchronousPrmitive<GetFrobResult> FSP = new FlickrSynchronousPrmitive<GetFrobResult>();
@@ -32,16 +32,16 @@ namespace MyFlickr.Rest.Synchronous
         /// </summary>
         /// <param name="authenticator">instance</param>
         /// <param name="authenticationToken">The authentication token to check</param>
-        /// <returns></returns>
-        public static CheckTokenResult CheckToken(this Authenticator authenticator, string authenticationToken)
+        /// <returns>AuthenticationTokens</returns>
+        public static AuthenticationTokens CheckToken(this Authenticator authenticator, string authenticationToken)
         {
-            FlickrSynchronousPrmitive<CheckTokenResult> FSP = new FlickrSynchronousPrmitive<CheckTokenResult>();
+            FlickrSynchronousPrmitive<AuthenticationTokens> FSP = new FlickrSynchronousPrmitive<AuthenticationTokens>();
 
-            Action<object, EventArgs<CheckTokenResult>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
-            authenticator.CheckTokenCompleted += new EventHandler<EventArgs<CheckTokenResult>>(handler);
+            Action<object, EventArgs<AuthenticationTokens>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            authenticator.CheckTokenCompleted += new EventHandler<EventArgs<AuthenticationTokens>>(handler);
             FSP.Token = authenticator.CheckTokenAsync(authenticationToken);
             FSP.WaitForAsynchronousCall();
-            authenticator.CheckTokenCompleted -= new EventHandler<EventArgs<CheckTokenResult>>(handler);
+            authenticator.CheckTokenCompleted -= new EventHandler<EventArgs<AuthenticationTokens>>(handler);
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
@@ -52,16 +52,16 @@ namespace MyFlickr.Rest.Synchronous
         /// </summary>
         /// <param name="authenticator">instance</param>
         /// <param name="miniToken">The mini-token typed in by a user. It should be 9 digits long. It may optionally contain dashes</param>
-        /// <returns></returns>
-        public static GetFullTokenResult GetFullToken(this Authenticator authenticator,string miniToken)
+        /// <returns>AuthenticationTokens</returns>
+        public static AuthenticationTokens GetFullToken(this Authenticator authenticator,string miniToken)
         {
-            FlickrSynchronousPrmitive<GetFullTokenResult> FSP = new FlickrSynchronousPrmitive<GetFullTokenResult>();
+            FlickrSynchronousPrmitive<AuthenticationTokens> FSP = new FlickrSynchronousPrmitive<AuthenticationTokens>();
 
-            Action<object, EventArgs<GetFullTokenResult>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
-            authenticator.GetFullTokenCompleted += new EventHandler<EventArgs<GetFullTokenResult>>(handler);
+            Action<object, EventArgs<AuthenticationTokens>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            authenticator.GetFullTokenCompleted += new EventHandler<EventArgs<AuthenticationTokens>>(handler);
             FSP.Token = authenticator.GetFullTokenAsync(miniToken);
             FSP.WaitForAsynchronousCall();
-            authenticator.GetFullTokenCompleted -= new EventHandler<EventArgs<GetFullTokenResult>>(handler);
+            authenticator.GetFullTokenCompleted -= new EventHandler<EventArgs<AuthenticationTokens>>(handler);
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
@@ -72,16 +72,16 @@ namespace MyFlickr.Rest.Synchronous
         /// </summary>
         /// <param name="authenticator">instance</param>
         /// <param name="frob">The frob to check</param>
-        /// <returns></returns>
-        public static GetTokenResult GetToken(this Authenticator authenticator,string frob)
+        /// <returns>AuthenticationTokens object</returns>
+        public static AuthenticationTokens GetToken(this Authenticator authenticator,string frob)
         {
-            FlickrSynchronousPrmitive<GetTokenResult> FSP = new FlickrSynchronousPrmitive<GetTokenResult>();
+            FlickrSynchronousPrmitive<AuthenticationTokens> FSP = new FlickrSynchronousPrmitive<AuthenticationTokens>();
 
-            Action<object, EventArgs<GetTokenResult>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
-            authenticator.GetTokenCompleted += new EventHandler<EventArgs<GetTokenResult>>(handler);
+            Action<object, EventArgs<AuthenticationTokens>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            authenticator.GetTokenCompleted += new EventHandler<EventArgs<AuthenticationTokens>>(handler);
             FSP.Token = authenticator.GetTokenAsync(frob);
             FSP.WaitForAsynchronousCall();
-            authenticator.GetTokenCompleted -= new EventHandler<EventArgs<GetTokenResult>>(handler);
+            authenticator.GetTokenCompleted -= new EventHandler<EventArgs<AuthenticationTokens>>(handler);
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
