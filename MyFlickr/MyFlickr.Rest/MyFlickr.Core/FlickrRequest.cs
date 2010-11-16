@@ -14,8 +14,6 @@ namespace MyFlickr.Core
                 throw new ArgumentNullException("callBack");
             if (downloadErrorCallBack == null)
                 throw new ArgumentNullException("onErrorCallBack");
-            if (string.IsNullOrEmpty(sharedSecret))
-                throw new ArgumentException("sharedSecret");
 
             new WebClient( e => {
                 if (e.Error == null)

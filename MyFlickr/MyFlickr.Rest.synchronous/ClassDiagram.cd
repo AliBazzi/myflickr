@@ -7,5 +7,12 @@
       <FileName>SynchronousAuthenticator.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="MyFlickr.Rest.Synchronous.SynchronousUser">
+    <Position X="0.5" Y="2.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SynchronousUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
