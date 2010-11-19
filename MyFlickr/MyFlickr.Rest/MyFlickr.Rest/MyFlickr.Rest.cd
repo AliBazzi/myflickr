@@ -31,14 +31,43 @@
     <Position X="0.5" Y="5" Width="5" />
     <TypeIdentifier>
       <HashCode>AAIACAAAAAAAAIgACACAgAggAiAAACAAAQAAAAABAAA=</HashCode>
-      <FileName>User.cs</FileName>
+      <FileName>MyFlickr.Rest\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.ContactsList" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="8.75" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BCAAAAAAAAAQABAgAAAACAAACAAAQAAAAAAQAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\User.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyFlickr.Rest.Contact">
+    <Position X="10" Y="6" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAACAAAAiCAAAAAAAAAQAAAAAAQAA=</HashCode>
+      <FileName>MyFlickr.Rest\User.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="MyFlickr.Rest.AccessPermission">
-    <Position X="10.25" Y="0.5" Width="1.5" />
+    <Position X="11" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAEAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>MyFlickr.Rest\AccessPermission.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyFlickr.Rest.ContactFilter">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAgAAAAAAAAACAAAAAAAAAAAABAA=</HashCode>
+      <FileName>MyFlickr.Rest\User.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />

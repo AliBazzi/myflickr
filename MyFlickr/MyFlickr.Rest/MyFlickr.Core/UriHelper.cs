@@ -17,7 +17,7 @@ namespace MyFlickr.Core
 
             string str = BaseServiceUrl + "?";
 
-            foreach (var param in parameters)
+            foreach (var param in parameters.Where(param => !param.ShouldBeDropped))
                 str += string.Format("{0}&",param);
 
             if (!string.IsNullOrEmpty(sharedSecret))
@@ -47,7 +47,7 @@ namespace MyFlickr.Core
         {
             string str = sharedSecret;
 
-            foreach (var param in parameters.OrderBy((param)=>param.Name))
+            foreach (var param in parameters.Where(param => !param.ShouldBeDropped).OrderBy(param => param.Name))
                 str += param.ToString(true);
 
             return string.Format("api_sig={0}",str.Hash().GetHexString());

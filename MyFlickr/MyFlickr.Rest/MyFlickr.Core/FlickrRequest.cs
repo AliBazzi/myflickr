@@ -6,7 +6,7 @@ namespace MyFlickr.Core
 {
     public static class FlickrCore
     {
-        public static void IntiateRequest(Action<XElement> downloadCallBack,Action<Exception> downloadErrorCallBack,string sharedSecret,params Parameter[] parameters)
+        public static Uri IntiateRequest(Action<XElement> downloadCallBack,Action<Exception> downloadErrorCallBack,string sharedSecret,params Parameter[] parameters)
         {
             if (parameters == null)
                 throw new ArgumentNullException("parameters");
@@ -15,7 +15,7 @@ namespace MyFlickr.Core
             if (downloadErrorCallBack == null)
                 throw new ArgumentNullException("onErrorCallBack");
 
-            new WebClient( e => {
+            return new WebClient( e => {
                 if (e.Error == null)
                     XmlParsing(downloadCallBack, downloadErrorCallBack, e.Result);
                 else

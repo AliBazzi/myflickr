@@ -7,6 +7,16 @@ namespace MyFlickr.Rest
     public class AuthenticationTokens
     {
         /// <summary>
+        /// Flickr API application key
+        /// </summary>
+        public string ApiKey { get; private set; }
+
+        /// <summary>
+        /// A shared secret for the api key that is issued by flickr
+        /// </summary>
+        public string SharedSecret { get; private set; }
+
+        /// <summary>
         /// the Authentication Token
         /// </summary>
         public string Token { get; private set; }
@@ -31,7 +41,7 @@ namespace MyFlickr.Rest
         /// </summary>
         public string FullName { get; private set; }
 
-        internal AuthenticationTokens(string token, AccessPermission accessPermission
+        internal AuthenticationTokens(string apiKey , string sharedSecret,string token, AccessPermission accessPermission
             , string userID, string userName, string fullName)
         {
             this.AccessPermission = accessPermission;
@@ -39,14 +49,21 @@ namespace MyFlickr.Rest
             this.FullName = fullName;
             this.UserID = userID;
             this.UserName = userName;
+            this.ApiKey = apiKey;
+            this.SharedSecret = sharedSecret;
         }
     }
 
-    internal static class AuthenticationTokensExtensions
+    public static class AuthenticationTokensExtensions
     {
-        public static void ValidateGrantedPermission(this AuthenticationTokens authenticationTokens, AccessPermission accessPermission)
+        public static User CreateUserInstance(this AuthenticationTokens authinticationTokens)
         {
-            if (accessPermission < authenticationTokens.AccessPermission)
+            return new User(authinticationTokens);
+        }
+
+        internal static void ValidateGrantedPermission(this AuthenticationTokens authenticationTokens, AccessPermission accessPermission)
+        {
+            if (authenticationTokens.AccessPermission < accessPermission)
             {
                 throw new InvalidOperationException(string.Format("The Called method needs {0} permission and you have {1} permission"
                     , accessPermission.ToString() , authenticationTokens.AccessPermission.ToString()));
