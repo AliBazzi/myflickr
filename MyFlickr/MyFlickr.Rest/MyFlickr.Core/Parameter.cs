@@ -8,19 +8,24 @@ namespace MyFlickr.Core
 
         public string Value { get; private set; }
 
-        public Parameter(string name, string value)
+        public Parameter(string name, object value)
         {
             if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentException("name");
             }
-            if (string.IsNullOrEmpty(value))
+            if (value == null)
             {
-                throw new ArgumentException("value");
+                this.ShouldBeDropped = true;
+            }
+            else
+            {
+                this.Value = value.ToString().ToLower();
             }
             this.Name = name;
-            this.Value = value;
         }
+
+        public bool ShouldBeDropped { get; private set; }
 
         public override string ToString()
         {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using MyFlickr.Core;
 
 namespace MyFlickr.Rest.Synchronous

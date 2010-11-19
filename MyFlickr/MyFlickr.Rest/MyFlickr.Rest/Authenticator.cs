@@ -75,7 +75,7 @@ namespace MyFlickr.Rest
             FlickrCore.IntiateRequest(element =>
                 {
                     this.InvokeGetTokenCompleted(new EventArgs<AuthenticationTokens>(token ,new AuthenticationTokens
-                             (element.Element("auth").Element("token").Value
+                             (this.ApiKey,this.SharedSecret,element.Element("auth").Element("token").Value
                             , element.Element("auth").Element("perms").Value.GetValue()
                             , element.Element("auth").Element("user").Attribute("nsid").Value
                             , element.Element("auth").Element("user").Attribute("username").Value
@@ -102,7 +102,7 @@ namespace MyFlickr.Rest
             FlickrCore.IntiateRequest(element =>
             {
                 this.InvokeCheckTokenCompleted(new EventArgs<AuthenticationTokens>(token, new AuthenticationTokens
-                         (element.Element("auth").Element("token").Value
+                         (this.ApiKey,this.SharedSecret,element.Element("auth").Element("token").Value
                         , element.Element("auth").Element("perms").Value.GetValue()
                         , element.Element("auth").Element("user").Attribute("nsid").Value
                         , element.Element("auth").Element("user").Attribute("username").Value
@@ -129,7 +129,7 @@ namespace MyFlickr.Rest
             FlickrCore.IntiateRequest(element =>
             {
                 this.InvokeGetFullTokenCompleted(new EventArgs<AuthenticationTokens>(token, new AuthenticationTokens
-                         (element.Element("auth").Element("token").Value
+                         (this.ApiKey,this.SharedSecret,element.Element("auth").Element("token").Value
                         , element.Element("auth").Element("perms").Value.GetValue()
                         , element.Element("auth").Element("user").Attribute("nsid").Value
                         , element.Element("auth").Element("user").Attribute("username").Value

@@ -12,7 +12,7 @@ namespace MyFlickr.Rest.Test
         public string sharedSecret;
 
         [XmlElement]
-        public string frob;
+        public string token;
 
     }
 }
