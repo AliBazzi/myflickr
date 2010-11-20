@@ -118,7 +118,47 @@ namespace MyFlickr.Rest.Test
         public void GetInfoOf()
         {
             var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance()
-                .GetInfoOf(new User(this.data.apiKey, "53703764@N02"));
+                .GetInfo(new User(this.data.apiKey, "53703764@N02"));
+        }
+
+        [TestMethod]
+        public void GetPhotoSetsList()
+        {
+            var res = new User(this.data.apiKey, "36893321@N03").GetPhotoSetsList();
+            foreach (var item in res.PhotoSets) { }
+        }
+
+        [TestMethod]
+        public void GetPhotoSetsList2()
+        {
+            var res = new Authenticator(this.data.apiKey,this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetPhotoSetsList();
+            foreach (var item in res.PhotoSets) { }
+        }
+
+        [TestMethod]
+        public void GetGalleriesList()
+        {
+            var res = new User(this.data.apiKey, "36893321@N03").GetGalleriesList();
+            foreach (var gallery in res.Galleries) { }
+        }
+
+        [TestMethod]
+        public void GetGalleriesList2()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetGalleriesList();
+            foreach (var gallery in res.Galleries) { }
+        }
+        [TestMethod]
+        public void GetPublicGroups()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetPublicGroups();
+            foreach (var group in res.Groups) { }
+        }
+        [TestMethod]
+        public void GetPublicGroups2()
+        {
+            var res = new User(this.data.apiKey, "36893321@N03").GetPublicGroups();
+            foreach (var group in res.Groups) { }
         }
     }
 }

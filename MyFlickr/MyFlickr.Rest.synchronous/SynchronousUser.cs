@@ -184,15 +184,74 @@ namespace MyFlickr.Rest.Synchronous
         /// <param name="userInstance"></param>
         /// <param name="user">User Object that represents a Flickr User.</param>
         /// <returns>UserInfo Object</returns>
-        public static UserInfo GetInfoOf(this User userInstance, User user)
+        public static UserInfo GetInfo(this User userInstance, User user)
         {
             FlickrSynchronousPrmitive<UserInfo> FSP = new FlickrSynchronousPrmitive<UserInfo>();
 
             Action<object, EventArgs<UserInfo>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
-            userInstance.GetInfoOfCompleted += new EventHandler<EventArgs<UserInfo>>(handler);
-            FSP.Token = userInstance.GetInfoOfAsync(user);
+            userInstance.GetInfoCompleted += new EventHandler<EventArgs<UserInfo>>(handler);
+            FSP.Token = userInstance.GetInfoAsync(user);
             FSP.WaitForAsynchronousCall();
-            userInstance.GetInfoOfCompleted -= new EventHandler<EventArgs<UserInfo>>(handler);
+            userInstance.GetInfoCompleted -= new EventHandler<EventArgs<UserInfo>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns the photosets belonging to the specified user.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>PhotoSetsCollection Object</returns>
+        public static PhotoSetsCollection GetPhotoSetsList(this User user)
+        {
+            FlickrSynchronousPrmitive<PhotoSetsCollection> FSP = new FlickrSynchronousPrmitive<PhotoSetsCollection>();
+
+            Action<object, EventArgs<PhotoSetsCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetPhotoSetsListCompleted += new EventHandler<EventArgs<PhotoSetsCollection>>(handler);
+            FSP.Token = user.GetPhotoSetsListAsync();
+            FSP.WaitForAsynchronousCall();
+            user.GetPhotoSetsListCompleted -= new EventHandler<EventArgs<PhotoSetsCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Return the list of galleries created by a user. Sorted from newest to oldest.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="perPage">Number of galleries to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>GalleriesCollection Object</returns>
+        public static GalleriesCollection GetGalleriesList(this User user, Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            FlickrSynchronousPrmitive<GalleriesCollection> FSP = new FlickrSynchronousPrmitive<GalleriesCollection>();
+
+            Action<object, EventArgs<GalleriesCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetGalleriesListCompleted += new EventHandler<EventArgs<GalleriesCollection>>(handler);
+            FSP.Token = user.GetGalleriesListAsync(perPage,page);
+            FSP.WaitForAsynchronousCall();
+            user.GetGalleriesListCompleted -= new EventHandler<EventArgs<GalleriesCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns the list of public groups a user is a member of.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>GroupCollection Object</returns>
+        public static GroupCollection GetPublicGroups(this User user)
+        {
+            FlickrSynchronousPrmitive<GroupCollection> FSP = new FlickrSynchronousPrmitive<GroupCollection>();
+
+            Action<object, EventArgs<GroupCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetPublicGroupsCompleted += new EventHandler<EventArgs<GroupCollection>>(handler);
+            FSP.Token = user.GetPublicGroupsAsync();
+            FSP.WaitForAsynchronousCall();
+            user.GetPublicGroupsCompleted -= new EventHandler<EventArgs<GroupCollection>>(handler);
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
