@@ -281,7 +281,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="user">User Object that represents a Flickr User.</param>
         /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
-        public Token GetInfoOfAsync(User user)
+        public Token GetInfoAsync(User user)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
             if (user == null)
@@ -290,23 +290,93 @@ namespace MyFlickr.Rest
             Token token = Core.Token.GenerateToken();
 
             FlickrCore.IntiateRequest(
-                    elm => this.InokeGetInfoOfCompletedEvent(new EventArgs<UserInfo>(token, new UserInfo(elm.Element("person"))))
-                    , e => this.InokeGetInfoOfCompletedEvent(new EventArgs<UserInfo>(token, e)), this.SharedSecret
+                    elm => this.InokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, new UserInfo(elm.Element("person"))))
+                    , e => this.InokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, e)), this.SharedSecret
                     , new Parameter("api_key", this.ApiKey), new Parameter("auth_token", this.Token)
                     , new Parameter("method", "flickr.people.getInfo"), new Parameter("user_id", user.UserID));
 
             return token;
         }
 
-        #region Events
-        private void InokeGetInfoOfCompletedEvent(EventArgs<UserInfo> args)
+        /// <summary>
+        /// Returns the photosets belonging to the specified user.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetPhotoSetsListAsync()
         {
-            if (this.GetInfoOfCompleted != null)
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateRequest(
+                  elm => this.InvokeGetPhotoSetsListCompletedEvent(new EventArgs<PhotoSetsCollection>(token,new PhotoSetsCollection(elm.Element("photosets"))))
+                , e => this.InvokeGetPhotoSetsListCompletedEvent(new EventArgs<PhotoSetsCollection>(token,e))
+                , null, new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.photosets.getList"), new Parameter("user_id", this.UserID));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Return the list of galleries created by a user. Sorted from newest to oldest.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="perPage">Number of galleries to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetGalleriesListAsync(Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateRequest(
+              elm => this.InvokeGetGalleriesListCompletedEvent(new EventArgs<GalleriesCollection>(token,new GalleriesCollection(elm.Element("galleries")))),
+              e => this.InvokeGetGalleriesListCompletedEvent(new EventArgs<GalleriesCollection>(token,e)), null,
+              new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.galleries.getList"),
+              new Parameter("user_id", this.UserID), new Parameter("per_page", perPage), new Parameter("page", page));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Returns the list of public groups a user is a member of.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetPublicGroupsAsync()
+        {
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateRequest(
+                elm => this.InvokeGetPublicGroupsEvent(new EventArgs<GroupCollection>(token,new GroupCollection(elm.Element("groups")))), 
+                e => this.InvokeGetPublicGroupsEvent(new EventArgs<GroupCollection>(token,e)), null,
+                new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.people.getPublicGroups"), new Parameter("user_id", this.UserID));
+
+            return token;
+        }
+
+        #region Events
+        private void InvokeGetPublicGroupsEvent(EventArgs<GroupCollection> args)
+        {
+            if (this.GetPublicGroupsCompleted != null)
             {
-                this.GetInfoOfCompleted.Invoke(this, args);
+                this.GetPublicGroupsCompleted.Invoke(this, args);
             }
         }
-        public event EventHandler<EventArgs<UserInfo>> GetInfoOfCompleted;
+        public event EventHandler<EventArgs<GroupCollection>> GetPublicGroupsCompleted;
+        private void InvokeGetGalleriesListCompletedEvent(EventArgs<GalleriesCollection> args)
+        {
+            if (this.GetGalleriesListCompleted != null)
+            {
+                this.GetGalleriesListCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<GalleriesCollection>> GetGalleriesListCompleted;
+        private void InvokeGetPhotoSetsListCompletedEvent(EventArgs<PhotoSetsCollection> args)
+        {
+            if (this.GetPhotoSetsListCompleted != null)
+            {
+                this.GetPhotoSetsListCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<PhotoSetsCollection>> GetPhotoSetsListCompleted;
         private void InokeGetInfoCompletedEvent(EventArgs<UserInfo> args)
         {
             if (this.GetInfoCompleted != null)
@@ -363,7 +433,7 @@ namespace MyFlickr.Rest
     /// </summary>
     public class ContactsList : IEnumerable<Contact>
     {
-        private XElement data { get; set; }
+        private XElement data;
 
         private bool isPublicList;
 
@@ -512,7 +582,7 @@ namespace MyFlickr.Rest
     /// </summary>
     public class PhotosCollection : IEnumerable<Photo>
     {
-        private XElement data { get;set; }
+        private XElement data ;
 
         internal PhotosCollection(XElement data)
         {
@@ -732,152 +802,464 @@ namespace MyFlickr.Rest
     /// </summary>
     public class UserInfo
     {
+        private XElement data;
+
         internal UserInfo(XElement element)
         {
-            this.UserID = element.Attribute("id").Value;
-            this.UserName = element.Element("username").Value;
-            this.RealName = element.Element("realname").Value;
-            this.IsProUser = element.Attribute("ispro").Value.ToBoolean();
-            this.IconServer = int.Parse(element.Attribute("iconserver").Value);
-            this.IconFarm = int.Parse(element.Attribute("iconfarm").Value);
-            this.PathAlias = element.Attribute("path_alias").Value;
-            this.Geneder = element.Attribute("geneder") != null ? element.Element("gender").Value : null;
-            this.IsIgnored = element.Attribute("igonred") != null ? new Nullable<bool>(element.Attribute("ignored").Value.ToBoolean()) : null;
-            this.IsContact = element.Attribute("contact") != null ? new Nullable<bool>(element.Attribute("contact").Value.ToBoolean()) : null;
-            this.IsFamily = element.Attribute("family") != null ? new Nullable<bool>(element.Attribute("family").Value.ToBoolean()) : null;
-            this.IsFriend = element.Attribute("friend") != null ? new Nullable<bool>(element.Attribute("friend").Value.ToBoolean()) : null;
-            this.IsConsideringYouAsContact = element.Attribute("revcontact") != null ? new Nullable<bool>(element.Attribute("revcontact").Value.ToBoolean()) : null;
-            this.IsConsideringYouAsFamily = element.Attribute("revfamily") != null ? new Nullable<bool>(element.Attribute("revfamily").Value.ToBoolean()) : null;
-            this.IsConsideringYouAsFriend = element.Attribute("revfriend") != null ? new Nullable<bool>(element.Attribute("revfriend").Value.ToBoolean()) : null;
-            this.mbox_sha1sum = element.Element("mbox_sha1sum") !=null ? element.Element("mbox_sha1sum").Value : null;
-            this.Location = element.Element("location").Value;
-            this.PhotosUrl = new Uri(element.Element("photosurl").Value);
-            this.ProfileUrl = new Uri(element.Element("profileurl").Value);
-            this.MobileUrl = new Uri(element.Element("mobileurl").Value);
-            this.FirstDateTaken = DateTime.Parse(element.Element("photos").Element("firstdatetaken").Value);
-            this.FirstDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(double.Parse(element.Element("photos").Element("firstdate").Value));
-            this.PhotosCount = int.Parse(element.Element("photos").Element("count").Value);
-            this.PhotoStreamViews = element.Element("photos").Element("views") != null ? new Nullable<int>(int.Parse(element.Element("photos").Element("views").Value)) : null;
+            this.data = element;
         }
 
         /// <summary>
         /// the user name
         /// </summary>
-        public string UserName { get; private set; }
+        public string UserName { get { return data.Attribute("username").Value; } }
 
         /// <summary>
         /// the Real user name
         /// </summary>
-        public string RealName { get; private set; }
+        public string RealName { get { return data.Element("realname").Value;} }
 
         /// <summary>
         /// the User ID
         /// </summary>
-        public string UserID { get; private set; }
+        public string UserID { get { return data.Attribute("id").Value; } }
 
         /// <summary>
         /// determine if the user has Pro Account
         /// </summary>
-        public bool IsProUser { get; private set; }
+        public bool IsProUser { get { return data.Attribute("ispro").Value.ToBoolean(); } }
 
         /// <summary>
         /// the number of the server the icon resides on
         /// </summary>
-        public int IconServer { get; private set; }
+        public int IconServer { get { return int.Parse(data.Attribute("iconserver").Value); } }
 
         /// <summary>
         /// the number of server farm  the icon resides on
         /// </summary>
-        public int IconFarm { get; private set; }
+        public int IconFarm { get { return int.Parse(data.Attribute("iconfarm").Value); } }
 
         /// <summary>
         /// the Path Alias (used when Generating Urls ) , Could be Empty when not set by the user
         /// </summary>
-        public string PathAlias { get; private set; }
+        public string PathAlias { get { return data.Attribute("path_alias").Value; } }
         
         /// <summary>
         /// http://markmail.org/message/2poskzlsgdjjt7ow , could be Null
         /// </summary>
-        public string mbox_sha1sum { get; private set; }
+        public string mbox_sha1sum { get { return data.Element("mbox_sha1sum") != null ? data.Element("mbox_sha1sum").Value : null; } }
 
         /// <summary>
         /// The Location of the User , Could be Null
         /// </summary>
-        public string Location { get; private set; }
+        public string Location { get { return data.Element("location").Value; } }
 
         /// <summary>
         /// the url that leads to Photostream of the user
         /// </summary>
-        public Uri PhotosUrl { get; private set; }
+        public Uri PhotosUrl { get { return new Uri(data.Element("photosurl").Value); } }
 
         /// <summary>
         /// the url that leads to the user profile
         /// </summary>
-        public Uri ProfileUrl { get; private set; }
+        public Uri ProfileUrl { get { return new Uri(data.Element("profileurl").Value); } }
 
         /// <summary>
         /// the url that leads to the Photostream page of the user that ready to be displayed on mobile device 
         /// </summary>
-        public Uri MobileUrl { get; private set; }
+        public Uri MobileUrl { get { return new Uri(data.Element("mobileurl").Value); } }
 
         /// <summary>
         /// contains the datetime of the first photo taken by the user.
         /// </summary>
-        public DateTime FirstDateTaken { get; private set; }
+        public DateTime FirstDateTaken { get { return DateTime.Parse(data.Element("photos").Element("firstdatetaken").Value); } }
 
         /// <summary>
         /// contains the timestamp of the first photo uploaded by the user.
         /// </summary>
-        public DateTime FirstDate { get; private set; }
+        public DateTime FirstDate { get { return new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(double.Parse(data.Element("photos").Element("firstdate").Value)); } }
 
         /// <summary>
         /// the number of photos the user has Uploaded
         /// </summary>
-        public int PhotosCount { get; private set; }
+        public int PhotosCount { get { return int.Parse(data.Element("photos").Element("count").Value); } }
 
         /// <summary>
         /// the number of views by Flickr users for the Photostream page of the User, could be Null
         /// </summary>
-        public Nullable<int> PhotoStreamViews { get; private set; }
+        public Nullable<int> PhotoStreamViews { get { return data.Element("photos").Element("views") != null ? new Nullable<int>(int.Parse(data.Element("photos").Element("views").Value)) : null; } }
 
         /// <summary>
         /// the Gender of User , could be Null
         /// </summary>
-        public string Geneder { get; private set; }
+        public string Geneder { get { return data.Attribute("geneder") != null ? data.Element("gender").Value : null; } }
 
         /// <summary>
         /// determine if the user is ignored by you
         /// </summary>
-        public Nullable<bool> IsIgnored { get; private set; }
+        public Nullable<bool> IsIgnored { get { return data.Attribute("igonred") != null ? new Nullable<bool>(data.Attribute("ignored").Value.ToBoolean()) : null; } }
 
         /// <summary>
         /// determine whether the user is a contact in your contact list or Not
         /// </summary>
-        public Nullable<bool> IsContact { get; private set; }
+        public Nullable<bool> IsContact { get { return data.Attribute("contact") != null ? new Nullable<bool>(data.Attribute("contact").Value.ToBoolean()) : null; } }
 
         /// <summary>
         /// determine whether you are marking the user as a family in you contact list or Not
         /// </summary>
-        public Nullable<bool> IsFamily { get; private set; }
+        public Nullable<bool> IsFamily { get { return data.Attribute("family") != null ? new Nullable<bool>(data.Attribute("family").Value.ToBoolean()) : null; } }
 
         /// <summary>
         /// determine whether you are marking the user as a friend  in you contact list or Not
         /// </summary>
-        public Nullable<bool> IsFriend { get; private set; }
+        public Nullable<bool> IsFriend { get { return data.Attribute("friend") != null ? new Nullable<bool>(data.Attribute("friend").Value.ToBoolean()) : null; } }
 
         /// <summary>
         /// determine whether the user is marking you as a contact or Not
         /// </summary>
-        public Nullable<bool> IsConsideringYouAsContact { get; private set; }
+        public Nullable<bool> IsConsideringYouAsContact { get { return data.Attribute("revcontact") != null ? new Nullable<bool>(data.Attribute("revcontact").Value.ToBoolean()) : null; } }
 
         /// <summary>
         /// determine whether the user is marking you as a family or Not
         /// </summary>
-        public Nullable<bool> IsConsideringYouAsFriend { get; private set; }
+        public Nullable<bool> IsConsideringYouAsFriend { get { return data.Attribute("revfriend") != null ? new Nullable<bool>(data.Attribute("revfriend").Value.ToBoolean()) : null;  } }
 
         /// <summary>
         /// determine whether the user is marking you as a friend or Not
         /// </summary>
-        public Nullable<bool> IsConsideringYouAsFamily { get; private set; }
+        public Nullable<bool> IsConsideringYouAsFamily { get { return data.Attribute("revfamily") != null ? new Nullable<bool>(data.Attribute("revfamily").Value.ToBoolean()) : null; } }
+    }
+
+    /// <summary>
+    /// represents a collection of photosets
+    /// </summary>
+    public class PhotoSetsCollection:IEnumerable<PhotoSet>
+    {
+        private XElement data;
+
+        internal PhotoSetsCollection(XElement element)
+        {
+            this.data = element;
+            this.PhotoSetsCount = element.Elements("photoset").Count();
+        }
+
+        /// <summary>
+        /// the number of photosets in this collection
+        /// </summary>
+        public int PhotoSetsCount { get; private set; }
+
+        /// <summary>
+        /// the Photosets Objects
+        /// </summary>
+        public IEnumerable<PhotoSet> PhotoSets
+        {
+            get
+            {
+                return data.Elements("photoset")
+                    .Select(elm => new PhotoSet(Int64.Parse(elm.Attribute("id").Value), Int64.Parse(elm.Attribute("primary").Value),
+                    elm.Attribute("secret").Value, int.Parse(elm.Attribute("server").Value), int.Parse(elm.Attribute("farm").Value),
+                    int.Parse(elm.Attribute("photos").Value), int.Parse(elm.Attribute("videos").Value), elm.Element("title").Value,
+                    elm.Element("description").Value));
+            }
+        }
+
+        public IEnumerator<PhotoSet> GetEnumerator()
+        {
+            foreach (var photoset in this.PhotoSets)
+                yield return photoset;
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+    }
+
+    /// <summary>
+    /// represents a user photoset
+    /// </summary>
+    public class PhotoSet
+    {
+        internal PhotoSet(Int64 id,Int64 primary,string secret , int server,int farm ,int photos,int videos,string title,string description) 
+        {
+            this.ID = id;
+            this.Primary = primary;
+            this.Secret = secret;
+            this.Server = server;
+            this.Farm = farm;
+            this.PhotosCount = photos;
+            this.VideosCount = videos;
+            this.Title = title;
+            this.Description = description;
+        }
+
+        /// <summary>
+        /// the ID that identifies the photoset
+        /// </summary>
+        public Int64 ID { get; private set; }
+
+        /// <summary>
+        /// the ID of default photo in this photoset
+        /// </summary>
+        public Int64 Primary { get; private set; }
+
+        /// <summary>
+        /// the secret used to build the URL of the default photo in this photoset
+        /// </summary>
+        public string Secret { get; private set; }
+
+        /// <summary>
+        /// the number of server the default photo in this set resides on
+        /// </summary>
+        public int Server { get; private set; }
+
+        /// <summary>
+        /// the number of servers farm the default photo in this set resides on
+        /// </summary>
+        public int Farm { get; private set; }
+
+        /// <summary>
+        /// the number of photos contained in this photoset
+        /// </summary>
+        public int PhotosCount { get; private set; }
+
+        /// <summary>
+        /// the number of videos contained in this photoset
+        /// </summary>
+        public int VideosCount { get; private set; }
+
+        /// <summary>
+        /// the title of the photoset
+        /// </summary>
+        public string Title { get; private set; }
+
+        /// <summary>
+        /// the description of the photoset , could be Null
+        /// </summary>
+        public string Description { get; private set; }
+    }
+
+    /// <summary>
+    /// represents a collection of galleries
+    /// </summary>
+    public class GalleriesCollection:IEnumerable<Gallery>
+    {
+        private XElement data;
+
+        internal GalleriesCollection(XElement element)
+        {
+            this.data = element;
+        }
+
+        /// <summary>
+        /// the Total Number of Galleries
+        /// </summary>
+        public int Total { get; private set; }
+
+        /// <summary>
+        /// the Number of Galleries per page
+        /// </summary>
+        public int PerPage { get; private set; }
+
+        /// <summary>
+        /// the number of pages
+        /// </summary>
+        public int Pages { get; private set; }
+
+        /// <summary>
+        /// the current page number
+        /// </summary>
+        public int Page { get; private set; }
+
+        /// <summary>
+        /// the Galleries Objects
+        /// </summary>
+        public IEnumerable<Gallery> Galleries 
+        { 
+            get 
+            {
+                return data.Elements("gallery").Select(
+                    elm => new Gallery(elm.Attribute("id").Value, elm.Attribute("url").Value, elm.Attribute("owner").Value,
+                        Int64.Parse(elm.Attribute("primary_photo_id").Value), int.Parse(elm.Attribute("count_photos").Value),
+                        int.Parse(elm.Attribute("count_videos").Value), int.Parse(elm.Attribute("primary_photo_farm").Value),
+                    int.Parse(elm.Attribute("primary_photo_server").Value), elm.Attribute("primary_photo_secret").Value, elm.Attribute("date_create").Value,
+                    elm.Attribute("date_update").Value, elm.Element("title").Value, elm.Element("description").Value)); 
+            }
+        }
+
+        public IEnumerator<Gallery> GetEnumerator()
+        {
+            foreach (var gallery in this.Galleries)
+                yield return gallery; 
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+    }
+
+    /// <summary>
+    /// represents a gallery
+    /// </summary>
+    public class Gallery
+    {
+        internal Gallery(string id, string url, string ownerID, Int64 primary, int photosCount, int videosCount, int farm, int server, string secret,
+            string dateCreated, string dateUpdated, string title, string description)
+        {
+            this.ID = id;
+            this.Url = new Uri(url);
+            this.OwnerID = ownerID;
+            this.Primary = primary;
+            this.PhotosCount = photosCount;
+            this.VideosCount = videosCount;
+            this.Farm = farm;
+            this.Server = server;
+            this.Secret = secret;
+            this.DateCreated = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(double.Parse(dateCreated));
+            this.DateUpdated = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(double.Parse(dateCreated));
+            this.Title = title;
+            this.Description = description;
+        }
+
+        /// <summary>
+        /// the ID of the Gallery
+        /// </summary>
+        public string ID { get; private set; }
+
+        /// <summary>
+        /// the URL that leads to the page of the gallery on Flickr
+        /// </summary>
+        public Uri Url { get; private set; }
+
+        /// <summary>
+        /// The Owner ID of the Gallery 
+        /// </summary>
+        public string OwnerID { get; private set; }
+
+        /// <summary>
+        /// the ID of the primary photo of the gallery
+        /// </summary>
+        public Int64 Primary { get; private set; }
+
+        /// <summary>
+        /// the number of photos in this gallery
+        /// </summary>
+        public int PhotosCount { get; private set; }
+
+        /// <summary>
+        /// the number of videos in this gallery
+        /// </summary>
+        public int VideosCount { get; private set; }
+
+        /// <summary>
+        /// the number of server farm that the primary photo of this gallery resides on
+        /// </summary>
+        public int Farm { get; private set; }
+
+        /// <summary>
+        /// the number of server that the primary photo of this gallery resides on
+        /// </summary>
+        public int Server { get; private set; }
+
+        /// <summary>
+        /// the secret used to build the URL of primary photo of this gallery
+        /// </summary>
+        public string Secret { get; private set; }
+
+        /// <summary>
+        /// the Date and time of the creation of this gallery
+        /// </summary>
+        public DateTime DateCreated { get; private set; }
+
+        /// <summary>
+        /// the Date and time of the last modification of this gallery
+        /// </summary>
+        public DateTime DateUpdated { get; private set; }
+
+        /// <summary>
+        /// the Title of this gallery
+        /// </summary>
+        public string Title { get; private set; }
+
+        /// <summary>
+        /// the Description of this gallery , could Be Null
+        /// </summary>
+        public string Description { get; private set; }
+    }
+
+    /// <summary>
+    /// represents a Collection of Groups
+    /// </summary>
+    public class GroupCollection : IEnumerable<Group>
+    {
+        private XElement data;
+
+        internal GroupCollection(XElement element)
+        {
+            this.data = element;
+            this.GroupsCount = element.Elements("group").Count();
+        }
+
+        /// <summary>
+        /// the Number of the Groups in the collection
+        /// </summary>
+        public int GroupsCount { get; private set; }
+
+        /// <summary>
+        /// the Groups Objects
+        /// </summary>
+        public IEnumerable<Group> Groups { 
+            get
+            {
+                return this.data.Elements("group").Select(elm => 
+                    new Group(elm.Attribute("nsid").Value,elm.Attribute("name").Value, elm.Attribute("admin").Value.ToBoolean()
+                        , elm.Attribute("eighteenplus").Value.ToBoolean())); 
+            }
+        }
+
+        public IEnumerator<Group> GetEnumerator()
+        {
+            foreach (var group in this.Groups)
+                yield return group;
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+    }
+
+    /// <summary>
+    /// represent a Flickr Group
+    /// </summary>
+    public class Group
+    {
+        internal Group(string id, string name, bool isAdmin, bool isOver18)
+        {
+            this.ID = id;
+            this.Name = name;
+            this.IsAdmin = isAdmin;
+            this.IsOver18 = isOver18;
+        }
+        /// <summary>
+        /// the ID that identifies the group
+        /// </summary>
+        public string ID { get; private set; }
+
+        /// <summary>
+        /// the name of the Group
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// determine whether the calling user is an administrator of the group.
+        /// </summary>
+        public bool IsAdmin { get; private set; }
+
+        /// <summary>
+        /// determine if the group is visible to members over 18 only.
+        /// </summary>
+        public bool IsOver18 { get; private set; }
     }
 }
