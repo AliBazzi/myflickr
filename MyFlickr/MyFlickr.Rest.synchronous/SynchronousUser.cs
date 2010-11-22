@@ -281,15 +281,15 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="user"></param>
-        /// <param name="collectionID">The ID of the collection to fetch a tree for, or Null to fetch the root collection.</param>
-        /// <returns>CollectionsList Object</returns>
-        public static CollectionsList GetCollectionsTree(this User user, string collectionID = null)
+        /// <param name="collection">The ID of the collection to fetch a tree for, or Null to fetch the root collection.</param>
+        /// <returns>CollectionsList Object</returns>   
+        public static CollectionsList GetCollectionsTree(this User user, Collection collection = null)
         {
             FlickrSynchronousPrmitive<CollectionsList> FSP = new FlickrSynchronousPrmitive<CollectionsList>();
 
             Action<object, EventArgs<CollectionsList>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
             user.GetCollectionsTreeCompleted += new EventHandler<EventArgs<CollectionsList>>(handler);
-            FSP.Token = user.GetCollectionsTreeAsync(collectionID);
+            FSP.Token = user.GetCollectionsTreeAsync(collection);
             FSP.WaitForAsynchronousCall();
             user.GetCollectionsTreeCompleted -= new EventHandler<EventArgs<CollectionsList>>(handler);
 
