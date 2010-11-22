@@ -1,7 +1,7 @@
 ﻿using System;
 using MyFlickr.Core;
 
-namespace MyFlickr.Rest.Synchronous
+namespace MyFlickr.Rest
 {
     public static class SynchronousUser
     {
@@ -252,6 +252,46 @@ namespace MyFlickr.Rest.Synchronous
             FSP.Token = user.GetPublicGroupsAsync();
             FSP.WaitForAsynchronousCall();
             user.GetPublicGroupsCompleted -= new EventHandler<EventArgs<GroupCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Get a list of configured blogs for the calling user.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="serviceID">Optionally only return blogs for a given service id.</param>
+        /// <returns>BlogsCollection Object</returns>
+        public static BlogsCollection GetBlogsList(this User user, Nullable<int> serviceID = null)
+        {
+            FlickrSynchronousPrmitive<BlogsCollection> FSP = new FlickrSynchronousPrmitive<BlogsCollection>();
+
+            Action<object, EventArgs<BlogsCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetBlogsListCompleted += new EventHandler<EventArgs<BlogsCollection>>(handler);
+            FSP.Token = user.GetBlogsListAsync(serviceID);
+            FSP.WaitForAsynchronousCall();
+            user.GetBlogsListCompleted -= new EventHandler<EventArgs<BlogsCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns a tree (or sub tree) of collections belonging to a given user.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="collectionID">The ID of the collection to fetch a tree for, or Null to fetch the root collection.</param>
+        /// <returns>CollectionsList Object</returns>
+        public static CollectionsList GetCollectionsTree(this User user, string collectionID = null)
+        {
+            FlickrSynchronousPrmitive<CollectionsList> FSP = new FlickrSynchronousPrmitive<CollectionsList>();
+
+            Action<object, EventArgs<CollectionsList>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetCollectionsTreeCompleted += new EventHandler<EventArgs<CollectionsList>>(handler);
+            FSP.Token = user.GetCollectionsTreeAsync(collectionID);
+            FSP.WaitForAsynchronousCall();
+            user.GetCollectionsTreeCompleted -= new EventHandler<EventArgs<CollectionsList>>(handler);
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
