@@ -1,7 +1,7 @@
 ﻿using System;
 using MyFlickr.Core;
 
-namespace MyFlickr.Rest.Synchronous
+namespace MyFlickr.Rest
 {
     public static class SynchronousAuthenticator
     {

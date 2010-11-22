@@ -44,7 +44,7 @@ namespace MyFlickr.Rest
 
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateRequest((element) =>
+            FlickrCore.IntiateGetRequest((element) =>
             {
                 var frob = element.Element("frob").Value;
                 var url = UriHelper.CalculateRedirectionUrl(this.SharedSecret , new Parameter("api_key", this.ApiKey) ,
@@ -72,7 +72,7 @@ namespace MyFlickr.Rest
 
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateRequest(element =>
+            FlickrCore.IntiateGetRequest(element =>
                 {
                     this.InvokeGetTokenCompleted(new EventArgs<AuthenticationTokens>(token ,new AuthenticationTokens
                              (this.ApiKey,this.SharedSecret,element.Element("auth").Element("token").Value
@@ -99,7 +99,7 @@ namespace MyFlickr.Rest
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateRequest(element =>
+            FlickrCore.IntiateGetRequest(element =>
             {
                 this.InvokeCheckTokenCompleted(new EventArgs<AuthenticationTokens>(token, new AuthenticationTokens
                          (this.ApiKey,this.SharedSecret,element.Element("auth").Element("token").Value
@@ -126,7 +126,7 @@ namespace MyFlickr.Rest
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateRequest(element =>
+            FlickrCore.IntiateGetRequest(element =>
             {
                 this.InvokeGetFullTokenCompleted(new EventArgs<AuthenticationTokens>(token, new AuthenticationTokens
                          (this.ApiKey,this.SharedSecret,element.Element("auth").Element("token").Value

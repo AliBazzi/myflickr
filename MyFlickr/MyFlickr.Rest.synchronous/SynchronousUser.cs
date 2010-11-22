@@ -159,6 +159,28 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
+        /// Returns a list of photos containing a particular Flickr member.
+        /// This method does not require authentication. but when called when having at least read permission ,  you will get private photos
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>PhotosCollection Object</returns>
+        public static PhotosOfUserCollection GetPhotosOfUser(this User user, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            FlickrSynchronousPrmitive<PhotosOfUserCollection> FSP = new FlickrSynchronousPrmitive<PhotosOfUserCollection>();
+
+            Action<object, EventArgs<PhotosOfUserCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetUserPhotosCompleted += new EventHandler<EventArgs<PhotosOfUserCollection>>(handler);
+            FSP.Token = user.GetPhotosOfUserAsync(extras,perPage,page);
+            FSP.WaitForAsynchronousCall();
+            user.GetUserPhotosCompleted -= new EventHandler<EventArgs<PhotosOfUserCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
         /// Get information about the user.
         /// This method requires authentication with 'read' permission.
         /// </summary>
@@ -295,5 +317,71 @@ namespace MyFlickr.Rest
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
+
+        /// <summary>
+        /// Returns a list of favorite public photos for the given user.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
+        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>PhotosCollection Object</returns>
+        public static PhotosCollection GetPublicFavoritesList(this User user ,string minFaveDate = null, string maxFaveDate = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            FlickrSynchronousPrmitive<PhotosCollection> FSP = new FlickrSynchronousPrmitive<PhotosCollection>();
+
+            Action<object, EventArgs<PhotosCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetPublicFavoritesListCompleted += new EventHandler<EventArgs<PhotosCollection>>(handler);
+            FSP.Token = user.GetPublicFavoritesListAsync(minFaveDate,maxFaveDate,extras,perPage,page);
+            FSP.WaitForAsynchronousCall();
+            user.GetPublicFavoritesListCompleted -= new EventHandler<EventArgs<PhotosCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns a list of the user's favorite photos. Only photos which the calling user has permission to see are returned.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="userInstance"></param>
+        /// <param name="user">The object that represents a Flickr User.</param>
+        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
+        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>PhotosCollection Object</returns>
+        public static PhotosCollection GetFavoritesList(this User userInstance ,User user ,string minFaveDate = null, string maxFaveDate = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            FlickrSynchronousPrmitive<PhotosCollection> FSP = new FlickrSynchronousPrmitive<PhotosCollection>();
+
+            Action<object, EventArgs<PhotosCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            userInstance.GetFavoritesListCompleted += new EventHandler<EventArgs<PhotosCollection>>(handler);
+            FSP.Token = userInstance.GetFavoritesListAsync(user,minFaveDate,maxFaveDate,extras,perPage,page);
+            FSP.WaitForAsynchronousCall();
+            userInstance.GetFavoritesListCompleted -= new EventHandler<EventArgs<PhotosCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns a list of the user's favorite photos. Only photos which the calling user has permission to see are returned.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="userInstance"></param>
+        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
+        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>PhotosCollection Object</returns>    
+        public static PhotosCollection GetFavoritesList(this User userInstance, string minFaveDate = null, string maxFaveDate = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            return GetFavoritesList(userInstance, userInstance, minFaveDate, maxFaveDate, extras, perPage, page);
+        }
+
     }
 }

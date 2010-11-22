@@ -4,7 +4,7 @@
     <Position X="0.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>gAAAAAAAAAIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
-      <FileName>MyFlickr.Core\MD5Helper.cs</FileName>
+      <FileName>MD5Helper.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Core.UriHelper">
@@ -20,25 +20,52 @@
   <Class Name="MyFlickr.Core.FlickrCore">
     <Position X="5.5" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <HashCode>AAAAAIAQAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
       <FileName>MyFlickr.Core\FlickrRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Core.WebClient">
-    <Position X="7.75" Y="0.5" Width="2.25" />
+    <Position X="7.75" Y="0.5" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAABAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAIAAA=</HashCode>
       <FileName>MyFlickr.Core\WebClient.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MyFlickr.Core.EventArgsBase">
-    <Position X="0.5" Y="2.5" Width="2.5" />
+  <Class Name="MyFlickr.Core.FlickrException">
+    <Position X="3.5" Y="3" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAQAAA=</HashCode>
-      <FileName>EventArgsBase.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Core\FlickrExcpetion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Core.Parameter">
+    <Position X="0.5" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAQCAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Core\Parameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Core.Token">
+    <Position X="5.25" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAgAAAAAAAAAAABIAAAAAAAAAAAiA=</HashCode>
+      <FileName>MyFlickr.Core\Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Core.NoReply">
+    <Position X="7.5" Y="3" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NoReply.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

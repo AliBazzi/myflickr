@@ -2,7 +2,7 @@
 using System.Threading;
 using System;
 
-namespace MyFlickr.Rest.Synchronous
+namespace MyFlickr.Rest
 {
     internal class FlickrSynchronousPrmitive<Result>
     {
