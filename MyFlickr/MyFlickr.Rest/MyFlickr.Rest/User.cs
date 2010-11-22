@@ -67,7 +67,6 @@ namespace MyFlickr.Rest
             this.authTkns = new AuthenticationTokens(apiKey, null, null, Rest.AccessPermission.None, userID, null, null);
         }
 
-
         /// <summary>
         /// Get a list of contacts for the calling user.
         /// This method requires authentication with 'read' permission.
@@ -259,16 +258,16 @@ namespace MyFlickr.Rest
             if (this.AccessPermission > AccessPermission.None)
             {
                 FlickrCore.IntiateRequest(
-                    elm => this.InokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token,new UserInfo(elm.Element("person"))))
-                    , e => this.InokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token,e)), this.SharedSecret
+                    elm => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token,new UserInfo(elm.Element("person"))))
+                    , e => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token,e)), this.SharedSecret
                     , new Parameter("api_key", this.ApiKey),new Parameter("auth_token",this.Token)
                     ,new Parameter("method", "flickr.people.getInfo"), new Parameter("user_id", this.UserID));
             }
             else
             {
                 FlickrCore.IntiateRequest(
-                    elm => this.InokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, new UserInfo(elm.Element("person"))))
-                    , e => this.InokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, e)), null,
+                    elm => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, new UserInfo(elm.Element("person"))))
+                    , e => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, e)), null,
                     new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.people.getInfo"), new Parameter("user_id", this.UserID));
             }
 
@@ -290,8 +289,8 @@ namespace MyFlickr.Rest
             Token token = Core.Token.GenerateToken();
 
             FlickrCore.IntiateRequest(
-                    elm => this.InokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, new UserInfo(elm.Element("person"))))
-                    , e => this.InokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, e)), this.SharedSecret
+                    elm => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, new UserInfo(elm.Element("person"))))
+                    , e => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, e)), this.SharedSecret
                     , new Parameter("api_key", this.ApiKey), new Parameter("auth_token", this.Token)
                     , new Parameter("method", "flickr.people.getInfo"), new Parameter("user_id", user.UserID));
 
@@ -352,7 +351,63 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Get a list of configured blogs for the calling user.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="serviceID">Optionally only return blogs for a given service id.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetBlogsListAsync(Nullable<int> serviceID = null)
+        {
+            this.authTkns.ValidateGrantedPermission(Rest.AccessPermission.Read);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateRequest(
+                 elm => this.InvokeGetBlogsListEvent(new EventArgs<BlogsCollection>(token,new BlogsCollection(elm.Element("blogs"))))
+               , e => this.InvokeGetBlogsListEvent(new EventArgs<BlogsCollection>(token,e)), this.SharedSecret
+               , new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.blogs.getList")
+               , new Parameter("auth_token", this.Token), new Parameter("service", serviceID));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Returns a tree (or sub tree) of collections belonging to a given user.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="collectionID">The ID of the collection to fetch a tree for, or Null to fetch the root collection.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetCollectionsTreeAsync(string collectionID = null)
+        {
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateRequest(
+                elm => this.InvokeGetCollectionsTreeEvent(new EventArgs<CollectionsList>(token , new CollectionsList(elm.Element("collections")))),
+                e => this.InvokeGetCollectionsTreeEvent(new EventArgs<CollectionsList>(token,e)), null,
+                new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.collections.getTree"), 
+                new Parameter("collection_id", collectionID), new Parameter("user_id", this.UserID));
+
+            return token;
+        }
+
         #region Events
+        private void InvokeGetCollectionsTreeEvent(EventArgs<CollectionsList> args)
+        {
+            if (this.GetCollectionsTreeCompleted != null)
+            {
+                this.GetCollectionsTreeCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<CollectionsList>> GetCollectionsTreeCompleted;
+        private void InvokeGetBlogsListEvent(EventArgs<BlogsCollection> args)
+        {
+            if (this.GetBlogsListCompleted != null)
+            {
+                this.GetBlogsListCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<BlogsCollection>> GetBlogsListCompleted;
         private void InvokeGetPublicGroupsEvent(EventArgs<GroupCollection> args)
         {
             if (this.GetPublicGroupsCompleted != null)
@@ -377,7 +432,7 @@ namespace MyFlickr.Rest
             }
         }
         public event EventHandler<EventArgs<PhotoSetsCollection>> GetPhotoSetsListCompleted;
-        private void InokeGetInfoCompletedEvent(EventArgs<UserInfo> args)
+        private void InvokeGetInfoCompletedEvent(EventArgs<UserInfo> args)
         {
             if (this.GetInfoCompleted != null)
             {
@@ -933,37 +988,37 @@ namespace MyFlickr.Rest
     /// <summary>
     /// represents a collection of photosets
     /// </summary>
-    public class PhotoSetsCollection:IEnumerable<PhotoSet>
+    public class PhotoSetsCollection:IEnumerable<PhotosSet>
     {
         private XElement data;
 
         internal PhotoSetsCollection(XElement element)
         {
             this.data = element;
-            this.PhotoSetsCount = element.Elements("photoset").Count();
+            this.PhotosSetsCount = element.Elements("photoset").Count();
         }
 
         /// <summary>
         /// the number of photosets in this collection
         /// </summary>
-        public int PhotoSetsCount { get; private set; }
+        public int PhotosSetsCount { get; private set; }
 
         /// <summary>
         /// the Photosets Objects
         /// </summary>
-        public IEnumerable<PhotoSet> PhotoSets
+        public IEnumerable<PhotosSet> PhotoSets
         {
             get
             {
                 return data.Elements("photoset")
-                    .Select(elm => new PhotoSet(Int64.Parse(elm.Attribute("id").Value), Int64.Parse(elm.Attribute("primary").Value),
+                    .Select(elm => new PhotosSet(Int64.Parse(elm.Attribute("id").Value), Int64.Parse(elm.Attribute("primary").Value),
                     elm.Attribute("secret").Value, int.Parse(elm.Attribute("server").Value), int.Parse(elm.Attribute("farm").Value),
                     int.Parse(elm.Attribute("photos").Value), int.Parse(elm.Attribute("videos").Value), elm.Element("title").Value,
                     elm.Element("description").Value));
             }
         }
 
-        public IEnumerator<PhotoSet> GetEnumerator()
+        public IEnumerator<PhotosSet> GetEnumerator()
         {
             foreach (var photoset in this.PhotoSets)
                 yield return photoset;
@@ -976,19 +1031,13 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a user photoset
+    /// represents photosSet Basic Information
     /// </summary>
-    public class PhotoSet
+    public class PhotosSetBasic
     {
-        internal PhotoSet(Int64 id,Int64 primary,string secret , int server,int farm ,int photos,int videos,string title,string description) 
+        internal PhotosSetBasic(Int64 id, string title, string description)
         {
             this.ID = id;
-            this.Primary = primary;
-            this.Secret = secret;
-            this.Server = server;
-            this.Farm = farm;
-            this.PhotosCount = photos;
-            this.VideosCount = videos;
             this.Title = title;
             this.Description = description;
         }
@@ -997,6 +1046,33 @@ namespace MyFlickr.Rest
         /// the ID that identifies the photoset
         /// </summary>
         public Int64 ID { get; private set; }
+
+        /// <summary>
+        /// the title of the photoset
+        /// </summary>
+        public string Title { get; private set; }
+
+        /// <summary>
+        /// the description of the photoset , could be Null
+        /// </summary>
+        public string Description { get; private set; }
+    }
+
+    /// <summary>
+    /// represents a user PhotosSet
+    /// </summary>
+    public class PhotosSet : PhotosSetBasic
+    {
+        internal PhotosSet(Int64 id,Int64 primary,string secret , int server,int farm ,int photos,int videos,string title,string description) 
+            :base(id,title,description)
+        {
+            this.Primary = primary;
+            this.Secret = secret;
+            this.Server = server;
+            this.Farm = farm;
+            this.PhotosCount = photos;
+            this.VideosCount = videos;
+        }
 
         /// <summary>
         /// the ID of default photo in this photoset
@@ -1027,16 +1103,6 @@ namespace MyFlickr.Rest
         /// the number of videos contained in this photoset
         /// </summary>
         public int VideosCount { get; private set; }
-
-        /// <summary>
-        /// the title of the photoset
-        /// </summary>
-        public string Title { get; private set; }
-
-        /// <summary>
-        /// the description of the photoset , could be Null
-        /// </summary>
-        public string Description { get; private set; }
     }
 
     /// <summary>
@@ -1261,5 +1327,173 @@ namespace MyFlickr.Rest
         /// determine if the group is visible to members over 18 only.
         /// </summary>
         public bool IsOver18 { get; private set; }
+    }
+
+    /// <summary>
+    /// represents a Collection of Blogs
+    /// </summary>
+    public class BlogsCollection:IEnumerable<Blog>
+    {
+        private XElement data;
+
+        internal BlogsCollection(XElement element)
+        {
+            this.data = element;
+            this.BlogsCount = element.Elements("blog").Count();
+        }
+
+        /// <summary>
+        /// the number of blogs in this collection
+        /// </summary>
+        public int BlogsCount { get; private set; }
+
+        /// <summary>
+        /// Blogs Objects
+        /// </summary>
+        public IEnumerable<Blog> Blogs 
+        { 
+            get 
+            {
+                return this.data.Elements("blog").Select(elm => new Blog(elm));
+            }
+        }
+
+        public IEnumerator<Blog> GetEnumerator()
+        {
+            foreach (var blog in this.Blogs)
+                yield return blog;
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+    }
+
+    /// <summary>
+    /// Represents a blog
+    /// </summary>
+    public class Blog
+    {
+        internal Blog(XElement element)
+        {
+            this.ID = int.Parse(element.Attribute("id").Value);
+            this.URL = new Uri(element.Attribute("url").Value);
+            this.Name = element.Attribute("name").Value;
+            this.NeedsPassword = element.Attribute("needspassword").Value.ToBoolean();
+        }
+
+        /// <summary>
+        /// the ID of the Blog
+        /// </summary>
+        public int ID { get; private set; }
+
+        /// <summary>
+        /// the URL that leads to the blog Service
+        /// </summary>
+        public Uri URL { get; private set; }
+
+        /// <summary>
+        /// determine whether the blog needs password
+        /// </summary>
+        public bool NeedsPassword { get; private set; }
+
+        /// <summary>
+        /// the name of the Blog Service
+        /// </summary>
+        public string Name { get; private set; }
+    }
+
+    /// <summary>
+    /// represents a collection of Flickr Collections
+    /// </summary>
+    public class CollectionsList
+    {
+        private XElement data;
+        private IEnumerable<XElement> iEnumerable;
+
+        internal CollectionsList(XElement element)
+        {
+            this.data = element;
+        }
+
+        public CollectionsList(IEnumerable<XElement> iEnumerable)
+        {
+            this.iEnumerable = iEnumerable;
+        }
+
+        /// <summary>
+        /// Flickr Collections Objects
+        /// </summary>
+        public IEnumerable<Collection> Collections
+        {
+            get
+            {
+                if (this.data != null)
+                    return this.data.Elements("collection").Select(elm => new Collection(elm));
+                else
+                    return this.iEnumerable.Select(elm => new Collection(elm));
+            }
+        }
+    }
+
+    /// <summary>
+    /// represents a Flickr Collection
+    /// </summary>
+    public class Collection
+    {
+        private XElement data;
+
+        internal Collection(XElement element)
+        {
+            this.data = element;
+            this.ID = element.Attribute("id").Value;
+            this.Title = element.Attribute("title").Value;
+            this.Description = element.Attribute("description").Value;
+            this.IconLarge = element.Attribute("iconlarge").Value;
+            this.IconSmall = element.Attribute("iconsmall").Value;
+        }
+
+        /// <summary>
+        /// Flickr Collections List
+        /// </summary>
+        public CollectionsList Collections { get { return new CollectionsList(this.data.Elements("collection")); } }
+
+        /// <summary>
+        /// PhotoSets Objects
+        /// </summary>
+        public IEnumerable<PhotosSetBasic> PhotosSets
+        {
+            get
+            {
+                return this.data.Elements("set").Select(elm => 
+                    new PhotosSetBasic(Int64.Parse(elm.Attribute("id").Value), elm.Attribute("title").Value, elm.Attribute("description").Value));
+            }
+        }
+
+        /// <summary>
+        /// the ID of the Collection
+        /// </summary>
+        public string ID { get; private set; }
+
+        /// <summary>
+        /// the Title of the Collection
+        /// </summary>
+        public string Title { get; private set; }
+
+        /// <summary>
+        /// the Description of the collection
+        /// </summary>
+        public string Description { get; private set; }
+
+        /// <summary>
+        /// the URL of the large icon of this Collection , Note : could be relative path for a default when not set by the User
+        /// </summary>
+        public string IconLarge { get; private set; }
+
+        /// <summary>
+        /// the URL of the small icon of this Collection , Note : could be relative path for a default when not set by the User
+        /// </summary>
+        public string IconSmall { get; private set; }
     }
 }

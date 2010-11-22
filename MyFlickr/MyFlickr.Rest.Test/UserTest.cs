@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MyFlickr.Rest.Synchronous;
 using System;
 
 namespace MyFlickr.Rest.Test
@@ -108,6 +107,7 @@ namespace MyFlickr.Rest.Test
         {
             var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetInfo();
         }
+
         [TestMethod]
         public void GetInfo2()
         {
@@ -148,17 +148,60 @@ namespace MyFlickr.Rest.Test
             var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetGalleriesList();
             foreach (var gallery in res.Galleries) { }
         }
+
         [TestMethod]
         public void GetPublicGroups()
         {
             var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetPublicGroups();
             foreach (var group in res.Groups) { }
         }
+
         [TestMethod]
         public void GetPublicGroups2()
         {
             var res = new User(this.data.apiKey, "36893321@N03").GetPublicGroups();
             foreach (var group in res.Groups) { }
+        }
+
+        [TestMethod]
+        public void GetBlogsList()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetBlogsList();
+            foreach (var blog in res.Blogs) { }
+        }
+
+        [TestMethod]
+        public void GetCollectionsTree()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetCollectionsTree();
+            foreach (var collection in res.Collections) 
+            {
+                foreach (var bphotoset in collection.PhotosSets)
+                {
+
+                }
+                foreach (var col in collection.Collections.Collections)
+                {
+
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetCollectionsTree2()
+        {
+            var res = new User(this.data.apiKey, "36893321@N03").GetCollectionsTree();
+            foreach (var collection in res.Collections)
+            {
+                foreach (var bphotoset in collection.PhotosSets)
+                {
+
+                }
+                foreach (var col in collection.Collections.Collections)
+                {
+
+                }
+            }
         }
     }
 }
