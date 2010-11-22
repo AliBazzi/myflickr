@@ -203,5 +203,76 @@ namespace MyFlickr.Rest.Test
                 }
             }
         }
+
+        [TestMethod]
+        public void GetPhotosOfUser()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetPhotosOfUser();
+            foreach (var item in res.Photos)
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetPhotosOfUser2()
+        {
+            var res = new User(this.data.apiKey, "36893321@N03").GetPhotosOfUser();
+            foreach (var item in res.Photos)
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetPublicFavorites()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetPublicFavoritesList();
+            foreach (var item in res.Photos)
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetPublicFavorites2()
+        {
+            var res = new User(this.data.apiKey, "36893321@N03").GetPublicFavoritesList();
+            foreach (var item in res.Photos)
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetFavorites()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetFavoritesList();
+            foreach (var item in res.Photos)
+            {
+
+            }
+        }
+
+        [TestMethod,ExpectedException(typeof(InvalidOperationException))]
+        public void GetFavorites2()
+        {
+            var res = new User(this.data.apiKey, "36893321@N03").GetFavoritesList();
+            foreach (var item in res.Photos)
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetFavorites3()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance()
+                .GetFavoritesList(new User(this.data.apiKey, "53703764@N02"));
+            foreach (var item in res.Photos)
+            {
+
+            }
+        }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MyFlickr.Rest.Synchronous;
 using MyFlickr.Core;
 
 namespace MyFlickr.Rest.Test
