@@ -378,7 +378,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="collectionID">The ID of the collection to fetch a tree for, or Null to fetch the root collection.</param>
         /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
-        public Token GetCollectionsTreeAsync(string collectionID = null)
+        public Token GetCollectionsTreeAsync(Collection collection = null)
         {
             Token token = Core.Token.GenerateToken();
 
@@ -386,7 +386,7 @@ namespace MyFlickr.Rest
                 elm => this.InvokeGetCollectionsTreeEvent(new EventArgs<CollectionsList>(token , new CollectionsList(elm.Element("collections")))),
                 e => this.InvokeGetCollectionsTreeEvent(new EventArgs<CollectionsList>(token,e)), null,
                 new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.collections.getTree"), 
-                new Parameter("collection_id", collectionID), new Parameter("user_id", this.UserID));
+                new Parameter("collection_id", collection != null ? collection.ID : null ), new Parameter("user_id", this.UserID));
 
             return token;
         }
