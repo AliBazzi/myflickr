@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="MyFlickr.Rest\Contacts.cs" />
     <Compile Include="MyFlickr.Core\NoReply.cs" />
     <Compile Include="MyFlickr.Rest\Blogs.cs" />
@@ -70,6 +71,9 @@
   <ItemGroup>
     <None Include="MyFlickr.Core\MyFlickr.Core.cd" />
     <None Include="MyFlickr.Rest\MyFlickr.Rest.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="flickr Api that are Done.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

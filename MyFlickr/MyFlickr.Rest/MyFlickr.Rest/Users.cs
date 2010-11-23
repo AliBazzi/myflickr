@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MyFlickr.Core;
 using System.Xml.Linq;
+using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
@@ -75,7 +75,7 @@ namespace MyFlickr.Rest
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 1000. The maximum allowed value is 1000.</param>
         /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
-        public Token GetContactsListAsync(Nullable<ContactFilter> contactFilter = null,Nullable<int> page = null , Nullable<int> perPage = null)
+        public Token GetContactsListAsync(Nullable<ContactFilter> contactFilter = null, Nullable<int> page = null , Nullable<int> perPage = null)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
             Token token = MyFlickr.Core.Token.GenerateToken();
@@ -143,7 +143,7 @@ namespace MyFlickr.Rest
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
-        public Token GetPhotosAsync(Nullable<SafeSearch> safeSearch = null, string minUploadDate = null, string maxUploadDate = null
+        public Token GetPhotosAsync(Nullable<SafetyLevel> safeSearch = null, string minUploadDate = null, string maxUploadDate = null
             , string minTakenDate = null , string maxTakenDate = null, Nullable<ContentType> contentType = null, Nullable<PrivacyFilter> privacyFilter = null
             , string extras = null , Nullable<int> perPage = null, Nullable<int> page = null)
         {
@@ -167,7 +167,7 @@ namespace MyFlickr.Rest
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
-        public Token GetPhotosAsync(User user, Nullable<SafeSearch> safeSearch = null, string minUploadDate = null, string maxUploadDate = null
+        public Token GetPhotosAsync(User user, Nullable<SafetyLevel> safeSearch = null, string minUploadDate = null, string maxUploadDate = null
             , string minTakenDate = null, string maxTakenDate = null, Nullable<ContentType> contentType = null, Nullable<PrivacyFilter> privacyFilter = null
             , string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
@@ -178,9 +178,11 @@ namespace MyFlickr.Rest
                   elm => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns,elm.Element("photos")))),
                   e => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.SharedSecret,
                   new Parameter("method", "flickr.people.getPhotos"), new Parameter("api_key", this.ApiKey), new Parameter("auth_token", this.Token)
-                , new Parameter("user_id", user.UserID), new Parameter("safe_search", safeSearch), new Parameter("min_upload_date", minUploadDate)
-                , new Parameter("max_upload_date", maxUploadDate), new Parameter("min_taken_date", minTakenDate), new Parameter("max_taken_date", maxTakenDate)
-                , new Parameter("content_type", contentType), new Parameter("privacy_filter", privacyFilter)
+                  , new Parameter("user_id", user.UserID), new Parameter("safe_search", safeSearch.HasValue ? (object)(int)safeSearch : null),
+                  new Parameter("min_upload_date", minUploadDate),
+                  new Parameter("max_upload_date", maxUploadDate), new Parameter("min_taken_date", minTakenDate), new Parameter("max_taken_date", maxTakenDate),
+                  new Parameter("content_type", contentType.HasValue ? (object)(int)contentType : null),
+                  new Parameter("privacy_filter", privacyFilter.HasValue ? (object)(int)privacyFilter : null)
                 , new Parameter("extras", extras), new Parameter("per_page", perPage), new Parameter("page", page));
 
             return token;
@@ -196,7 +198,7 @@ namespace MyFlickr.Rest
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
-        public Token GetPublicPhotosAsync(User user, Nullable<SafeSearch> safeSearch = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
+        public Token GetPublicPhotosAsync(User user, Nullable<SafetyLevel> safeSearch = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             Token token = Core.Token.GenerateToken();
 
@@ -204,7 +206,8 @@ namespace MyFlickr.Rest
                   elm => this.InvokeGetPublicPhotosCompletedEvent(new EventArgs<PhotosCollection>(token,new PhotosCollection(this.authTkns,elm.Element("photos"))))
                 , e => this.InvokeGetPublicPhotosCompletedEvent(new EventArgs<PhotosCollection>(token,e)), null
                 , new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.people.getPublicPhotos"), new Parameter("user_id", user.UserID)
-                , new Parameter("safe_search", safeSearch) , new Parameter("extras", extras), new Parameter("per_page", perPage), new Parameter("page", page));
+                , new Parameter("safe_search", safeSearch.HasValue ? (object)(int)safeSearch: null) , new Parameter("extras", extras),
+                  new Parameter("per_page", perPage), new Parameter("page", page));
 
             return token;
         }
@@ -218,7 +221,7 @@ namespace MyFlickr.Rest
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
-        public Token GetPublicPhotosAsync(Nullable<SafeSearch> safeSearch = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
+        public Token GetPublicPhotosAsync(Nullable<SafetyLevel> safeSearch = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             return this.GetPublicPhotosAsync(this, safeSearch, extras, perPage, page);
         }
@@ -401,8 +404,8 @@ namespace MyFlickr.Rest
         /// Returns a list of favorite public photos for the given user.
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
-        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
+        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp. more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
@@ -425,8 +428,8 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'read' permission.
         /// </summary>
         /// <param name="user">The object that represents a Flickr User.</param>
-        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
-        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
+        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
@@ -451,8 +454,8 @@ namespace MyFlickr.Rest
         /// Returns a list of the user's favorite photos. Only photos which the calling user has permission to see are returned.
         /// This method requires authentication with 'read' permission.
         /// </summary>
-        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
-        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
+        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
@@ -461,8 +464,176 @@ namespace MyFlickr.Rest
         {
             return this.GetFavoritesListAsync(this, minFaveDate, maxFaveDate, extras, perPage, page);
         }
-        
+
+        /// <summary>
+        /// Returns a list of your photos that are not part of any sets.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="maxUploadDate">Maximum upload date. Photos with an upload date less than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minUploadDate">Minimum upload date. Photos with an upload date greater than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minTakenDate">Minimum taken date. Photos with an taken date greater than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxTakenDate">Maximum taken date. Photos with an taken date less than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="privacyFilter">Return photos only matching a certain privacy level.</param>
+        /// <param name="mediaType">Filter results by media type.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetPhotosNotInSetAsync(string maxUploadDate = null, string minUploadDate = null, string minTakenDate = null, string maxTakenDate = null,
+            Nullable<PrivacyFilter> privacyFilter = null, Nullable<MediaType> mediaType = null, string extras = null, Nullable<int> perPage = null,
+            Nullable<int> page = null)
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetPhotosNotInListCompletedEvent(new EventArgs<PhotosCollection>(token,new PhotosCollection(this.authTkns,elm.Element("photos")))) ,
+                e => this.InvokeGetPhotosNotInListCompletedEvent(new EventArgs<PhotosCollection>(token,e)), this.SharedSecret ,
+                new Parameter("method","flickr.photos.getNotInSet"), new Parameter("api_key",this.ApiKey), new Parameter("auth_token",this.Token) ,
+                new Parameter("max_upload_date",maxUploadDate), new Parameter("min_upload_date",minUploadDate), new Parameter("min_taken_date",minTakenDate) ,
+                new Parameter("max_taken_date",maxTakenDate), new Parameter("privacy_filter",privacyFilter.HasValue ? (object)(int)privacyFilter : null), 
+                new Parameter("media",mediaType), new Parameter("extras",extras), new Parameter("page",page), new Parameter("per_page",perPage));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Returns a list of your photos with no tags.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="maxUploadDate">Maximum upload date. Photos with an upload date less than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minUploadDate">Minimum upload date. Photos with an upload date greater than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minTakenDate">Minimum taken date. Photos with an taken date greater than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxTakenDate">Maximum taken date. Photos with an taken date less than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="privacyFilter">Return photos only matching a certain privacy level.</param>
+        /// <param name="mediaType">Filter results by media type.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetUntaggedPhotosAsync(string maxUploadDate = null, string minUploadDate = null, string minTakenDate = null, string maxTakenDate = null,
+            Nullable<PrivacyFilter> privacyFilter = null, Nullable<MediaType> mediaType = null, string extras = null, Nullable<int> perPage = null,
+            Nullable<int> page = null)
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetUntaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns, elm.Element("photos")))),
+                e => this.InvokeGetUntaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.SharedSecret,
+                new Parameter("method", "flickr.photos.getUntagged"), new Parameter("api_key", this.ApiKey), new Parameter("auth_token", this.Token),
+                new Parameter("max_upload_date", maxUploadDate), new Parameter("min_upload_date", minUploadDate), new Parameter("min_taken_date", minTakenDate),
+                new Parameter("max_taken_date", maxTakenDate), new Parameter("privacy_filter", privacyFilter.HasValue ? (object)(int)privacyFilter : null),
+                new Parameter("media", mediaType), new Parameter("extras", extras), new Parameter("page", page), new Parameter("per_page", perPage));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Returns a list of your geo-tagged photos.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="maxUploadDate">Maximum upload date. Photos with an upload date less than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minUploadDate">Minimum upload date. Photos with an upload date greater than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minTakenDate">Minimum taken date. Photos with an taken date greater than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxTakenDate">Maximum taken date. Photos with an taken date less than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="privacyFilter">Return photos only matching a certain privacy level.</param>
+        /// <param name="sortType">The order in which to sort returned photos. Defaults to datePostedDescending.</param>
+        /// <param name="mediaType">Filter results by media type.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetGeotaggedPhotosAsync(string maxUploadDate = null, string minUploadDate = null, string minTakenDate = null, string maxTakenDate = null,
+            Nullable<PrivacyFilter> privacyFilter = null,Nullable<SortType> sortType = null , Nullable<MediaType> mediaType = null, string extras = null,
+            Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns, elm.Element("photos")))),
+                e => this.InvokeGetGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.SharedSecret,
+                new Parameter("method", "flickr.photos.getWithGeoData"), new Parameter("api_key", this.ApiKey), new Parameter("auth_token", this.Token),
+                new Parameter("max_upload_date", maxUploadDate), new Parameter("min_upload_date", minUploadDate), new Parameter("min_taken_date", minTakenDate),
+                new Parameter("max_taken_date", maxTakenDate), new Parameter("privacy_filter", privacyFilter.HasValue ? (object)(int)privacyFilter : null),
+                new Parameter("sort",sortType.HasValue ? sortType.Value.GetString() : null),
+                new Parameter("media", mediaType), new Parameter("extras", extras), new Parameter("page", page), new Parameter("per_page", perPage));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Returns a list of your photos which haven't been geo-tagged.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="maxUploadDate">Maximum upload date. Photos with an upload date less than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minUploadDate">Minimum upload date. Photos with an upload date greater than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minTakenDate">Minimum taken date. Photos with an taken date greater than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxTakenDate">Maximum taken date. Photos with an taken date less than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="privacyFilter">Return photos only matching a certain privacy level.</param>
+        /// <param name="sortType">The order in which to sort returned photos. Defaults to datePostedDescending.</param>
+        /// <param name="mediaType">Filter results by media type.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetUnGeotaggedPhotosAsync(string maxUploadDate = null, string minUploadDate = null, string minTakenDate = null, string maxTakenDate = null,
+            Nullable<PrivacyFilter> privacyFilter = null, Nullable<SortType> sortType = null, Nullable<MediaType> mediaType = null, string extras = null,
+            Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetUnGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns, elm.Element("photos")))),
+                e => this.InvokeGetUnGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.SharedSecret,
+                new Parameter("method", "flickr.photos.getWithoutGeoData"), new Parameter("api_key", this.ApiKey), new Parameter("auth_token", this.Token),
+                new Parameter("max_upload_date", maxUploadDate), new Parameter("min_upload_date", minUploadDate), new Parameter("min_taken_date", minTakenDate),
+                new Parameter("max_taken_date", maxTakenDate), new Parameter("privacy_filter", privacyFilter.HasValue ? (object)(int)privacyFilter : null),
+                new Parameter("sort", sortType.HasValue ? sortType.Value.GetString() : null),
+                new Parameter("media", mediaType), new Parameter("extras", extras), new Parameter("page", page), new Parameter("per_page", perPage));
+
+            return token;
+        }
+
         #region Events
+        private void InvokeGetUnGeotaggedPhotosCompletedEvent(EventArgs<PhotosCollection> args)
+        {
+            if (this.GetUnGeotaggedPhotosCompleted != null)
+            {
+                this.GetUnGeotaggedPhotosCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<PhotosCollection>> GetUnGeotaggedPhotosCompleted;
+        private void InvokeGetGeotaggedPhotosCompletedEvent(EventArgs<PhotosCollection> args)
+        {
+            if (this.GetGeotaggedPhotosCompleted != null)
+            {
+                this.GetGeotaggedPhotosCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<PhotosCollection>> GetGeotaggedPhotosCompleted;
+        private void InvokeGetUntaggedPhotosCompletedEvent(EventArgs<PhotosCollection> args)
+        {
+            if (this.GetUntaggedPhotosCompleted != null)
+            {
+                this.GetUntaggedPhotosCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<PhotosCollection>> GetUntaggedPhotosCompleted;
+        private void InvokeGetPhotosNotInListCompletedEvent(EventArgs<PhotosCollection> args)
+        {
+            if (this.GetPhotosNotInSetCompleted != null)
+            {
+                this.GetPhotosNotInSetCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<PhotosCollection>> GetPhotosNotInSetCompleted;
         private void InvokeGetFavoritesListCompletedEvent(EventArgs<PhotosCollection> args)
         {
             if (this.GetFavoritesListCompleted != null)
@@ -571,25 +742,6 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// Safe search setting
-    /// </summary>
-    public enum SafeSearch
-    {
-        /// <summary>
-        /// for safe
-        /// </summary>
-        Safe = 0 , 
-        /// <summary>
-        /// for moderate
-        /// </summary>
-        Moderate = 1,
-        /// <summary>
-        /// for restricted
-        /// </summary>
-        Restricted =2
-    }
-
-    /// <summary>
     /// Content Type setting
     /// </summary>
     public enum ContentType
@@ -649,6 +801,80 @@ namespace MyFlickr.Rest
         /// completely private photos
         /// </summary>
         PrivatePhotos = 5
+    }
+
+    /// <summary>
+    /// Media Type Setting
+    /// </summary>
+    public enum MediaType
+    {
+        /// <summary>
+        /// Photos and Videos
+        /// </summary>
+        All=0 ,
+        /// <summary>
+        /// Photos only
+        /// </summary>
+        Photos=1 ,
+        /// <summary>
+        /// Videos only
+        /// </summary>
+        Videos =2
+    }
+
+    /// <summary>
+    /// The order in which to sort returned photos.
+    /// </summary>
+    public enum SortType
+    {
+        /// <summary>
+        /// Date Posted Descending
+        /// </summary>
+        DatePostedDescending,
+        /// <summary>
+        /// Date Posted Ascending
+        /// </summary>
+        DatePostedAscending,
+        /// <summary>
+        /// Date Taken Ascending
+        /// </summary>
+        DateTakenAscending,
+        /// <summary>
+        /// Date Taken Descending
+        /// </summary>
+        DateTakenDescending,
+        /// <summary>
+        /// Interestingness Descending
+        /// </summary>
+        InterestingnessDescending,
+        /// <summary>
+        /// Interestingness Ascending
+        /// </summary>
+        InterestingnessAscending        
+    }
+
+    internal static class SortTypeExtensions
+    {
+        public static string GetString(this SortType sortType)
+        {
+            switch (sortType)
+            {
+                case SortType.DatePostedDescending:
+                    return "date-posted-desc";
+                case SortType.DatePostedAscending:
+                    return "date-posted-asc";
+                case SortType.DateTakenAscending:
+                    return "date-taken-asc";
+                case SortType.DateTakenDescending:
+                    return "date-taken-desc";
+                case SortType.InterestingnessDescending:
+                    return "interestingness-desc";
+                case SortType.InterestingnessAscending:
+                    return "interestingness-asc";
+                default:
+                    throw new ArgumentException("sortType");
+            }
+        }
     }
 
     /// <summary>
