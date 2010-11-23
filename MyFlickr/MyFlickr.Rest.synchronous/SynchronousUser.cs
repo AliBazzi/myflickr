@@ -79,7 +79,7 @@ namespace MyFlickr.Rest
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <returns>PhotoCollection Object</returns>
-        public static PhotosCollection GetPhotos(this User user, Nullable<SafeSearch> safeSearch = null, string minUploadDate = null, string maxUploadDate = null
+        public static PhotosCollection GetPhotos(this User user, Nullable<SafetyLevel> safeSearch = null, string minUploadDate = null, string maxUploadDate = null
             , string minTakenDate = null, string maxTakenDate = null, Nullable<ContentType> contentType = null, Nullable<PrivacyFilter> privacyFilter = null
             , string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
@@ -104,7 +104,7 @@ namespace MyFlickr.Rest
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <returns>PhotoCollection Object</returns>
-        public static PhotosCollection GetPhotos(this User userInstance, User user, Nullable<SafeSearch> safeSearch = null, string minUploadDate = null, string maxUploadDate = null
+        public static PhotosCollection GetPhotos(this User userInstance, User user, Nullable<SafetyLevel> safeSearch = null, string minUploadDate = null, string maxUploadDate = null
             , string minTakenDate = null, string maxTakenDate = null, Nullable<ContentType> contentType = null, Nullable<PrivacyFilter> privacyFilter = null
             , string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
@@ -130,7 +130,7 @@ namespace MyFlickr.Rest
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <returns>PhotoCollection Object</returns>
-        public static PhotosCollection GetPublicPhotos(this User userInstance, User user, Nullable<SafeSearch> safeSearch = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
+        public static PhotosCollection GetPublicPhotos(this User userInstance, User user, Nullable<SafetyLevel> safeSearch = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             FlickrSynchronousPrmitive<PhotosCollection> FSP = new FlickrSynchronousPrmitive<PhotosCollection>();
 
@@ -153,7 +153,7 @@ namespace MyFlickr.Rest
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <returns>PhotoCollection Object</returns>
-        public static PhotosCollection GetPublicPhotos(this User user, Nullable<SafeSearch> safeSearch = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
+        public static PhotosCollection GetPublicPhotos(this User user, Nullable<SafetyLevel> safeSearch = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             return GetPublicPhotos(user, user, safeSearch, extras, perPage, page);
         }
@@ -323,8 +323,8 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="user"></param>
-        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
-        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
+        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
@@ -348,8 +348,8 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="userInstance"></param>
         /// <param name="user">The object that represents a Flickr User.</param>
-        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
-        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
+        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
@@ -372,8 +372,8 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'read' permission.
         /// </summary>
         /// <param name="userInstance"></param>
-        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
-        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.</param>
+        /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
@@ -383,5 +383,126 @@ namespace MyFlickr.Rest
             return GetFavoritesList(userInstance, userInstance, minFaveDate, maxFaveDate, extras, perPage, page);
         }
 
+        /// <summary>
+        /// Returns a list of your photos that are not part of any sets.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="maxUploadDate">Maximum upload date. Photos with an upload date less than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minUploadDate">Minimum upload date. Photos with an upload date greater than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minTakenDate">Minimum taken date. Photos with an taken date greater than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp. more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxTakenDate">Maximum taken date. Photos with an taken date less than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="privacyFilter">Return photos only matching a certain privacy level.</param>
+        /// <param name="mediaType">Filter results by media type.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>PhotosCollection Object</returns>
+        public static PhotosCollection GetPhotosNotInSet(this User user, string maxUploadDate = null, string minUploadDate = null, string minTakenDate = null,
+            string maxTakenDate = null, Nullable<PrivacyFilter> privacyFilter = null, Nullable<MediaType> mediaType = null, string extras = null,
+            Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            FlickrSynchronousPrmitive<PhotosCollection> FSP = new FlickrSynchronousPrmitive<PhotosCollection>();
+
+            Action<object, EventArgs<PhotosCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetPhotosNotInSetCompleted += new EventHandler<EventArgs<PhotosCollection>>(handler);
+            FSP.Token = user.GetPhotosNotInSetAsync(maxUploadDate, minUploadDate, minTakenDate, maxTakenDate, privacyFilter, mediaType, extras, perPage, page);
+            FSP.WaitForAsynchronousCall();
+            user.GetPhotosNotInSetCompleted -= new EventHandler<EventArgs<PhotosCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns a list of your photos with no tags.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="maxUploadDate">Maximum upload date. Photos with an upload date less than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minUploadDate">Minimum upload date. Photos with an upload date greater than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minTakenDate">Minimum taken date. Photos with an taken date greater than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxTakenDate">Maximum taken date. Photos with an taken date less than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="privacyFilter">Return photos only matching a certain privacy level.</param>
+        /// <param name="mediaType">Filter results by media type.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>PhotosCollection Object</returns>
+        public static PhotosCollection GetUntaggedPhotos(this User user, string maxUploadDate = null, string minUploadDate = null, string minTakenDate = null,
+            string maxTakenDate = null, Nullable<PrivacyFilter> privacyFilter = null, Nullable<MediaType> mediaType = null, string extras = null,
+            Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            FlickrSynchronousPrmitive<PhotosCollection> FSP = new FlickrSynchronousPrmitive<PhotosCollection>();
+
+            Action<object, EventArgs<PhotosCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetUntaggedPhotosCompleted += new EventHandler<EventArgs<PhotosCollection>>(handler);
+            FSP.Token = user.GetUntaggedPhotosAsync(maxUploadDate, minUploadDate, minTakenDate, maxTakenDate, privacyFilter, mediaType, extras, perPage, page);
+            FSP.WaitForAsynchronousCall();
+            user.GetUntaggedPhotosCompleted -= new EventHandler<EventArgs<PhotosCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns a list of your geo-tagged photos.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="maxUploadDate">Maximum upload date. Photos with an upload date less than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minUploadDate">Minimum upload date. Photos with an upload date greater than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minTakenDate">Minimum taken date. Photos with an taken date greater than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxTakenDate">Maximum taken date. Photos with an taken date less than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="privacyFilter">Return photos only matching a certain privacy level.</param>
+        /// <param name="sortType">The order in which to sort returned photos. Defaults to datePostedDescending.</param>
+        /// <param name="mediaType">Filter results by media type.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        ///<returns>PhotosCollection Object</returns>
+        public static PhotosCollection GetGeotaggedPhotos(this User user, string maxUploadDate = null, string minUploadDate = null, string minTakenDate = null,
+            string maxTakenDate = null, Nullable<PrivacyFilter> privacyFilter = null, Nullable<SortType> sortType = null, Nullable<MediaType> mediaType = null,
+            string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            FlickrSynchronousPrmitive<PhotosCollection> FSP = new FlickrSynchronousPrmitive<PhotosCollection>();
+
+            Action<object, EventArgs<PhotosCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetGeotaggedPhotosCompleted += new EventHandler<EventArgs<PhotosCollection>>(handler);
+            FSP.Token = user.GetGeotaggedPhotosAsync(maxUploadDate, minUploadDate, minTakenDate, maxTakenDate, privacyFilter,sortType, mediaType, extras, perPage, page);
+            FSP.WaitForAsynchronousCall();
+            user.GetGeotaggedPhotosCompleted -= new EventHandler<EventArgs<PhotosCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns a list of your photos which haven't been geo-tagged.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="maxUploadDate">Maximum upload date. Photos with an upload date less than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minUploadDate">Minimum upload date. Photos with an upload date greater than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="minTakenDate">Minimum taken date. Photos with an taken date greater than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="maxTakenDate">Maximum taken date. Photos with an taken date less than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
+        /// <param name="privacyFilter">Return photos only matching a certain privacy level.</param>
+        /// <param name="sortType">The order in which to sort returned photos. Defaults to datePostedDescending.</param>
+        /// <param name="mediaType">Filter results by media type.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>PhotosCollection Object</returns>
+        public static PhotosCollection GetUnGeotaggedPhotos(this User user ,string maxUploadDate = null, string minUploadDate = null, string minTakenDate = null,
+            string maxTakenDate = null, Nullable<PrivacyFilter> privacyFilter = null, Nullable<SortType> sortType = null, Nullable<MediaType> mediaType = null,
+            string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            FlickrSynchronousPrmitive<PhotosCollection> FSP = new FlickrSynchronousPrmitive<PhotosCollection>();
+
+            Action<object, EventArgs<PhotosCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetUnGeotaggedPhotosCompleted += new EventHandler<EventArgs<PhotosCollection>>(handler);
+            FSP.Token = user.GetUnGeotaggedPhotosAsync(maxUploadDate, minUploadDate, minTakenDate, maxTakenDate, privacyFilter, sortType, mediaType, extras, perPage, page);
+            FSP.WaitForAsynchronousCall();
+            user.GetUnGeotaggedPhotosCompleted -= new EventHandler<EventArgs<PhotosCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
     }
 }

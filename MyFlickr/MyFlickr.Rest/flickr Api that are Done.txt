@@ -1,0 +1,59 @@
+auth:4
+    * flickr.auth.checkToken
+    * flickr.auth.getFrob
+    * flickr.auth.getFullToken
+    * flickr.auth.getToken
+
+collections:1
+    * flickr.collections.getTree
+
+contacts:2
+    * flickr.contacts.getList
+    * flickr.contacts.getPublicList
+
+favorites:4
+    * flickr.favorites.add
+    * flickr.favorites.getList
+    * flickr.favorites.getPublicList
+    * flickr.favorites.remove
+
+galleries:1
+    * flickr.galleries.getList
+
+groups:1
+    * flickr.groups.getinfo
+
+people:5
+    * flickr.people.getInfo
+    * flickr.people.getPhotos
+    * flickr.people.getPhotosOf
+    * flickr.people.getPublicGroups
+    * flickr.people.getPublicPhotos
+
+photos:15
+    * flickr.photos.getExif
+    * flickr.photos.getFavorites
+    * flickr.photos.getNotInSet
+    * flickr.photos.getWithGeoData
+    * flickr.photos.getWithoutGeoData
+    * flickr.photos.getUntagged
+	* flickr.photos.getInfo
+	* flickr.photos.addTags
+	* flickr.photos.removeTag
+	* flickr.photos.getPerms
+	* flickr.photos.setPerms
+	* flickr.photos.setMeta
+	* flickr.photos.setSafetyLevel
+	* flickr.photos.setDates
+	* flickr.photos.setContentType
+	* flickr.photos.delete
+
+photos.people:1
+    * flickr.photos.people.getList
+
+photosets:1
+    * flickr.photosets.getList
+
+blogs:2
+    * flickr.blogs.getList
+	* flickr.blogs.postPhoto

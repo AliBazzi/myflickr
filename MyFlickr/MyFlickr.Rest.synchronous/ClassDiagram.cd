@@ -10,8 +10,36 @@
   <Class Name="MyFlickr.Rest.SynchronousUser">
     <Position X="0.5" Y="2.5" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>AAAEAAAAAEAAAgAAAAAAAAFAAAAAAECAAAAAAAgAAAA=</HashCode>
+      <HashCode>AAAFAAQAAEAAAgAAAAJAAAFAAEAAQECAAAAAAIgEAAA=</HashCode>
       <FileName>SynchronousUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.FlickrSynchronousPrmitive&lt;Result&gt;">
+    <Position X="6" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABIAAAAAAAAAIIAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>FlickrSynchronousPrmitive.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.EventArgsExtensions">
+    <Position X="9" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FlickrSynchronousPrmitive.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.TokenExtensions">
+    <Position X="9" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FlickrSynchronousPrmitive.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.SynchronousPhoto">
+    <Position X="0.5" Y="7" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IgAAAAAgAAAAAgkAAAAAAAAAIgEAAFACAAABEBAAAAA=</HashCode>
+      <FileName>SynchronousPhoto.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

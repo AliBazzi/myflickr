@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+
 /// <summary>
 /// represents a Collection of Blogs
 /// </summary>
@@ -50,7 +51,7 @@ public class Blog
 {
     internal Blog(XElement element)
     {
-        this.ID = int.Parse(element.Attribute("id").Value);
+        this.ID = Int64.Parse(element.Attribute("id").Value);
         this.URL = new Uri(element.Attribute("url").Value);
         this.Name = element.Attribute("name").Value;
         this.NeedsPassword = element.Attribute("needspassword").Value.ToBoolean();
@@ -59,7 +60,7 @@ public class Blog
     /// <summary>
     /// the ID of the Blog
     /// </summary>
-    public int ID { get; private set; }
+    public Int64 ID { get; private set; }
 
     /// <summary>
     /// the URL that leads to the blog Service

@@ -20,7 +20,7 @@ namespace MyFlickr.Core
             }
             else
             {
-                this.Value = value.ToString().ToLower();
+                this.Value = value.ToString();
             }
             this.Name = name;
         }
