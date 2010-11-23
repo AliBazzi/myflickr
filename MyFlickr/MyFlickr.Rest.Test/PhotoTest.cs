@@ -25,5 +25,45 @@ namespace MyFlickr.Rest.Test
            res.AddToFavorite();
            res.RemoveFromFavorite();
         }
+
+        [TestMethod]
+        public void GetExif()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetPhotos().Photos.First();
+            foreach (var exif in res.GetExif())
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetExif2()
+        {
+            var res = new User(this.data.apiKey, "36893321@N03").GetPublicPhotos().Photos.First();
+            foreach (var exif in res.GetExif())
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetFavorites()
+        {
+            var res = new User(this.data.apiKey, "36893321@N03").GetPublicPhotos().Photos.First(p => p.ID.ToString() == "5015455849");
+            foreach (var person in res.GetFavorites())
+            {
+
+            }
+        }
+        [TestMethod]
+        public void GetFavorites2()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetPhotos()
+                .Photos.First(p => p.ID.ToString() == "5015455849");
+            foreach (var person in res.GetFavorites())
+            {
+
+            }
+        }
     }
 }

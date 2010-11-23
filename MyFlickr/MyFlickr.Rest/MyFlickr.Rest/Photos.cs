@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Xml.Linq;
-using System;
-using MyFlickr.Core;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
+using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
@@ -183,7 +183,81 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Retrieves a list of EXIF/TIFF/GPS tags for a given photo. The calling user must have permission to view the photo.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetExifAsync()
+        {
+            Token token = Core.Token.GenerateToken();
+            if (this.authTkns.AccessPermission > AccessPermission.None)
+            {
+                FlickrCore.IntiateGetRequest(
+                    elm => this.InvokeGetExifCompletedEvent(new EventArgs<IEnumerable<Exif>>(token,elm.Element("photo").Elements("exif").Select(exif=>new Exif(exif)))),
+                    e => this.InvokeGetExifCompletedEvent(new EventArgs<IEnumerable<Exif>>(token,e)), this.authTkns.SharedSecret,
+                    new Parameter("method", "flickr.photos.getExif"), new Parameter("api_key", this.authTkns.ApiKey),
+                    new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID));
+            }
+            else
+            {
+                FlickrCore.IntiateGetRequest(
+                    elm => this.InvokeGetExifCompletedEvent(new EventArgs<IEnumerable<Exif>>(token, elm.Element("photo").Elements("exif").Select(exif => new Exif(exif)))),
+                    e => this.InvokeGetExifCompletedEvent(new EventArgs<IEnumerable<Exif>>(token, e)), null,
+                    new Parameter("method", "flickr.photos.getExif"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("photo_id", this.ID));
+            }
+            return token;
+        }
+
+        /// <summary>
+        /// Returns the list of people who have favorited a given photo.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="page">Number of users to return per page. If this argument is omitted, it defaults to 10. The maximum allowed value is 50.</param>
+        /// <param name="perPage">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetFavoritesAsync(Nullable<int> page = null, Nullable<int> perPage = null)
+        {
+            Token token = Core.Token.GenerateToken();
+
+            if (this.authTkns.AccessPermission > AccessPermission.None)
+            {
+                FlickrCore.IntiateGetRequest(
+                    elm => this.InvokeGetFavoritesCompletedEvent(new EventArgs<IEnumerable<Person>>(token, elm.Element("photo").Elements("person").Select(person => new Person(person)))),
+                    e => this.InvokeGetFavoritesCompletedEvent(new EventArgs<IEnumerable<Person>>(token, e)), this.authTkns.SharedSecret,
+                    new Parameter("method", "flickr.photos.getFavorites"), new Parameter("api_key", this.authTkns.ApiKey),
+                    new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID),
+                    new Parameter("page",page),new Parameter("per_page",perPage));
+            }
+            else
+            {
+                FlickrCore.IntiateGetRequest(
+                    elm => this.InvokeGetFavoritesCompletedEvent(new EventArgs<IEnumerable<Person>>(token, elm.Element("photo").Elements("person").Select(person => new Person(person)))),
+                    e => this.InvokeGetFavoritesCompletedEvent(new EventArgs<IEnumerable<Person>>(token, e)), null,
+                    new Parameter("method", "flickr.photos.getFavorites"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("photo_id", this.ID),
+                    new Parameter("page", page), new Parameter("per_page", perPage));
+            }
+
+            return token;
+        }
+
         #region Events
+        private void InvokeGetFavoritesCompletedEvent(EventArgs<IEnumerable<Person>> args)
+        {
+            if (this.GetFavoritesCompleted != null)
+            {
+                this.GetFavoritesCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<IEnumerable<Person>>> GetFavoritesCompleted;
+        private void InvokeGetExifCompletedEvent(EventArgs<IEnumerable<Exif>> args)
+        {
+            if (this.GetExifCompleted != null)
+            {
+                this.GetExifCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<IEnumerable<Exif>>> GetExifCompleted;
         private void InvokeRemoveFromfavoriteCompletedEvent(EventArgs<NoReply> args)
         {
             if (this.RemoveFromFavoriteCompleted != null)
@@ -269,5 +343,79 @@ namespace MyFlickr.Rest
         {
             return this.GetEnumerator();
         }
+    }
+
+    /// <summary>
+    /// Represents an Exif piece of information , http://en.wikipedia.org/wiki/Exchangeable_image_file_format
+    /// </summary>
+    public class Exif
+    {
+        internal Exif(XElement element)
+        {
+            this.TagSpace = element.Attribute("tagspace").Value;
+            this.TagSpaceID = int.Parse(element.Attribute("tagspaceid").Value);
+            this.Tag = int.Parse(element.Attribute("tag").Value);
+            this.Raw = element.Element("raw").Value;
+            this.Clean = element.Element("clean") != null ? element.Element("clean").Value : null;
+            this.Label = element.Attribute("label").Value;
+        }
+
+        /// <summary>
+        /// the tag space this Exif is belong to
+        /// </summary>
+        public string TagSpace { get; private set; }
+
+        /// <summary>
+        /// the tag space ID this Exif is belong to
+        /// </summary>
+        public int TagSpaceID { get; private set; }
+
+        /// <summary>
+        /// the Tag number
+        /// </summary>
+        public int Tag { get; private set; }
+
+        /// <summary>
+        /// the name of label
+        /// </summary>
+        public string Label { get; private set; }
+
+        /// <summary>
+        /// the Raw value of the Tag
+        /// </summary>
+        public string Raw { get; private set; }
+
+        /// <summary>
+        /// contains a pretty-formatted version of the tag where available, Could Be Null
+        /// </summary>
+        public string Clean { get; private set; }
+    }
+
+    /// <summary>
+    /// represents person information that added a photo to his favorite list
+    /// </summary>
+    public class Person
+    {
+        internal Person(XElement element)
+        {
+            this.ID = element.Attribute("nsid").Value;
+            this.UserName = element.Attribute("username").Value;
+            this.FaveDate = new DateTime(1970,1,1,0,0,0,0).AddSeconds(double.Parse(element.Attribute("favedate").Value));
+        }
+
+        /// <summary>
+        /// the ID of the Person
+        /// </summary>
+        public string ID { get; private set; }
+
+        /// <summary>
+        /// the user name of the person
+        /// </summary>
+        public string UserName { get; private set; }
+
+        /// <summary>
+        /// the date where the user added the photo to his favorite list
+        /// </summary>
+        public DateTime FaveDate { get; private set; }
     }
 }
