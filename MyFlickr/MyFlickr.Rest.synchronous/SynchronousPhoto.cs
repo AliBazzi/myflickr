@@ -320,5 +320,60 @@ namespace MyFlickr.Rest
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
+
+        /// <summary>
+        /// Returns next and previous photos for a photo in a photostream.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <returns>PhotoContext object</returns>
+        public static PhotoContext GetContext(this Photo photo)
+        {
+            FlickrSynchronousPrmitive<PhotoContext> FSP = new FlickrSynchronousPrmitive<PhotoContext>();
+
+            Action<object, EventArgs<PhotoContext>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.GetContextCompleted += new EventHandler<EventArgs<PhotoContext>>(handler);
+            FSP.Token = photo.GetContextAsync();
+            FSP.WaitForAsynchronousCall();
+            photo.GetContextCompleted -= new EventHandler<EventArgs<PhotoContext>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns all visible sets and pools the photo belongs to.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <returns>PhotoContexts Object</returns>
+        public static PhotoContexts GetAllContexts(this Photo photo)
+        {
+            FlickrSynchronousPrmitive<PhotoContexts> FSP = new FlickrSynchronousPrmitive<PhotoContexts>();
+
+            Action<object, EventArgs<PhotoContexts>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.GetAllContextsCompleted += new EventHandler<EventArgs<PhotoContexts>>(handler);
+            FSP.Token = photo.GetAllContextsAsync();
+            FSP.WaitForAsynchronousCall();
+            photo.GetAllContextsCompleted -= new EventHandler<EventArgs<PhotoContexts>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns the available sizes for a photo. The calling user must have permission to view the photo.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <returns>Enumerable of Size Objects</returns>
+        public static IEnumerable<Size> GetSizes(this Photo photo)
+        {
+            FlickrSynchronousPrmitive<IEnumerable<Size>> FSP = new FlickrSynchronousPrmitive<IEnumerable<Size>>();
+
+            Action<object, EventArgs<IEnumerable<Size>>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.GetSizesCompleted += new EventHandler<EventArgs<IEnumerable<Size>>>(handler);
+            FSP.Token = photo.GetSizesAsync();
+            FSP.WaitForAsynchronousCall();
+            photo.GetSizesCompleted -= new EventHandler<EventArgs<IEnumerable<Size>>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow(); 
+        }
     }
 }

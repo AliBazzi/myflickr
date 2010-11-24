@@ -67,8 +67,7 @@ namespace MyFlickr.Rest
         {
             get
             {
-                return this.data.Elements("set").Select(elm =>
-                    new PhotosSetBasic(Int64.Parse(elm.Attribute("id").Value), elm.Attribute("title").Value, elm.Attribute("description").Value));
+                return this.data.Elements("set").Select(set => new PhotosSetBasic(set));
             }
         }
 

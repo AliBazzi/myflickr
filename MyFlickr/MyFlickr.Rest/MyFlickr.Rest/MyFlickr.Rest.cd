@@ -28,9 +28,9 @@
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Rest.User">
-    <Position X="0.5" Y="5" Width="5.25" />
+    <Position X="0.5" Y="5" Width="5.75" />
     <TypeIdentifier>
-      <HashCode>CApsGgQBIAAAQIgQSACAkAgwQmwEADQAAUAAgGwBCIA=</HashCode>
+      <HashCode>CQpsGgQBIBAQUIgQSADAlAgwdmwEIDQDAcEEgO4JCIA=</HashCode>
       <FileName>MyFlickr.Rest\Users.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -51,18 +51,18 @@
   <Class Name="MyFlickr.Rest.PhotosCollection" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="13" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACAAAAAAAAAQADAgAAAACAAAAAAAQCAAAAAQAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="MyFlickr.Rest.Photo">
-    <Position X="13" Y="13" Width="4.75" />
+    <Position X="13" Y="13" Width="5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAgAAIAAAAiEAAAAEAAgQCACQAACEAAAAAYgAAAAA=</HashCode>
+      <HashCode>QABiggEJAgBAiMQIAEEAZgUCViQMiCUDCMgg4wIAAIA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -136,7 +136,7 @@
   <Class Name="MyFlickr.Rest.PhotosOfUserCollection" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="25" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACAAAAAAAAAQADAgAAAACAAQAAAAQCAAAAAQAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -188,11 +188,11 @@
       <FileName>MyFlickr.Rest\AccessPermission.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="MyFlickr.Rest.SafeSearch">
+  <Enum Name="MyFlickr.Rest.SafetyLevel">
     <Position X="17.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
-      <FileName>MyFlickr.Rest\Users.cs</FileName>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="MyFlickr.Rest.ContentType">

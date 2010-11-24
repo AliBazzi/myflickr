@@ -10,11 +10,8 @@ public class ContactsList : IEnumerable<Contact>
 {
     private XElement data;
 
-    private bool isPublicList;
-
-    internal ContactsList(XElement element, bool isPublicList)
+    internal ContactsList(XElement element)
     {
-        this.isPublicList = isPublicList;
         this.data = element;
         this.Page = int.Parse(element.Attribute("page").Value);
         this.Pages = int.Parse(element.Attribute("pages").Value);
@@ -49,14 +46,7 @@ public class ContactsList : IEnumerable<Contact>
     {
         get
         {
-            return data.Elements("contact").Select(elm => this.isPublicList
-               ?
-               new Contact(elm.Attribute("nsid").Value,
-               elm.Attribute("username").Value, int.Parse(elm.Attribute("iconserver").Value), elm.Attribute("ignored").Value.ToBoolean())
-               :
-               new Contact(elm.Attribute("nsid").Value, elm.Attribute("username").Value, int.Parse(elm.Attribute("iconserver").Value)
-               , elm.Attribute("ignored").Value.ToBoolean(), elm.Attribute("realname").Value, elm.Attribute("friend").Value.ToBoolean()
-               , elm.Attribute("family").Value.ToBoolean()));
+            return data.Elements("contact").Select(elm =>new Contact(elm));
         }
     }
 
@@ -108,24 +98,31 @@ public class Contact
     public int IconServer { get; private set; }
 
     /// <summary>
-    /// the contact is ignored
+    /// the contact is ignored , Could Be Null
     /// </summary>
-    public bool IsIgnored { get; private set; }
+    public Nullable<bool> IsIgnored { get; private set; }
 
-    internal Contact(string userID, string userName, int iconServer, bool isIgnored)
-    {
-        this.UserID = userID;
-        this.UserName = userName;
-        this.IconServer = iconServer;
-        this.IsIgnored = isIgnored;
-    }
+    /// <summary>
+    ///the Path Alias (used when Generating Urls ) , Could be Empty when not set by the user
+    /// </summary>
+    public string PathAlias { get; private set; }
 
-    internal Contact(string userID, string userName, int iconServer, bool isIgnored, string realName, bool isFriend, bool isFamily)
-        : this(userID, userName, iconServer, isIgnored)
+    /// <summary>
+    /// the Number of photos Uploaded recently by the Contact , Could Be null
+    /// </summary>
+    public Nullable<int> PhotosUploaded { get; private set; }
+
+    internal Contact(XElement elm)
     {
-        this.RealName = realName;
-        this.IsFamily = isFamily;
-        this.IsFriend = isFriend;
+        this.UserID = elm.Attribute("nsid").Value;
+        this.UserName = elm.Attribute("username").Value;
+        this.IconServer = int.Parse(elm.Attribute("iconserver").Value);
+        this.IsIgnored = elm.Attribute("ignored") != null ? new Nullable<bool>(elm.Attribute("ignored").Value.ToBoolean()) : null ;
+        this.RealName = elm.Attribute("realname").Value;
+        this.IsFriend = elm.Attribute("friend") != null ? new Nullable<bool>(elm.Attribute("friend").Value.ToBoolean()) : null ;
+        this.IsFamily = elm.Attribute("family") != null ? new Nullable<bool>(elm.Attribute("family").Value.ToBoolean()) : null ;
+        this.PathAlias = elm.Attribute("path_alias")!= null ? elm.Attribute("path_alias").Value : null ;
+        this.PhotosUploaded = elm.Attribute("photos_uploaded") != null ? new Nullable<int>(int.Parse(elm.Attribute("photos_uploaded").Value)) : null;
     }
 }
 

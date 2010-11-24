@@ -1,4 +1,4 @@
-auth:4
+auth:4/4
     * flickr.auth.checkToken
     * flickr.auth.getFrob
     * flickr.auth.getFullToken
@@ -7,11 +7,12 @@ auth:4
 collections:1
     * flickr.collections.getTree
 
-contacts:2
+contacts:3/3
     * flickr.contacts.getList
     * flickr.contacts.getPublicList
+	* flickr.contacts.getListRecentlyUploaded
 
-favorites:4
+favorites:4/4
     * flickr.favorites.add
     * flickr.favorites.getList
     * flickr.favorites.getPublicList
@@ -30,7 +31,7 @@ people:5
     * flickr.people.getPublicGroups
     * flickr.people.getPublicPhotos
 
-photos:15
+photos:25/26
     * flickr.photos.getExif
     * flickr.photos.getFavorites
     * flickr.photos.getNotInSet
@@ -47,6 +48,17 @@ photos:15
 	* flickr.photos.setDates
 	* flickr.photos.setContentType
 	* flickr.photos.delete
+	* flickr.photos.getCounts
+	* flickr.photos.recentlyUpdated
+	* flickr.photos.getContactsPublicPhotos
+	* flickr.photos.getContactsPhotos
+	* flickr.photos.getContext
+	* flickr.photos.getAllContexts
+	* flickr.photos.setTags : will not Implements it cause doesn't differ from addTags
+	* flickr.photos.getSizes
+	________________________________
+	* flickr.photos.getRecent
+	* flickr.photos.search : Done , Not Added Yet , Don't Forget That (the Right place is missing )
 
 photos.people:1
     * flickr.photos.people.getList
@@ -54,6 +66,6 @@ photos.people:1
 photosets:1
     * flickr.photosets.getList
 
-blogs:2
+blogs:2/3
     * flickr.blogs.getList
 	* flickr.blogs.postPhoto

@@ -90,12 +90,12 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// determine if the Photo could be seen only by friends 
+        /// determine if the Photo could be seen only by friends
         /// </summary>
         public bool IsFriend { get; private set; }
 
         /// <summary>
-        /// determine if the Photo could be seen only by family 
+        /// determine if the Photo could be seen only by family
         /// </summary>
         public bool IsFamily { get; private set; }
 
@@ -426,6 +426,7 @@ namespace MyFlickr.Rest
         public Token SetSafetyLevelAsync(SafetyLevel safetyLevel , Nullable<bool> isHidden = null) 
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+
             Token token = Core.Token.GenerateToken();
 
             FlickrCore.InitiatePostRequest(
@@ -505,7 +506,85 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Returns next and previous photos for a photo in a photostream.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetContextAsync()
+        {
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetContextCompletedEvent(new EventArgs<PhotoContext>(token,new PhotoContext(this.authTkns,elm))),
+                e => this.InvokeGetContextCompletedEvent(new EventArgs<PhotoContext>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.getContext"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Returns all visible sets and pools the photo belongs to.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetAllContextsAsync()
+        {
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetAllContextsCompletedEvent(new EventArgs<PhotoContexts>(token,new PhotoContexts(elm))),
+                e => this.InvokeGetAllContextsCompletedEvent(new EventArgs<PhotoContexts>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.getAllContexts"), new Parameter("auth_token", this.authTkns.Token)
+            , new Parameter("api_key", this.authTkns.ApiKey), new Parameter("photo_id", this.ID));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Returns the available sizes for a photo. The calling user must have permission to view the photo.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetSizesAsync()
+        {
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetSizesCompletedEvent(new EventArgs<IEnumerable<Size>>(token,elm.Element("sizes").Elements("size").Select(size=> new Size(size)))),
+                e => this.InvokeGetSizesCompletedEvent(new EventArgs<IEnumerable<Size>>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.getSizes"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID));
+
+            return token;
+        }
+
         #region Events
+        private void InvokeGetSizesCompletedEvent(EventArgs<IEnumerable<Size>> args)
+        {
+            if (this.GetSizesCompleted != null)
+            {
+                this.GetSizesCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<IEnumerable<Size>>> GetSizesCompleted;
+        private void InvokeGetAllContextsCompletedEvent(EventArgs<PhotoContexts> args)
+        {
+            if (this.GetAllContextsCompleted != null)
+            {
+                this.GetAllContextsCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<PhotoContexts>> GetAllContextsCompleted;
+        private void InvokeGetContextCompletedEvent(EventArgs<PhotoContext> args)
+        {
+            if (this.GetContextCompleted != null)
+            {
+                this.GetContextCompleted.Invoke(this, args);
+            }    
+        }
+        public event EventHandler<EventArgs<PhotoContext>> GetContextCompleted;
         private void InvokeDeleteCompletedEvent(EventArgs<NoReply> args)
         {
             if (this.DeleteCompleted != null)
@@ -1295,14 +1374,202 @@ namespace MyFlickr.Rest
         /// <summary>
         /// for safe
         /// </summary>
-        Safe = 0,
+        Safe = 1,
         /// <summary>
         /// for moderate
         /// </summary>
-        Moderate = 1,
+        Moderate = 2,
         /// <summary>
         /// for restricted
         /// </summary>
-        Restricted = 2
+        Restricted = 3
+    }
+
+    /// <summary>
+    /// represent a photo context
+    /// </summary>
+    public class PhotoContext
+    {
+        internal PhotoContext(AuthenticationTokens authTkns, XElement element)
+        {
+            if (element.Element("nextphoto").Attribute("id").Value != "0")
+            {
+                this.NextPhoto = new NeighborPhoto(authTkns, element.Element("nextphoto"));
+            }
+            if (element.Element("prevphoto").Attribute("id").Value != "0")
+            {
+                this.PreviousPhoto = new NeighborPhoto(authTkns, element.Element("prevphoto"));
+            }
+        }
+
+        /// <summary>
+        /// previous photo in the Current Context, Could be Null when there is no Previous Photo
+        /// </summary>
+        public NeighborPhoto PreviousPhoto { get; private set; }
+
+        /// <summary>
+        /// next photo in the current context , Could be Null when there is no Next Photo
+        /// </summary>
+        public NeighborPhoto NextPhoto { get; private set; }
+
+    }
+
+    /// <summary>
+    /// represents a neighbor photo in the current context
+    /// </summary>
+    public class NeighborPhoto
+    {
+        internal NeighborPhoto(AuthenticationTokens authTkns,XElement element)
+        {
+            this.ThumbURL = new Uri(element.Attribute("thumb").Value);
+            this.URL = element.Attribute("url").Value;
+            this.License = int.Parse(element.Attribute("license").Value);
+            this.IsFavorite = element.Attribute("is_faved")!= null ? new Nullable<bool>(element.Attribute("is_faved").Value.ToBoolean()) : null;
+            this.Media = element.Attribute("media").Value;
+            this.ID = element.Attribute("id").Value;
+            this.Title = element.Attribute("title").Value;
+            this.Server = int.Parse(element.Attribute("server").Value);
+            this.Farm = int.Parse(element.Attribute("farm").Value);
+        }
+
+        /// <summary>
+        /// the Thumb URL of this photo
+        /// </summary>
+        public Uri ThumbURL { get; private set; }
+
+        /// <summary>
+        /// the type of the media (video , photo)
+        /// </summary>
+        public string Media { get; private set; }
+
+        /// <summary>
+        /// the license number
+        /// </summary>
+        public int License { get; private set; }
+
+        /// <summary>
+        /// determine whether this photo is Favorited by you or Not , Could Be Null
+        /// </summary>
+        public Nullable<bool> IsFavorite { get; private set; }
+        
+        /// <summary>
+        /// the ID of the Photo
+        /// </summary>
+        public string ID { get; private set; }
+
+        /// <summary>
+        /// this string is used to in the building of photo URL
+        /// </summary>
+        public string Secret { get; private set; }
+
+        /// <summary>
+        /// the Title of the photo
+        /// </summary>
+        public string Title { get; private set; }
+
+        /// <summary>
+        /// the Server number which the photo is on
+        /// </summary>
+        public int Server { get; private set; }
+
+        /// <summary>
+        /// The server Farm number which the photo is on
+        /// </summary>
+        public int Farm { get; private set; }
+
+        /// <summary>
+        /// relative path for the photo in the Photostream of the Owner
+        /// </summary>
+        public string URL { get; private set; }
+    }
+
+    /// <summary>
+    /// represents a group Pool
+    /// </summary>
+    public class Pool
+    {
+        internal Pool(XElement element)
+        {
+            this.ID = element.Attribute("id").Value;
+            this.Title = element.Attribute("title").Value;
+        }
+
+        /// <summary>
+        /// the ID of the Group
+        /// </summary>
+        public string ID { get; private set; }
+
+        /// <summary>
+        /// the Title of the Group
+        /// </summary>
+        public string Title { get; private set; }
+    }
+
+    /// <summary>
+    /// represents a collection of sets and pools that a photo is contained in
+    /// </summary>
+    public class PhotoContexts
+    {
+        internal PhotoContexts(XElement element)
+        {
+            this.Pools = element.Elements("pool").Select(pool => new Pool(pool));
+            this.Sets = element.Elements("set").Select(set => new PhotosSetBasic(set));
+        }
+
+        /// <summary>
+        /// Enumerable of Group Pools
+        /// </summary>
+        public IEnumerable<Pool> Pools { get; private set; }
+
+        /// <summary>
+        /// Enumerable of Sets
+        /// </summary>
+        public IEnumerable<PhotosSetBasic> Sets { get; private set; }
+    }
+
+    /// <summary>
+    /// represents a Size of a Photo
+    /// </summary>
+    public class Size
+    {
+        internal Size(XElement element)
+        {
+            this.Label = element.Attribute("label").Value;
+            this.Source = new Uri(element.Attribute("source").Value);
+            this.Url = new Uri(element.Attribute("url").Value);
+            this.Media = element.Attribute("media").Value;
+            this.Height = int.Parse(element.Attribute("height").Value);
+            this.Width = int.Parse(element.Attribute("width").Value);
+        }
+
+        /// <summary>
+        /// The Size category , Given in the Label
+        /// </summary>
+        public string Label { get; private set; }
+
+        /// <summary>
+        /// the Width of the Photo
+        /// </summary>
+        public int Width { get; private set; }
+
+        /// <summary>
+        /// the Height of the Photo
+        /// </summary>
+        public int Height { get; private set; }
+
+        /// <summary>
+        /// the Type of the Media (photo, Video)
+        /// </summary>
+        public string Media { get; private set; }
+
+        /// <summary>
+        /// the Source file URL
+        /// </summary>
+        public Uri Source { get; private set; }
+
+        /// <summary>
+        /// the URL of the Photo Size Page
+        /// </summary>
+        public Uri Url { get; private set; }
     }
 }

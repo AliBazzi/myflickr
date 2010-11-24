@@ -155,8 +155,8 @@ namespace MyFlickr.Rest.Test
         {
             var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
             var photo = user.GetPublicPhotos().Photos.First();
-            photo.SetSafetyLevel(SafetyLevel.Restricted,true);
-            photo.SetSafetyLevel(SafetyLevel.Safe,false);
+            photo.SetSafetyLevel(SafetyLevel.Restricted);
+            photo.SetSafetyLevel(SafetyLevel.Safe);
         }
 
         [TestMethod, ExpectedException(typeof(FlickrException))]
@@ -173,6 +173,78 @@ namespace MyFlickr.Rest.Test
             var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
             var photo = user.GetPublicPhotos().Photos.First();
             photo.SetContentType(ContentType.Photos);
+        }
+
+        [TestMethod]
+        public void GetContextTest()
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var photo = user.GetPublicPhotos().Photos.First();
+            var context = photo.GetContext();
+        }
+
+        [TestMethod]
+        public void GetContextTest2()
+        {
+            var user = new User(this.data.apiKey, "53703764@N02");
+            var photo = user.GetPublicPhotos().Photos.First();
+            var context = photo.GetContext();
+        }
+
+        [TestMethod]
+        public void GetAllContexts()
+        {
+            var user = new User(this.data.apiKey, "53703764@N02");
+            var photo = user.GetPublicPhotos().Photos.First();
+            var contexts = photo.GetAllContexts();
+            foreach (var set in contexts.Sets)
+            {
+
+            }
+            foreach (var pool in contexts.Pools)
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetAllContexts2()
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var photo = user.GetPublicPhotos().Photos.First();
+            var contexts = photo.GetAllContexts();
+            foreach (var set in contexts.Sets)
+            {
+
+            }
+            foreach (var pool in contexts.Pools)
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetSizesTest()
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var photo = user.GetPublicPhotos().Photos.First();
+            var sizes = photo.GetSizes();
+            foreach (var size in sizes)
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetSizesTest2()
+        {
+            var user = new User(this.data.apiKey, "53703764@N02");
+            var photo = user.GetPublicPhotos().Photos.First();
+            var sizes = photo.GetSizes();
+            foreach (var size in sizes)
+            {
+
+            }
         }
     }
 }
