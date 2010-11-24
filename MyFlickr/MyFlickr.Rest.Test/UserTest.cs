@@ -318,5 +318,70 @@ namespace MyFlickr.Rest.Test
 
             }
         }
+
+        [TestMethod]
+        public void GetPhotosCountsTest()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance()
+                      .GetPhotosCounts(new DateTime(2008,1,1),new DateTime(2009,1,1),new DateTime(2010,1,1));
+            foreach (var range in res)
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetRecentlyUpdatedTest()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance()
+                                 .GetRecentlyUpdatedPhotos(new DateTime(2010, 9, 1));
+            foreach (var photo in res.Photos)
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetContactsPhotosTest()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance()
+                                            .GetContactsPhotos();
+            foreach (var photo in res)
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetContactsPublicPhotosTest()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance()
+                                                       .GetContactsPublicPhotos();
+            foreach (var photo in res)
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetContactsPublicPhotosTest2()
+        {
+            var res = new User(this.data.apiKey, "36893321@N03").GetContactsPublicPhotos();
+            foreach (var photo in res)
+            {
+
+            }
+        }
+
+        [TestMethod]
+        public void GetListContactsRecentlyUploadedTest()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance()
+                        .GetListRecentlyUploaded((DateTime.Now - new TimeSpan(23,0,0)).ToUnixTimeStamp().ToString());
+            foreach (var contact in res)
+            {
+
+            }
+        }
     }
 }

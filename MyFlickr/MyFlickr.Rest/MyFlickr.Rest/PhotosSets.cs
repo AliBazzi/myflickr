@@ -30,11 +30,7 @@ namespace MyFlickr.Rest
         {
             get
             {
-                return data.Elements("photoset")
-                    .Select(elm => new PhotosSet(Int64.Parse(elm.Attribute("id").Value), Int64.Parse(elm.Attribute("primary").Value),
-                    elm.Attribute("secret").Value, int.Parse(elm.Attribute("server").Value), int.Parse(elm.Attribute("farm").Value),
-                    int.Parse(elm.Attribute("photos").Value), int.Parse(elm.Attribute("videos").Value), elm.Element("title").Value,
-                    elm.Element("description").Value));
+                return data.Elements("photoset").Select(elm => new PhotosSet(elm));
             }
         }
 
@@ -55,11 +51,11 @@ namespace MyFlickr.Rest
     /// </summary>
     public class PhotosSetBasic
     {
-        internal PhotosSetBasic(Int64 id, string title, string description)
+        internal PhotosSetBasic(XElement elm)
         {
-            this.ID = id;
-            this.Title = title;
-            this.Description = description;
+            this.ID = Int64.Parse(elm.Attribute("id").Value);
+            this.Title = elm.Attribute("title").Value;
+            this.Description = elm.Attribute("description") != null ?  elm.Attribute("description").Value : null;
         }
 
         /// <summary>
@@ -83,15 +79,15 @@ namespace MyFlickr.Rest
     /// </summary>
     public class PhotosSet : PhotosSetBasic
     {
-        internal PhotosSet(Int64 id, Int64 primary, string secret, int server, int farm, int photos, int videos, string title, string description)
-            : base(id, title, description)
+        public PhotosSet(XElement elm)
+            :base(elm)
         {
-            this.Primary = primary;
-            this.Secret = secret;
-            this.Server = server;
-            this.Farm = farm;
-            this.PhotosCount = photos;
-            this.VideosCount = videos;
+            this.Primary = Int64.Parse(elm.Attribute("primary").Value);
+            this.Secret = elm.Attribute("secret").Value;
+            this.Server = int.Parse(elm.Attribute("server").Value);
+            this.Farm = int.Parse(elm.Attribute("farm").Value);
+            this.PhotosCount = int.Parse(elm.Attribute("photos").Value);
+            this.VideosCount = int.Parse(elm.Attribute("videos").Value);
         }
 
         /// <summary>

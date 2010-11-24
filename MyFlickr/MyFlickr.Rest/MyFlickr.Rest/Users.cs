@@ -81,7 +81,7 @@ namespace MyFlickr.Rest
             Token token = MyFlickr.Core.Token.GenerateToken();
 
             FlickrCore.IntiateGetRequest(
-              element => this.InvokeGetContactsListCompletedEvent(new EventArgs<ContactsList>(token,new ContactsList(element.Element("contacts"),false))) 
+              element => this.InvokeGetContactsListCompletedEvent(new EventArgs<ContactsList>(token,new ContactsList(element.Element("contacts")))) 
             , e => this.InvokeGetContactsListCompletedEvent(new EventArgs<ContactsList>(token, e))
             , this.SharedSecret,
             new Parameter("method", "flickr.contacts.getList"), new Parameter("api_key", this.ApiKey), new Parameter("auth_token", this.authTkns.Token)
@@ -106,7 +106,7 @@ namespace MyFlickr.Rest
             Token token = Core.Token.GenerateToken();
 
             FlickrCore.IntiateGetRequest(
-              element => this.InvokeGetPublicContactsListCompletedEvent(new EventArgs<ContactsList>(token, new ContactsList(element.Element("contacts"), true)))
+              element => this.InvokeGetPublicContactsListCompletedEvent(new EventArgs<ContactsList>(token, new ContactsList(element.Element("contacts"))))
             , e => this.InvokeGetPublicContactsListCompletedEvent(new EventArgs<ContactsList>(token, e))
             , this.SharedSecret, new Parameter("method", "flickr.contacts.getPublicList"),new Parameter("user_id",user.UserID),
             new Parameter("api_key", this.ApiKey) , new Parameter("page", page), new Parameter("per_page", perPage));
@@ -601,7 +601,174 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Gets a list of photo counts for the given date ranges for the calling user.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="dates">list of dates, denoting the periods to return counts for. They should be specified smallest first.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetPhotosCountsAsync(params DateTime[] dates)
+        {
+            if (dates == null)
+                throw new ArgumentNullException("dates");
+
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetPhotosCountsCompletedEvent(new EventArgs<IEnumerable<PhotosCount>>(token,elm.Element("photocounts").Elements("photocount").Select(pc=>new PhotosCount(pc)))),
+                e => this.InvokeGetPhotosCountsCompletedEvent(new EventArgs<IEnumerable<PhotosCount>>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.getCounts"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
+                new Parameter("dates", dates.Select(date => date.ToUnixTimeStamp().ToString()).Aggregate((left, right) => string.Format("{0} , {1}", left, right))));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Return a list of your photos that have been recently created or which have been recently modified.
+        ///Recently modified may mean that the photo's metadata (title, description, tags) may have been changed or a comment has been added (or just modified somehow :-)
+        ///This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="minDate">a timestamp indicating the date from which modifications should be compared.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetRecentlyUpdatedPhotosAsync(DateTime minDate,string extras = null , Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetRecentlyUpdatedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token,new PhotosCollection(this.authTkns,elm.Element("photos")))),
+                e => this.InvokeGetRecentlyUpdatedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.recentlyUpdated"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
+                new Parameter("min_date", minDate.ToUnixTimeStamp()), new Parameter("extras", extras), new Parameter("per_page", perPage), new Parameter("page", page));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Fetch a list of recent photos from the calling users' contacts.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="count">Number of photos to return. Defaults to 10, maximum 50. This is only used if single_photo is not passed.</param>
+        /// <param name="justFriends">set as true to only show photos from friends and family (excluding regular contacts).</param>
+        /// <param name="singlePhoto">set as true to Only fetch one photo (the latest) per contact, instead of all photos in chronological order.</param>
+        /// <param name="includeSelf">Set to true to include photos from the calling user.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields include: license, date_upload, date_taken, owner_name, icon_server, original_format, last_update.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetContactsPhotosAsync(Nullable<int> count = null, Nullable<bool> justFriends = null, Nullable<bool> singlePhoto = null,
+            Nullable<bool> includeSelf = null, string extras = null)
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetContactsPhotosCompletedEvent
+                    (new EventArgs<IEnumerable<Photo>>(token,elm.Element("photos").Elements("photo").Select(photo=>new Photo(this.authTkns,photo)))),
+                e => this.InvokeGetContactsPhotosCompletedEvent(new EventArgs<IEnumerable<Photo>>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.getContactsPhotos"), new Parameter("api_key", this.authTkns.ApiKey), 
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("count",count),new Parameter("just_friends",justFriends),
+                new Parameter("single_photos",singlePhoto), new Parameter("iclude_self",includeSelf), new Parameter("extras",extras));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Fetch a list of recent public photos from a users' contacts.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="count">Number of photos to return. Defaults to 10, maximum 50. This is only used if single_photo is not passed.</param>
+        /// <param name="justFriends">set as true to only show photos from friends and family (excluding regular contacts).</param>
+        /// <param name="singlePhoto">set as true to Only fetch one photo (the latest) per contact, instead of all photos in chronological order.</param>
+        /// <param name="includeSelf">Set to true to include photos from the user specified by user object.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields include: license, date_upload, date_taken, owner_name, icon_server, original_format, last_update.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetContactsPublicPhotosAsync(Nullable<int> count = null, Nullable<bool> justFriends = null, Nullable<bool> singlePhoto = null,
+            Nullable<bool> includeSelf = null, string extras = null)
+        {
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetContactsPublicPhotosCompletedEvent
+                    (new EventArgs<IEnumerable<Photo>>(token, elm.Element("photos").Elements("photo").Select(photo => new Photo(this.authTkns, photo)))),
+                e => this.InvokeGetContactsPublicPhotosCompletedEvent(new EventArgs<IEnumerable<Photo>>(token, e)), null,
+                new Parameter("method", "flickr.photos.getContactsPublicPhotos"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("user_id", this.UserID), new Parameter("count", count), new Parameter("just_friends", justFriends),
+                new Parameter("single_photos", singlePhoto), new Parameter("iclude_self", includeSelf), new Parameter("extras", extras));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Return a list of contacts for a user who have recently uploaded photos along with the total count of photos uploaded.
+        /// This method is still considered experimental. We don't plan for it to change or to go away but so long as this notice is present you should write your code accordingly.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="date_lastUpload">Limits the resultset to contacts that have uploaded photos since this date. The date should be in the form of a Unix timestamp. The default offset is (1) hour and the maximum (24) hours. </param>
+        /// <param name="filter">Limit the result set to all contacts or only those who are friends or family. Valid options are:
+        ///* ff friends and family
+        ///* all all your contacts
+        ///Default value is "all".</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetListRecentlyUploadedAsync(string dateLastUpload = null, string filter = null)
+        {
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetListRecentlyUploadedCompletedEvent(new EventArgs<IEnumerable<Contact>>(token,elm.Element("contacts").Elements("contact").Select(cont=>new Contact(cont)))),
+                e => this.InvokeGetListRecentlyUploadedCompletedEvent(new EventArgs<IEnumerable<Contact>>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.contacts.getListRecentlyUploaded"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("date_lastupload", dateLastUpload), new Parameter("filter", filter));
+
+            return token;
+        }
+
         #region Events
+        private void InvokeGetListRecentlyUploadedCompletedEvent(EventArgs<IEnumerable<Contact>> args)
+        {
+            if (this.GetListRecentlyUploadedCompleted != null)
+            {
+                this.GetListRecentlyUploadedCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<IEnumerable<Contact>>> GetListRecentlyUploadedCompleted;
+        private void InvokeGetContactsPublicPhotosCompletedEvent(EventArgs<IEnumerable<Photo>> args)
+        {
+            if (this.GetContactsPublicPhotosCompleted != null)
+            {
+                this.GetContactsPublicPhotosCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<IEnumerable<Photo>>> GetContactsPublicPhotosCompleted;
+        private void InvokeGetContactsPhotosCompletedEvent(EventArgs<IEnumerable<Photo>> args)
+        {
+            if (this.GetContactsPhotosCompleted != null)
+            {
+                this.GetContactsPhotosCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<IEnumerable<Photo>>> GetContactsPhotosCompleted;
+        private void InvokeGetRecentlyUpdatedPhotosCompletedEvent(EventArgs<PhotosCollection> args)
+        {
+            if (this.GetRecentlyUpdatedPhotosCompleted != null)
+            {
+                this.GetRecentlyUpdatedPhotosCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<PhotosCollection>> GetRecentlyUpdatedPhotosCompleted;
+        private void InvokeGetPhotosCountsCompletedEvent(EventArgs<IEnumerable<PhotosCount>> args)
+        {
+            if (this.GetPhotosCountsCompleted != null)
+            {
+                this.GetPhotosCountsCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<IEnumerable<PhotosCount>>> GetPhotosCountsCompleted;
         private void InvokeGetUnGeotaggedPhotosCompletedEvent(EventArgs<PhotosCollection> args)
         {
             if (this.GetUnGeotaggedPhotosCompleted != null)
@@ -1008,5 +1175,82 @@ namespace MyFlickr.Rest
         /// determine whether the user is marking you as a friend or Not
         /// </summary>
         public Nullable<bool> IsConsideringYouAsFamily { get { return data.Attribute("revfamily") != null ? new Nullable<bool>(data.Attribute("revfamily").Value.ToBoolean()) : null; } }
+    }
+
+    /// <summary>
+    /// represents  photo counts in a given time period
+    /// </summary>
+    public class PhotosCount
+    {
+        internal PhotosCount(XElement element)
+        {
+            this.Count = int.Parse(element.Attribute("count").Value);
+            this.FromDate = double.Parse(element.Attribute("fromdate").Value).ToDateTimeFromUnix();
+            this.ToDate = double.Parse(element.Attribute("todate").Value).ToDateTimeFromUnix();
+        }
+
+        /// <summary>
+        /// the number of photo in this period
+        /// </summary>
+        public int Count { get; private set; }
+
+        /// <summary>
+        /// start time of counting
+        /// </summary>
+        public DateTime FromDate { get; private set; }
+
+        /// <summary>
+        /// end time of counting
+        /// </summary>
+        public DateTime ToDate { get; private set; }
+    }
+
+    /// <summary>
+    /// Tag Mode in Searching
+    /// </summary>
+    public enum TagMode
+	{
+        /// <summary>
+        /// 'any' for an OR combination of tags
+        /// </summary>
+        Any = 0,
+        /// <summary>
+        /// 'all' for an AND combination
+        /// </summary>
+        All = 1
+	}
+
+    /// <summary>
+    /// Geo Context Setting 
+    /// </summary>
+    public enum GeoContext
+	{
+        /// <summary>
+        /// not defined.
+        /// </summary>
+        NotDefined = 0,
+        /// <summary>
+        /// indoors.
+        /// </summary>
+        InDoors = 1,
+        /// <summary>
+        /// outdoors.
+        /// </summary>
+        OutDoors = 2
+	}
+
+    /// <summary>
+    /// Radius Unit Setting
+    /// </summary>
+    public enum RadiusUnits
+    {
+        /// <summary>
+        /// Miles
+        /// </summary>
+        Mi = 0,
+        /// <summary>
+        /// Kilometers
+        /// </summary>
+        Km = 1
     }
 }

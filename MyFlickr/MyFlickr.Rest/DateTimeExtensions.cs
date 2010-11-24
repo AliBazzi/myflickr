@@ -8,5 +8,10 @@ namespace MyFlickr.Rest
         {
             return (date - new DateTime(1970, 1, 1, 1, 0, 0, 0, 0)).TotalSeconds;
         }
+
+        public static DateTime ToDateTimeFromUnix(this double dbl)
+        {
+            return new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(dbl);
+        }
     }
 }

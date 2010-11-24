@@ -1,5 +1,6 @@
 ﻿using System;
 using MyFlickr.Core;
+using System.Collections.Generic;
 
 namespace MyFlickr.Rest
 {
@@ -501,6 +502,125 @@ namespace MyFlickr.Rest
             FSP.Token = user.GetUnGeotaggedPhotosAsync(maxUploadDate, minUploadDate, minTakenDate, maxTakenDate, privacyFilter, sortType, mediaType, extras, perPage, page);
             FSP.WaitForAsynchronousCall();
             user.GetUnGeotaggedPhotosCompleted -= new EventHandler<EventArgs<PhotosCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Gets a list of photo counts for the given date ranges for the calling user.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="dates">list of dates, denoting the periods to return counts for. They should be specified smallest first.</param>
+        /// <returns>Enumerable of PhotosCount Objects</returns>
+        public static IEnumerable<PhotosCount> GetPhotosCounts(this User user , params DateTime[] dates)
+        {
+            FlickrSynchronousPrmitive<IEnumerable<PhotosCount>> FSP = new FlickrSynchronousPrmitive<IEnumerable<PhotosCount>>();
+
+            Action<object, EventArgs<IEnumerable<PhotosCount>>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetPhotosCountsCompleted += new EventHandler<EventArgs<IEnumerable<PhotosCount>>>(handler);
+            FSP.Token = user.GetPhotosCountsAsync(dates);
+            FSP.WaitForAsynchronousCall();
+            user.GetPhotosCountsCompleted -= new EventHandler<EventArgs<IEnumerable<PhotosCount>>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Return a list of your photos that have been recently created or which have been recently modified.
+        ///Recently modified may mean that the photo's metadata (title, description, tags) may have been changed or a comment has been added (or just modified somehow :-)
+        ///This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="minDate">a timestamp indicating the date from which modifications should be compared.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>PhotosCollection Object</returns>
+        public static PhotosCollection GetRecentlyUpdatedPhotos(this User user, DateTime minDate, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            FlickrSynchronousPrmitive<PhotosCollection> FSP = new FlickrSynchronousPrmitive<PhotosCollection>();
+
+            Action<object, EventArgs<PhotosCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetRecentlyUpdatedPhotosCompleted += new EventHandler<EventArgs<PhotosCollection>>(handler);
+            FSP.Token = user.GetRecentlyUpdatedPhotosAsync(minDate,extras,perPage,page);
+            FSP.WaitForAsynchronousCall();
+            user.GetRecentlyUpdatedPhotosCompleted -= new EventHandler<EventArgs<PhotosCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Fetch a list of recent photos from the calling users' contacts.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="count">Number of photos to return. Defaults to 10, maximum 50. This is only used if single_photo is not passed.</param>
+        /// <param name="justFriends">set as true to only show photos from friends and family (excluding regular contacts).</param>
+        /// <param name="singlePhoto">set as true to Only fetch one photo (the latest) per contact, instead of all photos in chronological order.</param>
+        /// <param name="includeSelf">Set to true to include photos from the calling user.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields include: license, date_upload, date_taken, owner_name, icon_server, original_format, last_update.</param>
+        /// <returns>Enumerable of Photos Objects</returns>
+        public static IEnumerable<Photo> GetContactsPhotos(this User user, Nullable<int> count = null, Nullable<bool> justFriends = null,
+            Nullable<bool> singlePhoto = null, Nullable<bool> includeSelf = null, string extras = null)
+        {
+            FlickrSynchronousPrmitive<IEnumerable<Photo>> FSP = new FlickrSynchronousPrmitive<IEnumerable<Photo>>();
+
+            Action<object, EventArgs<IEnumerable<Photo>>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetContactsPhotosCompleted += new EventHandler<EventArgs<IEnumerable<Photo>>>(handler);
+            FSP.Token = user.GetContactsPhotosAsync(count,justFriends,singlePhoto,includeSelf,extras);
+            FSP.WaitForAsynchronousCall();
+            user.GetContactsPhotosCompleted -= new EventHandler<EventArgs<IEnumerable<Photo>>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Fetch a list of recent public photos from a users' contacts.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="user">The object that represents a Flickr User.</param>
+        /// <param name="count">Number of photos to return. Defaults to 10, maximum 50. This is only used if single_photo is not passed.</param>
+        /// <param name="justFriends">set as true to only show photos from friends and family (excluding regular contacts).</param>
+        /// <param name="singlePhoto">set as true to Only fetch one photo (the latest) per contact, instead of all photos in chronological order.</param>
+        /// <param name="includeSelf">Set to true to include photos from the user specified by user object.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields include: license, date_upload, date_taken, owner_name, icon_server, original_format, last_update.</param>
+        /// <returns>Enumerable of Photos Objects</returns>
+        public static IEnumerable<Photo> GetContactsPublicPhotos(this User user, Nullable<int> count = null, Nullable<bool> justFriends = null,
+            Nullable<bool> singlePhoto = null, Nullable<bool> includeSelf = null, string extras = null)
+        {
+            FlickrSynchronousPrmitive<IEnumerable<Photo>> FSP = new FlickrSynchronousPrmitive<IEnumerable<Photo>>();
+
+            Action<object, EventArgs<IEnumerable<Photo>>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetContactsPublicPhotosCompleted += new EventHandler<EventArgs<IEnumerable<Photo>>>(handler);
+            FSP.Token = user.GetContactsPublicPhotosAsync(count,justFriends,singlePhoto,includeSelf,extras);
+            FSP.WaitForAsynchronousCall();
+            user.GetContactsPublicPhotosCompleted -= new EventHandler<EventArgs<IEnumerable<Photo>>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Return a list of contacts for a user who have recently uploaded photos along with the total count of photos uploaded.
+        /// This method is still considered experimental. We don't plan for it to change or to go away but so long as this notice is present you should write your code accordingly.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="date_lastUpload">Limits the resultset to contacts that have uploaded photos since this date. The date should be in the form of a Unix timestamp. The default offset is (1) hour and the maximum (24) hours. </param>
+        /// <param name="filter">Limit the result set to all contacts or only those who are friends or family. Valid options are:
+        ///* ff friends and family
+        ///* all all your contacts
+        ///Default value is "all".</param>
+        /// <returns>Enumerable of Contact Objects</returns>
+        public static IEnumerable<Contact> GetListRecentlyUploaded(this User user, string dateLastUpload = null, string filter = null)
+        {
+            FlickrSynchronousPrmitive<IEnumerable<Contact>> FSP = new FlickrSynchronousPrmitive<IEnumerable<Contact>>();
+
+            Action<object, EventArgs<IEnumerable<Contact>>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetListRecentlyUploadedCompleted += new EventHandler<EventArgs<IEnumerable<Contact>>>(handler);
+            FSP.Token = user.GetListRecentlyUploadedAsync(dateLastUpload,filter);
+            FSP.WaitForAsynchronousCall();
+            user.GetListRecentlyUploadedCompleted -= new EventHandler<EventArgs<IEnumerable<Contact>>>(handler);
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
