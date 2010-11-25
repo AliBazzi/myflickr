@@ -560,7 +560,109 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Add a note to a photo. Coordinates and sizes are in pixels, based on the 500px image size shown on individual photo pages.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="x">The left coordinate of the note.</param>
+        /// <param name="y">The top coordinate of the note.</param>
+        /// <param name="height">The height of the note.</param>
+        /// <param name="width">The width of the note.</param>
+        /// <param name="text">The description of the note</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token AddNoteAync(int x, int y, int height, int width, string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                throw new ArgumentException("text");
+
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeAddNoteCompletedEvent(new EventArgs<string>(token, elm.Element("note").Attribute("id").Value)),
+                e => this.InvokeAddNoteCompletedEvent(new EventArgs<string>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.notes.add"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
+                new Parameter("photo_id", this.ID), new Parameter("note_x", x), new Parameter("note_y", y), new Parameter("note_h", height),
+                new Parameter("note_w", width), new Parameter("note_text", text));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Delete a note from a photo.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="noteID">The id of the note to delete.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token DeleteNoteAsync(string noteID)
+        {
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeDeleteNoteCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)),
+                e => this.InvokeDeleteNoteCompletedEvent(new EventArgs<NoReply>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.notes.delete"), new Parameter("auth_token", this.authTkns.Token),
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("photo_id", this.ID), new Parameter("note_id", noteID));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Edit a note on a photo. Coordinates and sizes are in pixels, based on the 500px image size shown on individual photo pages. 
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="noteID">The id of the note to edit.</param>
+        /// <param name="x">The left coordinate of the note.</param>
+        /// <param name="y">The top coordinate of the note.</param>
+        /// <param name="height">The height of the note</param>
+        /// <param name="width">The width of the note.</param>
+        /// <param name="text">The description of the note.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token EditNoteAsync(string noteID, int x, int y, int height, int width, string text)
+        {
+            if (string.IsNullOrEmpty(noteID))
+                throw new ArgumentException("noteID");
+            if (string.IsNullOrEmpty(text))
+                throw new ArgumentException("text");
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeEditNoteCompletedEvent(new EventArgs<NoReply>(token, NoReply.Empty)),
+                e => this.InvokeEditNoteCompletedEvent(new EventArgs<NoReply>(token, e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.notes.edit"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
+                new Parameter("photo_id", this.ID), new Parameter("note_x", x), new Parameter("note_y", y), new Parameter("note_h", height),
+                new Parameter("note_w", width), new Parameter("note_text", text),new Parameter("note_id",noteID));
+
+            return token;
+        }
+
         #region Events
+        private void InvokeEditNoteCompletedEvent(EventArgs<NoReply> args)
+        {
+            if (this.EditNoteCompleted != null)
+            {
+                this.EditNoteCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> EditNoteCompleted;
+        private void InvokeDeleteNoteCompletedEvent(EventArgs<NoReply> args)
+        {
+            if (this.DeleteNoteCompleted != null)
+            {
+                this.DeleteNoteCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> DeleteNoteCompleted;
+        private void InvokeAddNoteCompletedEvent(EventArgs<string> args)
+        {
+            if (this.AddNoteCompleted != null)
+            {
+                this.AddNoteCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<string>> AddNoteCompleted;
         private void InvokeGetSizesCompletedEvent(EventArgs<IEnumerable<Size>> args)
         {
             if (this.GetSizesCompleted != null)

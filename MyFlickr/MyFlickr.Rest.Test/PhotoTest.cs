@@ -246,5 +246,15 @@ namespace MyFlickr.Rest.Test
 
             }
         }
+
+        [TestMethod]
+        public void AddNoteTest()
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var photo = user.GetPublicPhotos().Photos.First();
+            var id = photo.AddNote(10,10,30,30,"Test");
+            photo.EditNote(id, 11, 11, 30, 60, "Test Edited !");
+            photo.DeleteNote(id);
+        }
     }
 }
