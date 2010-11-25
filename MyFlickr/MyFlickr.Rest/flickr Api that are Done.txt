@@ -60,6 +60,11 @@ photos:25/26
 	* flickr.photos.getRecent
 	* flickr.photos.search : Done , Not Added Yet , Don't Forget That (the Right place is missing )
 
+photos.notes 3/3
+    * flickr.photos.notes.add
+    * flickr.photos.notes.delete
+    * flickr.photos.notes.edit
+
 photos.people:1
     * flickr.photos.people.getList
 

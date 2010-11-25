@@ -375,5 +375,74 @@ namespace MyFlickr.Rest
 
             return FSP.ResultHolder.ReturnOrThrow(); 
         }
+
+        /// <summary>
+        /// Add a note to a photo. Coordinates and sizes are in pixels, based on the 500px image size shown on individual photo pages.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="x">The left coordinate of the note.</param>
+        /// <param name="y">The top coordinate of the note.</param>
+        /// <param name="height">The height of the note.</param>
+        /// <param name="width">The width of the note</param>
+        /// <param name="text">The description of the note</param>
+        /// <returns>the ID of the new Note</returns>
+        public static string AddNote(this Photo photo, int x, int y, int height, int width, string text)
+        {
+            FlickrSynchronousPrmitive<string> FSP = new FlickrSynchronousPrmitive<string>();
+
+            Action<object, EventArgs<string>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.AddNoteCompleted += new EventHandler<EventArgs<string>>(handler);
+            FSP.Token = photo.AddNoteAync(x,y,height,width,text);
+            FSP.WaitForAsynchronousCall();
+            photo.AddNoteCompleted -= new EventHandler<EventArgs<string>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow(); 
+        }
+
+        /// <summary>
+        /// Delete a note from a photo.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="noteID">The id of the note to delete.</param>
+        /// <returns>NoReply Represents Void</returns>
+        public static NoReply DeleteNote(this Photo photo, string noteID)
+        {
+            FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
+
+            Action<object, EventArgs<NoReply>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.DeleteNoteCompleted += new EventHandler<EventArgs<NoReply>>(handler);
+            FSP.Token = photo.DeleteNoteAsync(noteID);
+            FSP.WaitForAsynchronousCall();
+            photo.DeleteNoteCompleted -= new EventHandler<EventArgs<NoReply>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Edit a note on a photo. Coordinates and sizes are in pixels, based on the 500px image size shown on individual photo pages. 
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="noteID">The id of the note to edit.</param>
+        /// <param name="x">The left coordinate of the note.</param>
+        /// <param name="y">The top coordinate of the note.</param>
+        /// <param name="height">The height of the note</param>
+        /// <param name="width">The width of the note.</param>
+        /// <param name="text">The description of the note.</param>
+        /// <returns>NoReply Represents Void</returns>
+        public static NoReply EditNote(this Photo photo, string noteID, int x, int y, int height, int width, string text)
+        {
+            FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
+
+            Action<object, EventArgs<NoReply>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.EditNoteCompleted += new EventHandler<EventArgs<NoReply>>(handler);
+            FSP.Token = photo.EditNoteAsync(noteID,x,y,height,width,text);
+            FSP.WaitForAsynchronousCall();
+            photo.EditNoteCompleted -= new EventHandler<EventArgs<NoReply>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
     }
 }
