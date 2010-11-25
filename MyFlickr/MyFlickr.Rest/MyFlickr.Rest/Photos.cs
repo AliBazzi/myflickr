@@ -597,6 +597,9 @@ namespace MyFlickr.Rest
         /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
         public Token DeleteNoteAsync(string noteID)
         {
+            if (string.IsNullOrEmpty(noteID))
+                throw new ArgumentException("noteID");
+
             Token token = Core.Token.GenerateToken();
 
             FlickrCore.InitiatePostRequest(
@@ -638,7 +641,172 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Add a person to a photo. Coordinates and sizes of boxes are optional; they are measured in pixels, based on the 500px image size shown on individual photo pages.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="personID">The NSID of the user to add to the photo.</param>
+        /// <param name="x">The left-most pixel co-ordinate of the box around the person.</param>
+        /// <param name="y">The top-most pixel co-ordinate of the box around the person.</param>
+        /// <param name="height">The height (in pixels) of the box around the person.</param>
+        /// <param name="width">The width (in pixels) of the box around the person.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token AddPersonAync(string personID, Nullable<int> x = null, Nullable<int> y = null, Nullable<int> height = null, Nullable<int> width = null)
+        {
+            if (string.IsNullOrEmpty(personID))
+                throw new ArgumentException("personID");
+
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeAddPersonCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)),
+                e => this.InvokeAddPersonCompletedEvent(new EventArgs<NoReply>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.people.add"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID), new Parameter("user_id", personID),
+                new Parameter("person_x", x), new Parameter("person_y", y), new Parameter("person_w", width), new Parameter("person_h", height));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Remove a person from a photo.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="personID">The NSID of the person to remove from the photo.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token RemovePersonAsync(string personID)
+        {
+            if (string.IsNullOrEmpty(personID))
+                throw new ArgumentException("personID");
+
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeRemovePersonCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)),
+                e => this.InvokeRemovePersonCompletedEvent(new EventArgs<NoReply>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.people.delete"), new Parameter("api_key", this.authTkns.ApiKey), 
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID), new Parameter("user_id", personID));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Remove the bounding box from a person in a photo.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="personID">The NSID of the person whose bounding box you want to remove.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token RemovePersonCoordsAsync(string personID)
+        {
+            if (string.IsNullOrEmpty(personID))
+                throw new ArgumentException("personID");
+
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeRemovePersonCoordsCompletedEvent(new EventArgs<NoReply>(token, NoReply.Empty)),
+                e => this.InvokeRemovePersonCoordsCompletedEvent(new EventArgs<NoReply>(token, e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.people.deleteCoords"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID), new Parameter("user_id", personID));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Edit the bounding box of an existing person on a photo.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="personID">The NSID of the person to edit in a photo.</param>
+        /// <param name="x">The left-most pixel co-ordinate of the box around the person.</param>
+        /// <param name="y">The top-most pixel co-ordinate of the box around the person.</param>
+        /// <param name="height">The width (in pixels) of the box around the person.</param>
+        /// <param name="width">The width (in pixels) of the box around the person.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token EditPersonCoordsAsync(string personID, int x, int y, int height, int width)
+        {
+            if (string.IsNullOrEmpty(personID))
+                throw new ArgumentException("personID");
+
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeEditPersonCoordsCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)),
+                e => this.InvokeEditPersonCoordsCompletedEvent(new EventArgs<NoReply>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.people.editCoords"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID), new Parameter("user_id", personID),
+                new Parameter("person_x", x), new Parameter("person_y", y), new Parameter("person_h", height), new Parameter("person_w", width));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Get a list of people in a given photo.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetPersonsListAsync()
+        {
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetPersonsListCompletedEvent(new EventArgs<IEnumerable<PersonInPhoto>>(token,
+                    elm.Element("people").Elements("person").Select(person=>new PersonInPhoto(person)))),
+                e => this.InvokeGetPersonsListCompletedEvent(new EventArgs<IEnumerable<PersonInPhoto>>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.people.getList"), new Parameter("api_key", this.authTkns.ApiKey), 
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id",this.ID));
+
+            return token;
+        }
+
         #region Events
+        private void InvokeGetPersonsListCompletedEvent(EventArgs<IEnumerable<PersonInPhoto>> args)
+        {
+            if (this.GetPersonsListCompleted != null)
+            {
+                this.GetPersonsListCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<IEnumerable<PersonInPhoto>>> GetPersonsListCompleted;
+        private void InvokeEditPersonCoordsCompletedEvent(EventArgs<NoReply> args)
+        {
+            if (this.EditPersonCoordsCompleted != null)
+            {
+                this.EditPersonCoordsCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> EditPersonCoordsCompleted;
+        private void InvokeRemovePersonCoordsCompletedEvent(EventArgs<NoReply> args)
+        {
+            if (this.RemovePersonCoordsCompleted != null)
+            {
+                this.RemovePersonCoordsCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> RemovePersonCoordsCompleted;
+        private void InvokeRemovePersonCompletedEvent(EventArgs<NoReply> args)
+        {
+            if (this.RemovePersonCompleted != null)
+            {
+                this.RemovePersonCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> RemovePersonCompleted;
+        private void InvokeAddPersonCompletedEvent(EventArgs<NoReply> args)
+        {
+            if (this.AddPersonCompleted != null)
+            {
+                this.AddPersonCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> AddPersonCompleted;
         private void InvokeEditNoteCompletedEvent(EventArgs<NoReply> args)
         {
             if (this.EditNoteCompleted != null)
@@ -1673,5 +1841,81 @@ namespace MyFlickr.Rest
         /// the URL of the Photo Size Page
         /// </summary>
         public Uri Url { get; private set; }
+    }
+
+    /// <summary>
+    /// represents information of a person in a photo
+    /// </summary>
+    public class PersonInPhoto
+    {
+        internal PersonInPhoto(XElement element)
+        {
+            this.ID = element.Attribute("nsid").Value;
+            this.RealName = element.Attribute("realname").Value;
+            this.UserName = element.Attribute("username").Value;
+            this.AddedByID = element.Attribute("added_by").Value;
+            this.PathAlias = element.Attribute("path_alias").Value;
+            this.IconServer = int.Parse(element.Attribute("iconserver").Value);
+            this.Farm = int.Parse(element.Attribute("iconfarm").Value);
+            this.X = element.Attribute("x") != null ? new Nullable<int>(int.Parse(element.Attribute("x").Value)) : null;
+            this.Y = element.Attribute("y") != null ? new Nullable<int>(int.Parse(element.Attribute("y").Value)) : null;
+            this.Height = element.Attribute("h") != null ? new Nullable<int>(int.Parse(element.Attribute("h").Value)) : null;
+            this.Width = element.Attribute("w") != null ? new Nullable<int>(int.Parse(element.Attribute("w").Value)) : null;
+        }
+
+        /// <summary>
+        /// the ID of the person
+        /// </summary>
+        public string ID { get; private set; }
+
+        /// <summary>
+        /// the User Name of the person in the photo
+        /// </summary>
+        public string UserName { get; private set; }
+
+        /// <summary>
+        /// the real name of the person
+        /// </summary>
+        public string RealName { get; private set; }
+
+        /// <summary>
+        /// the number of icon server
+        /// </summary>
+        public int IconServer { get; private set; }
+
+        /// <summary>
+        /// the number of icon server Farm
+        /// </summary>
+        public int Farm { get; private set; }
+
+        /// <summary>
+        ///the Path Alias (used when Generating Urls ) , Could be Empty when not set by the user
+        /// </summary>
+        public string PathAlias { get; private set; }
+
+        /// <summary>
+        /// the ID of the User Add the Person to the photo
+        /// </summary>
+        public string AddedByID { get; private set; }
+
+        /// <summary>
+        /// the X of Person Box in the photo , Could Be Null
+        /// </summary>
+        public Nullable<int> X { get; private set; }
+
+        /// <summary>
+        /// the Y of the Person Box in the photo , Could Be Null
+        /// </summary>
+        public Nullable<int> Y { get; private set; }
+
+        /// <summary>
+        /// the height of the Person Box in the  photo , Could Be Null
+        /// </summary>
+        public Nullable<int> Height { get; private set; }
+
+        /// <summary>
+        ///  the Width of the Person Box in the  photo  , Could Be Null
+        /// </summary>
+        public Nullable<int> Width { get; private set; }
     }
 }

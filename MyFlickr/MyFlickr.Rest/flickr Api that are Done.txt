@@ -65,6 +65,14 @@ photos.notes 3/3
     * flickr.photos.notes.delete
     * flickr.photos.notes.edit
 
+photos.people 5/5
+    * flickr.photos.people.add
+    * flickr.photos.people.delete
+    * flickr.photos.people.deleteCoords
+    * flickr.photos.people.editCoords
+    * flickr.photos.people.getList
+
+
 photos.people:1
     * flickr.photos.people.getList
 
