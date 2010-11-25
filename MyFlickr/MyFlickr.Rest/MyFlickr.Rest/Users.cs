@@ -11,7 +11,7 @@ namespace MyFlickr.Rest
     /// </summary>
     public class User
     {
-        private AuthenticationTokens authTkns;
+        private readonly AuthenticationTokens authTkns;
 
         /// <summary>
         /// Flickr API application key
@@ -316,7 +316,7 @@ namespace MyFlickr.Rest
             Token token = Core.Token.GenerateToken();
 
             FlickrCore.IntiateGetRequest(
-                  elm => this.InvokeGetPhotoSetsListCompletedEvent(new EventArgs<PhotoSetsCollection>(token,new PhotoSetsCollection(elm.Element("photosets"))))
+                  elm => this.InvokeGetPhotoSetsListCompletedEvent(new EventArgs<PhotoSetsCollection>(token,new PhotoSetsCollection(this.authTkns,elm.Element("photosets"))))
                 , e => this.InvokeGetPhotoSetsListCompletedEvent(new EventArgs<PhotoSetsCollection>(token,e))
                 , null, new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.photosets.getList"), new Parameter("user_id", this.UserID));
 
@@ -392,7 +392,7 @@ namespace MyFlickr.Rest
             Token token = Core.Token.GenerateToken();
 
             FlickrCore.IntiateGetRequest(
-                elm => this.InvokeGetCollectionsTreeEvent(new EventArgs<CollectionsList>(token , new CollectionsList(elm.Element("collections")))),
+                elm => this.InvokeGetCollectionsTreeEvent(new EventArgs<CollectionsList>(token , new CollectionsList(this.authTkns,elm.Element("collections")))),
                 e => this.InvokeGetCollectionsTreeEvent(new EventArgs<CollectionsList>(token,e)), null,
                 new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.collections.getTree"), 
                 new Parameter("collection_id", collection != null ? collection.ID : null ), new Parameter("user_id", this.UserID));

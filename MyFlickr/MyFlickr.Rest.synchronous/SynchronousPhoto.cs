@@ -550,5 +550,107 @@ namespace MyFlickr.Rest
             return FSP.ResultHolder.ReturnOrThrow(); 
 
         }
+
+        /// <summary>
+        /// Rotate a photo.
+        /// This method requires authentication with 'write' permission.
+        /// the Photo Should belong to the calling user.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="degrees">The amount of degrees by which to rotate the photo (clockwise) from it's current orientation. Valid values are 90, 180 and 270.</param>
+        /// <returns>NoReply Represents Void</returns>
+        public static NoReply Rotate(this Photo photo,Degrees degrees)
+        {
+            FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
+
+            Action<object, EventArgs<NoReply>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.RotateCompleted += new EventHandler<EventArgs<NoReply>>(handler);
+            FSP.Token = photo.RotateAsync(degrees);
+            FSP.WaitForAsynchronousCall();
+            photo.RotateCompleted -= new EventHandler<EventArgs<NoReply>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Add comment to a photo as the currently authenticated user.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="text">Text of the comment.</param>
+        /// <returns>the ID of the Added Comment</returns>
+        public static string AddComment(this Photo photo, string text)
+        {
+            FlickrSynchronousPrmitive<string> FSP = new FlickrSynchronousPrmitive<string>();
+
+            Action<object, EventArgs<string>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.AddCommentCompleted += new EventHandler<EventArgs<string>>(handler);
+            FSP.Token = photo.AddCommentAsync(text);
+            FSP.WaitForAsynchronousCall();
+            photo.AddCommentCompleted -= new EventHandler<EventArgs<string>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Delete a comment as the currently authenticated user.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="commentID">The id of the comment to delete.</param>
+        /// <returns>NoReply Represents Void</returns>
+        public static NoReply DeleteComment(this Photo photo, string commentID)
+        {
+            FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
+
+            Action<object, EventArgs<NoReply>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.DeleteCommentCompleted += new EventHandler<EventArgs<NoReply>>(handler);
+            FSP.Token = photo.DeleteCommentAsync(commentID);
+            FSP.WaitForAsynchronousCall();
+            photo.DeleteCommentCompleted -= new EventHandler<EventArgs<NoReply>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Edit the text of a comment as the currently authenticated user.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="commentID">The id of the comment to edit.</param>
+        /// <param name="text">Update the comment to this text.</param>
+        /// <returns>NoReply Represents Void</returns>
+        public static NoReply EditComment(this Photo photo, string commentID, string text)
+        {
+            FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
+
+            Action<object, EventArgs<NoReply>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.EditCommentCompleted += new EventHandler<EventArgs<NoReply>>(handler);
+            FSP.Token = photo.EditCommentAsync(commentID,text);
+            FSP.WaitForAsynchronousCall();
+            photo.EditCommentCompleted -= new EventHandler<EventArgs<NoReply>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns the comments for a photo.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="minCommentDate">Minimum date that a a comment was added. The date should be in the form of a unix timestamp.</param>
+        /// <param name="maxCommentDate">Maximum date that a comment was added. The date should be in the form of a unix timestamp.</param>
+        /// <returns>Enumerable of Comments Object</returns>
+        public static IEnumerable<Comment> GetCommentsList(this Photo photo, string minCommentDate = null, string maxCommentDate = null)
+        {
+            FlickrSynchronousPrmitive<IEnumerable<Comment>> FSP = new FlickrSynchronousPrmitive<IEnumerable<Comment>>();
+
+            Action<object, EventArgs<IEnumerable<Comment>>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.GetCommentsListCompleted += new EventHandler<EventArgs<IEnumerable<Comment>>>(handler);
+            FSP.Token = photo.GetCommentsListAsync(minCommentDate,maxCommentDate);
+            FSP.WaitForAsynchronousCall();
+            photo.GetCommentsListCompleted -= new EventHandler<EventArgs<IEnumerable<Comment>>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow(); 
+        }
     }
 }
