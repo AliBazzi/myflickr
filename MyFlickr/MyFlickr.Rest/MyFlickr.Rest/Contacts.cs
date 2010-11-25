@@ -67,6 +67,19 @@ public class ContactsList : IEnumerable<Contact>
 /// </summary>
 public class Contact
 {
+    internal Contact(XElement elm)
+    {
+        this.UserID = elm.Attribute("nsid").Value;
+        this.UserName = elm.Attribute("username").Value;
+        this.IconServer = int.Parse(elm.Attribute("iconserver").Value);
+        this.IsIgnored = elm.Attribute("ignored") != null ? new Nullable<bool>(elm.Attribute("ignored").Value.ToBoolean()) : null;
+        this.RealName = elm.Attribute("realname") != null ? elm.Attribute("realname").Value : null;
+        this.IsFriend = elm.Attribute("friend") != null ? new Nullable<bool>(elm.Attribute("friend").Value.ToBoolean()) : null;
+        this.IsFamily = elm.Attribute("family") != null ? new Nullable<bool>(elm.Attribute("family").Value.ToBoolean()) : null;
+        this.PathAlias = elm.Attribute("path_alias") != null ? elm.Attribute("path_alias").Value : null;
+        this.PhotosUploaded = elm.Attribute("photos_uploaded") != null ? new Nullable<int>(int.Parse(elm.Attribute("photos_uploaded").Value)) : null;
+    }
+
     /// <summary>
     /// the User ID of the Contact
     /// </summary>
@@ -111,19 +124,6 @@ public class Contact
     /// the Number of photos Uploaded recently by the Contact , Could Be null
     /// </summary>
     public Nullable<int> PhotosUploaded { get; private set; }
-
-    internal Contact(XElement elm)
-    {
-        this.UserID = elm.Attribute("nsid").Value;
-        this.UserName = elm.Attribute("username").Value;
-        this.IconServer = int.Parse(elm.Attribute("iconserver").Value);
-        this.IsIgnored = elm.Attribute("ignored") != null ? new Nullable<bool>(elm.Attribute("ignored").Value.ToBoolean()) : null ;
-        this.RealName = elm.Attribute("realname").Value;
-        this.IsFriend = elm.Attribute("friend") != null ? new Nullable<bool>(elm.Attribute("friend").Value.ToBoolean()) : null ;
-        this.IsFamily = elm.Attribute("family") != null ? new Nullable<bool>(elm.Attribute("family").Value.ToBoolean()) : null ;
-        this.PathAlias = elm.Attribute("path_alias")!= null ? elm.Attribute("path_alias").Value : null ;
-        this.PhotosUploaded = elm.Attribute("photos_uploaded") != null ? new Nullable<int>(int.Parse(elm.Attribute("photos_uploaded").Value)) : null;
-    }
 }
 
 /// <summary>

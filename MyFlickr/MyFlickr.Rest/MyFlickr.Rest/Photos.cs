@@ -73,7 +73,7 @@ namespace MyFlickr.Rest
     /// </summary>
     public class Photo
     {
-        private AuthenticationTokens authTkns;
+        private readonly AuthenticationTokens authTkns;
 
         internal Photo(AuthenticationTokens authTkns, XElement element)
         {
@@ -534,7 +534,7 @@ namespace MyFlickr.Rest
             Token token = Core.Token.GenerateToken();
 
             FlickrCore.IntiateGetRequest(
-                elm => this.InvokeGetAllContextsCompletedEvent(new EventArgs<PhotoContexts>(token,new PhotoContexts(elm))),
+                elm => this.InvokeGetAllContextsCompletedEvent(new EventArgs<PhotoContexts>(token,new PhotoContexts(this.authTkns,elm))),
                 e => this.InvokeGetAllContextsCompletedEvent(new EventArgs<PhotoContexts>(token,e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photos.getAllContexts"), new Parameter("auth_token", this.authTkns.Token)
             , new Parameter("api_key", this.authTkns.ApiKey), new Parameter("photo_id", this.ID));
@@ -766,7 +766,166 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Rotate a photo.
+        /// This method requires authentication with 'write' permission.
+        /// the Photo Should belong to the calling user.
+        /// </summary>
+        /// <param name="degrees">The amount of degrees by which to rotate the photo (clockwise) from it's current orientation. Valid values are 90, 180 and 270.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token RotateAsync(Degrees degrees)
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeRotateCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)),
+                e => this.InvokeRotateCompletedEvent(new EventArgs<NoReply>(token,e)), this.authTkns.SharedSecret, 
+                new Parameter("method", "flickr.photos.transform.rotate") , new Parameter("api_key", this.authTkns.ApiKey), 
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID), new Parameter("degrees", (int)degrees));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Add comment to a photo as the currently authenticated user.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="text">Text of the comment.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token AddCommentAsync(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                throw new ArgumentException("text");
+
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeAddCommentCompletedEvent(new EventArgs<string>(token,elm.Element("comment").Attribute("id").Value)),
+                e => this.InvokeAddCommentCompletedEvent(new EventArgs<string>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.comments.addComment"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID), new Parameter("comment_text", text));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Delete a comment as the currently authenticated user.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="commentID">The id of the comment to delete.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token DeleteCommentAsync(string commentID)
+        {
+            if (string.IsNullOrEmpty(commentID))
+                throw new ArgumentException("commentID");
+
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeDeleteCommentCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)),
+                e => this.InvokeDeleteCommentCompletedEvent(new EventArgs<NoReply>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.comments.deleteComment"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID), new Parameter("comment_id", commentID));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Edit the text of a comment as the currently authenticated user.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="commentID">The id of the comment to edit.</param>
+        /// <param name="text">Update the comment to this text.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token EditCommentAsync(string commentID, string text)
+        {
+            if (string.IsNullOrEmpty(commentID))
+                throw new ArgumentException("commentID");
+            if (string.IsNullOrEmpty(text))
+                throw new ArgumentException("text");
+
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeEditCommentCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)),
+                e => this.InvokeEditCommentCompletedEvent(new EventArgs<NoReply>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.comments.editComment"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("comment_id", commentID), new Parameter("comment_text", text));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Returns the comments for a photo.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="minCommentDate">Minimum date that a a comment was added. The date should be in the form of a unix timestamp.</param>
+        /// <param name="maxCommentDate">Maximum date that a comment was added. The date should be in the form of a unix timestamp.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetCommentsListAsync(string minCommentDate = null, string maxCommentDate = null)
+        {
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeGetCommentsListCompletedEvent(new EventArgs<IEnumerable<Comment>>(token,
+                    elm.Element("comments").Elements("comment").Select(comment=>new Comment(comment)))),
+                e => this.InvokeGetCommentsListCompletedEvent(new EventArgs<IEnumerable<Comment>>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.comments.getList"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID),
+                new Parameter("min_comment_date", minCommentDate), new Parameter("max_comment_date", maxCommentDate));
+
+            return token;
+        }
+
         #region Events
+        private void InvokeGetCommentsListCompletedEvent(EventArgs<IEnumerable<Comment>> args)
+        {
+            if (this.GetCommentsListCompleted != null)
+            {
+                this.GetCommentsListCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<IEnumerable<Comment>>> GetCommentsListCompleted;
+        private void InvokeEditCommentCompletedEvent(EventArgs<NoReply> args)
+        {
+            if (this.EditCommentCompleted != null)
+            {
+                this.EditCommentCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> EditCommentCompleted;
+        private void InvokeDeleteCommentCompletedEvent(EventArgs<NoReply> args)
+        {
+            if (this.DeleteCommentCompleted != null)
+            {
+                this.DeleteCommentCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> DeleteCommentCompleted;
+        private void InvokeAddCommentCompletedEvent(EventArgs<string> args)
+        {
+            if (this.AddCommentCompleted != null)
+            {
+                this.AddCommentCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<string>> AddCommentCompleted;
+        private void InvokeRotateCompletedEvent(EventArgs<NoReply> args)
+        {
+            if (this.RotateCompleted != null)
+            {
+                this.RotateCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> RotateCompleted;
         private void InvokeGetPersonsListCompletedEvent(EventArgs<IEnumerable<PersonInPhoto>> args)
         {
             if (this.GetPersonsListCompleted != null)
@@ -1780,10 +1939,10 @@ namespace MyFlickr.Rest
     /// </summary>
     public class PhotoContexts
     {
-        internal PhotoContexts(XElement element)
+        internal PhotoContexts(AuthenticationTokens authTkns,XElement element)
         {
             this.Pools = element.Elements("pool").Select(pool => new Pool(pool));
-            this.Sets = element.Elements("set").Select(set => new PhotosSetBasic(set));
+            this.Sets = element.Elements("set").Select(set => new PhotosSetBasic(authTkns,set));
         }
 
         /// <summary>
@@ -1917,5 +2076,69 @@ namespace MyFlickr.Rest
         ///  the Width of the Person Box in the  photo  , Could Be Null
         /// </summary>
         public Nullable<int> Width { get; private set; }
+    }
+
+    /// <summary>
+    /// rotation setting
+    /// </summary>
+    public enum Degrees
+    {
+        /// <summary>
+        /// 90 degrees
+        /// </summary>
+        NinetyDegrees = 90,
+        /// <summary>
+        /// 180 degrees
+        /// </summary>
+        OneHundredAndEightyDegrees = 180 ,
+        /// <summary>
+        /// 270 degrees
+        /// </summary>
+        TwoHundredAndseventyDegress = 270 
+    }
+
+    /// <summary>
+    /// represents a Comment on photo or photos set
+    /// </summary>
+    public class Comment
+    {
+        internal Comment(XElement element)
+        {
+            this.ID = element.Attribute("id").Value;
+            this.AuthorID = element.Attribute("author").Value;
+            this.AuthorName = element.Attribute("authorname").Value;
+            this.DateCreated = double.Parse(element.Attribute("datecreate").Value).ToDateTimeFromUnix();
+            this.PermaLink = new Uri(element.Attribute("permalink").Value);
+        }
+
+        /// <summary>
+        /// the ID of the Comment
+        /// </summary>
+        public string ID { get; private set; }
+
+        /// <summary>
+        /// the ID of the User that Created the Comment
+        /// </summary>
+        public string AuthorID { get; private set; }
+
+        /// <summary>
+        /// the name of the user that created the Comment
+        /// </summary>
+        public string AuthorName { get; private set; }
+
+        /// <summary>
+        /// the date when the comment was created
+        /// </summary>
+        public DateTime DateCreated { get; private set; }
+
+        /// <summary>
+        /// the permalink that leads to the comment directly in the photo page on Flickr
+        /// </summary>
+        public Uri PermaLink { get; private set; }
+
+        /// <summary>
+        /// the Content of the Comment
+        /// </summary>
+        public string Text { get; private set; }
     }
 }

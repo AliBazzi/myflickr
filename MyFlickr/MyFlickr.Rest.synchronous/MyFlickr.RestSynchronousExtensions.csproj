@@ -48,6 +48,7 @@
     <Compile Include="FlickrSynchronousPrmitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SynchronousPhoto.cs" />
+    <Compile Include="SynchronousPhotosSets.cs" />
     <Compile Include="SynchronousUser.cs" />
   </ItemGroup>
   <ItemGroup>

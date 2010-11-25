@@ -72,12 +72,28 @@ photos.people 5/5
     * flickr.photos.people.editCoords
     * flickr.photos.people.getList
 
+photos.transform 1/1
+    * flickr.photos.transform.rotate
+
+photos.comments 4/5
+    * flickr.photos.comments.addComment
+    * flickr.photos.comments.deleteComment
+    * flickr.photos.comments.editComment
+    * flickr.photos.comments.getList
+	_____________________________________________
+    * flickr.photos.comments.getRecentForContacts
 
 photos.people:1
     * flickr.photos.people.getList
 
 photosets:1
     * flickr.photosets.getList
+
+photosets.comments 4/4
+    * flickr.photosets.comments.addComment
+    * flickr.photosets.comments.deleteComment
+    * flickr.photosets.comments.editComment
+    * flickr.photosets.comments.getList
 
 blogs:2/3
     * flickr.blogs.getList

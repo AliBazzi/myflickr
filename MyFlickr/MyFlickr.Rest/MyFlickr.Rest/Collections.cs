@@ -12,14 +12,17 @@ namespace MyFlickr.Rest
     {
         private XElement data;
         private IEnumerable<XElement> iEnumerable;
+        private AuthenticationTokens authTkns;
 
-        internal CollectionsList(XElement element)
+        internal CollectionsList(AuthenticationTokens authTkns,XElement element)
         {
+            this.authTkns = authTkns;
             this.data = element;
         }
 
-        public CollectionsList(IEnumerable<XElement> iEnumerable)
+        public CollectionsList(AuthenticationTokens authTkns,IEnumerable<XElement> iEnumerable)
         {
+            this.authTkns = authTkns;
             this.iEnumerable = iEnumerable;
         }
 
@@ -31,9 +34,9 @@ namespace MyFlickr.Rest
             get
             {
                 if (this.data != null)
-                    return this.data.Elements("collection").Select(elm => new Collection(elm));
+                    return this.data.Elements("collection").Select(elm => new Collection(this.authTkns,elm));
                 else
-                    return this.iEnumerable.Select(elm => new Collection(elm));
+                    return this.iEnumerable.Select(elm => new Collection(this.authTkns,elm));
             }
         }
     }
@@ -44,9 +47,10 @@ namespace MyFlickr.Rest
     public class Collection
     {
         private XElement data;
-
-        internal Collection(XElement element)
+        private AuthenticationTokens authTkns;
+        internal Collection(AuthenticationTokens authTkns,XElement element)
         {
+            this.authTkns = authTkns;
             this.data = element;
             this.ID = element.Attribute("id").Value;
             this.Title = element.Attribute("title").Value;
@@ -58,7 +62,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Flickr Collections List
         /// </summary>
-        public CollectionsList Collections { get { return new CollectionsList(this.data.Elements("collection")); } }
+        public CollectionsList Collections { get { return new CollectionsList(this.authTkns,this.data.Elements("collection")); } }
 
         /// <summary>
         /// PhotoSets Objects
@@ -67,7 +71,7 @@ namespace MyFlickr.Rest
         {
             get
             {
-                return this.data.Elements("set").Select(set => new PhotosSetBasic(set));
+                return this.data.Elements("set").Select(set => new PhotosSetBasic(this.authTkns,set));
             }
         }
 
