@@ -444,5 +444,111 @@ namespace MyFlickr.Rest
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
+
+        /// <summary>
+        /// Add a person to a photo. Coordinates and sizes of boxes are optional; they are measured in pixels, based on the 500px image size shown on individual photo pages.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="personID">The NSID of the user to add to the photo.</param>
+        /// <param name="x">The left-most pixel co-ordinate of the box around the person.</param>
+        /// <param name="y">The top-most pixel co-ordinate of the box around the person.</param>
+        /// <param name="height">The height (in pixels) of the box around the person.</param>
+        /// <param name="width">The width (in pixels) of the box around the person.</param>
+        /// <returns>NoReply Represents Void</returns>
+        public static NoReply AddPerson(this Photo photo, string personID, Nullable<int> x = null, Nullable<int> y = null, Nullable<int> height = null, Nullable<int> width = null)
+        {
+            FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
+
+            Action<object, EventArgs<NoReply>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.AddPersonCompleted += new EventHandler<EventArgs<NoReply>>(handler);
+            FSP.Token = photo.AddPersonAync(personID,x,y,height,width);
+            FSP.WaitForAsynchronousCall();
+            photo.AddPersonCompleted -= new EventHandler<EventArgs<NoReply>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Remove a person from a photo.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="personID">The NSID of the person to remove from the photo.</param>
+        /// <returns>NoReply Represents Void</returns>
+        public static NoReply RemovePerson(this Photo photo, string personID)
+        {
+            FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
+
+            Action<object, EventArgs<NoReply>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.RemovePersonCompleted += new EventHandler<EventArgs<NoReply>>(handler);
+            FSP.Token = photo.RemovePersonAsync(personID);
+            FSP.WaitForAsynchronousCall();
+            photo.RemovePersonCompleted -= new EventHandler<EventArgs<NoReply>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Remove the bounding box from a person in a photo.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="personID">The NSID of the person whose bounding box you want to remove.</param>
+        /// <returns>NoReply Represents Void</returns>
+        public static NoReply RemovePersonCoords(this Photo photo, string personID)
+        {
+            FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
+
+            Action<object, EventArgs<NoReply>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.RemovePersonCoordsCompleted += new EventHandler<EventArgs<NoReply>>(handler);
+            FSP.Token = photo.RemovePersonCoordsAsync(personID);
+            FSP.WaitForAsynchronousCall();
+            photo.RemovePersonCoordsCompleted -= new EventHandler<EventArgs<NoReply>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Edit the bounding box of an existing person on a photo.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="personID">The NSID of the person to edit in a photo.</param>
+        /// <param name="x">The left-most pixel co-ordinate of the box around the person.</param>
+        /// <param name="y">The top-most pixel co-ordinate of the box around the person.</param>
+        /// <param name="height">The width (in pixels) of the box around the person.</param>
+        /// <param name="width">The width (in pixels) of the box around the person.</param>
+        /// <returns>NoReply Represents Void</returns>
+        public static NoReply EditPersonCoords(this Photo photo, string personID, int x, int y, int height, int width)
+        {
+            FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
+
+            Action<object, EventArgs<NoReply>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.EditPersonCoordsCompleted += new EventHandler<EventArgs<NoReply>>(handler);
+            FSP.Token = photo.EditPersonCoordsAsync(personID,x,y,height,width);
+            FSP.WaitForAsynchronousCall();
+            photo.EditPersonCoordsCompleted -= new EventHandler<EventArgs<NoReply>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Get a list of people in a given photo.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <returns>Enumerable of PersonInPhoto Objects</returns>
+        public static IEnumerable<PersonInPhoto> GetPersonsList(this Photo photo)
+        {
+            FlickrSynchronousPrmitive<IEnumerable<PersonInPhoto>> FSP = new FlickrSynchronousPrmitive<IEnumerable<PersonInPhoto>>();
+
+            Action<object, EventArgs<IEnumerable<PersonInPhoto>>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.GetPersonsListCompleted += new EventHandler<EventArgs<IEnumerable<PersonInPhoto>>>(handler);
+            FSP.Token = photo.GetPersonsListAsync();
+            FSP.WaitForAsynchronousCall();
+            photo.GetPersonsListCompleted -= new EventHandler<EventArgs<IEnumerable<PersonInPhoto>>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow(); 
+
+        }
     }
 }

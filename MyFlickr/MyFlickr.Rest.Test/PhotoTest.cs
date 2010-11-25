@@ -256,5 +256,27 @@ namespace MyFlickr.Rest.Test
             photo.EditNote(id, 11, 11, 30, 60, "Test Edited !");
             photo.DeleteNote(id);
         }
+
+        [TestMethod]
+        public void PersonOperationTest()
+        {
+            var afriend = "46257837@N03";
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var photo = user.GetPublicPhotos().Photos.First();
+            photo.AddPerson(afriend, 10, 10, 10, 10);
+            photo.RemovePersonCoords(afriend);
+            photo.RemovePerson(afriend);
+            photo.AddPerson(afriend);
+            photo.EditPersonCoords(afriend, 20, 20, 50, 50);
+            photo.RemovePerson(afriend);
+        }
+
+        [TestMethod]
+        public void GetPersonsListTest() 
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var photo = user.GetPublicPhotos().Photos.First();
+            var list = photo.GetPersonsList();
+        }
     }
 }
