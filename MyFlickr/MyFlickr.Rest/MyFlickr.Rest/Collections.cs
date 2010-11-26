@@ -67,11 +67,11 @@ namespace MyFlickr.Rest
         /// <summary>
         /// PhotoSets Objects
         /// </summary>
-        public IEnumerable<PhotosSetBasic> PhotosSets
+        public IEnumerable<PhotoSetBasic> PhotosSets
         {
             get
             {
-                return this.data.Elements("set").Select(set => new PhotosSetBasic(this.authTkns,set));
+                return this.data.Elements("set").Select(set => new PhotoSetBasic(this.authTkns,set));
             }
         }
 

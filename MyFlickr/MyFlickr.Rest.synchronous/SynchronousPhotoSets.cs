@@ -6,7 +6,7 @@ using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
-    public static class SynchronousPhotosSets
+    public static class SynchronousPhotoSets
     {
         /// <summary>
         /// Returns the comments for a photoset.
@@ -14,7 +14,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="photoset"></param>
         /// <returns>Enumerable of comments</returns>
-        public static IEnumerable<Comment> GetCommentsList(this PhotosSetBasic photoset)
+        public static IEnumerable<Comment> GetCommentsList(this PhotoSetBasic photoset)
         {
             FlickrSynchronousPrmitive<IEnumerable<Comment>> FSP = new FlickrSynchronousPrmitive<IEnumerable<Comment>>();
 
@@ -34,7 +34,7 @@ namespace MyFlickr.Rest
         /// <param name="photoset"></param>
         /// <param name="text">Text of the comment.</param>
         /// <returns>the ID of the Added Comment</returns>
-        public static string AddComment(this PhotosSetBasic photoset,string text)
+        public static string AddComment(this PhotoSetBasic photoset,string text)
         {
             FlickrSynchronousPrmitive<string> FSP = new FlickrSynchronousPrmitive<string>();
 
@@ -54,7 +54,7 @@ namespace MyFlickr.Rest
         /// <param name="photoset"></param>
         /// <param name="commentID">The id of the comment to delete from a photoset.</param>
         /// <returns>NoReply Represents Void</returns>
-        public static NoReply DeleteComment(this PhotosSetBasic photoset, string commentID)
+        public static NoReply DeleteComment(this PhotoSetBasic photoset, string commentID)
         {
             FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
 
@@ -75,7 +75,7 @@ namespace MyFlickr.Rest
         /// <param name="commentID">The id of the comment to edit.</param>
         /// <param name="text">Update the comment to this text.</param>
         /// <returns>NoReply Represents Void</returns>
-        public static NoReply EditComment(this PhotosSetBasic photoset, string commentID, string text)
+        public static NoReply EditComment(this PhotoSetBasic photoset, string commentID, string text)
         {
             FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
 

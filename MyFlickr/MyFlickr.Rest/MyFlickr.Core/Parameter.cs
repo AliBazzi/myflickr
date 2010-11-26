@@ -2,7 +2,7 @@
 
 namespace MyFlickr.Core
 {
-    public class Parameter
+    internal class Parameter
     {
         public string Name { get; private set; }
 

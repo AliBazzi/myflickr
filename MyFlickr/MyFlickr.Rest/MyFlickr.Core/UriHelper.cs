@@ -5,7 +5,7 @@ using MD5;
 
 namespace MyFlickr.Core
 {
-    public static class UriHelper
+    internal static class UriHelper
     {
         private static readonly string BaseServiceUrl = "http://api.flickr.com/services/rest/";
         private static readonly string AuthServiceUrl = "http://api.flickr.com/services/auth/";
