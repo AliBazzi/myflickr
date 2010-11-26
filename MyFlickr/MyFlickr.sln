@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFlickr.Rest", "MyFlickr.R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFlickr.Rest.Test", "MyFlickr.Rest.Test\MyFlickr.Rest.Test.csproj", "{9114B8DC-5723-45CA-9F8B-AD5957CFAF93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFlickr.RestSynchronousExtensions", "MyFlickr.Rest.synchronous\MyFlickr.RestSynchronousExtensions.csproj", "{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFlickr.Rest.SynchronousExtensions", "MyFlickr.Rest.synchronous\MyFlickr.Rest.SynchronousExtensions.csproj", "{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -24,7 +24,7 @@ Global
 		SccProjectUniqueName3 = MyFlickr.Rest.Test\\MyFlickr.Rest.Test.csproj
 		SccProjectName3 = MyFlickr.Rest.Test
 		SccLocalPath3 = MyFlickr.Rest.Test
-		SccProjectUniqueName4 = MyFlickr.Rest.synchronous\\MyFlickr.Rest.synchronous.csproj
+		SccProjectUniqueName4 = MyFlickr.Rest.synchronous\\MyFlickr.Rest.SynchronousExtensions.csproj
 		SccProjectName4 = MyFlickr.Rest.synchronous
 		SccLocalPath4 = MyFlickr.Rest.synchronous
 	EndGlobalSection
