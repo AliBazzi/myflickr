@@ -51,9 +51,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MyFlickr.Rest.synchronous\MyFlickr.RestSynchronousExtensions.csproj">
+    <ProjectReference Include="..\MyFlickr.Rest.synchronous\MyFlickr.Rest.SynchronousExtensions.csproj">
       <Project>{35D2A0D1-2173-4105-BA44-8D7ED4F887D0}</Project>
-      <Name>MyFlickr.RestSynchronousExtensions</Name>
+      <Name>MyFlickr.Rest.SynchronousExtensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\MyFlickr.Rest\MyFlickr.Rest.csproj">
       <Project>{E0BF18A4-70D9-4EC9-A4D2-B7D54EBDADC7}</Project>
