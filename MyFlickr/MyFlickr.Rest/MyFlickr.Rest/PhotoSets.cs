@@ -9,7 +9,7 @@ namespace MyFlickr.Rest
     /// <summary>
     /// represents a collection of photosets
     /// </summary>
-    public class PhotoSetsCollection : IEnumerable<PhotosSet>
+    public class PhotoSetsCollection : IEnumerable<PhotoSet>
     {
         private XElement data;
         private readonly AuthenticationTokens authTkns;
@@ -29,15 +29,15 @@ namespace MyFlickr.Rest
         /// <summary>
         /// the Photosets Objects
         /// </summary>
-        public IEnumerable<PhotosSet> PhotoSets
+        public IEnumerable<PhotoSet> PhotoSets
         {
             get
             {
-                return data.Elements("photoset").Select(elm => new PhotosSet(authTkns,elm));
+                return data.Elements("photoset").Select(elm => new PhotoSet(authTkns,elm));
             }
         }
 
-        public IEnumerator<PhotosSet> GetEnumerator()
+        public IEnumerator<PhotoSet> GetEnumerator()
         {
             foreach (var photoset in this.PhotoSets)
                 yield return photoset;
@@ -52,11 +52,11 @@ namespace MyFlickr.Rest
     /// <summary>
     /// represents photosSet Basic Information
     /// </summary>
-    public class PhotosSetBasic
+    public class PhotoSetBasic
     {
         private readonly AuthenticationTokens authTkns;
 
-        internal PhotosSetBasic(AuthenticationTokens authTkns,XElement elm)
+        internal PhotoSetBasic(AuthenticationTokens authTkns,XElement elm)
         {
             this.authTkns = authTkns;
             this.ID = Int64.Parse(elm.Attribute("id").Value);
@@ -209,9 +209,9 @@ namespace MyFlickr.Rest
     /// <summary>
     /// represents a user PhotosSet
     /// </summary>
-    public class PhotosSet : PhotosSetBasic
+    public class PhotoSet : PhotoSetBasic
     {
-        public PhotosSet(AuthenticationTokens authTkns,XElement elm)
+        public PhotoSet(AuthenticationTokens authTkns,XElement elm)
             :base(authTkns,elm)
         {
             this.Primary = Int64.Parse(elm.Attribute("primary").Value);

@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\MyFlickr.Rest.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -52,7 +53,7 @@
     <Compile Include="MyFlickr.Rest\Galleries.cs" />
     <Compile Include="MyFlickr.Rest\Groups.cs" />
     <Compile Include="MyFlickr.Rest\Photos.cs" />
-    <Compile Include="MyFlickr.Rest\PhotosSets.cs" />
+    <Compile Include="MyFlickr.Rest\PhotoSets.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="MyFlickr.Rest\AccessPermission.cs" />
     <Compile Include="MyFlickr.Rest\Authenticator.cs" />

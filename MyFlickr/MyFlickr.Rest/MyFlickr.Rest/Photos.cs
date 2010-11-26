@@ -1942,7 +1942,7 @@ namespace MyFlickr.Rest
         internal PhotoContexts(AuthenticationTokens authTkns,XElement element)
         {
             this.Pools = element.Elements("pool").Select(pool => new Pool(pool));
-            this.Sets = element.Elements("set").Select(set => new PhotosSetBasic(authTkns,set));
+            this.Sets = element.Elements("set").Select(set => new PhotoSetBasic(authTkns,set));
         }
 
         /// <summary>
@@ -1953,7 +1953,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Enumerable of Sets
         /// </summary>
-        public IEnumerable<PhotosSetBasic> Sets { get; private set; }
+        public IEnumerable<PhotoSetBasic> Sets { get; private set; }
     }
 
     /// <summary>

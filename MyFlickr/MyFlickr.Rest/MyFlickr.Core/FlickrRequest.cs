@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace MyFlickr.Core
 {
-    public static class FlickrCore
+    internal static class FlickrCore
     {
         public static Uri IntiateGetRequest(Action<XElement> downloadCallBack,Action<Exception> downloadErrorCallBack,string sharedSecret,params Parameter[] parameters)
         {

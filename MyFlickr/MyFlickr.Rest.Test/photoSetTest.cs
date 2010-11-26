@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MyFlickr.Rest.Test
 {
     [TestClass]
-    public class photosSetTest
+    public class photoSetTest
     {
         private Data data;
 
