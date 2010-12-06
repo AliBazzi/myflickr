@@ -81,7 +81,7 @@ namespace MyFlickr.Rest
             this.IsFriend = element.Attribute("isfriend").Value.ToBoolean();
             this.IsFamily = element.Attribute("isfamily").Value.ToBoolean();
             this.IsPublic = element.Attribute("ispublic").Value.ToBoolean();
-            this.ID = Int64.Parse(element.Attribute("id").Value);
+            this.ID = element.Attribute("id").Value;
             this.Title = element.Attribute("title").Value;
             this.OwnerID = element.Attribute("owner").Value;
             this.Secret = element.Attribute("secret").Value;
@@ -107,7 +107,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// The ID of the photo
         /// </summary>
-        public Int64 ID { get; private set; }
+        public string ID { get; private set; }
 
         /// <summary>
         /// the title of the photo
@@ -1569,7 +1569,7 @@ namespace MyFlickr.Rest
         /// </summary>
         public string Content { get; private set; }
     }
-
+    
     /// <summary>
     /// Represents a Tag on a Photo
     /// </summary>
@@ -1687,7 +1687,7 @@ namespace MyFlickr.Rest
         /// </summary>
         public string CountryWoeID { get { return this.data.Element("country").Element("woeid").Value;} }
     }
-
+    
     /// <summary>
     /// Represents a Photo URL
     /// </summary>
@@ -1911,7 +1911,7 @@ namespace MyFlickr.Rest
         /// </summary>
         public string URL { get; private set; }
     }
-
+    
     /// <summary>
     /// represents a group Pool
     /// </summary>
@@ -2001,7 +2001,7 @@ namespace MyFlickr.Rest
         /// </summary>
         public Uri Url { get; private set; }
     }
-
+    
     /// <summary>
     /// represents information of a person in a photo
     /// </summary>
