@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
   <Class Name="MyFlickr.Rest.AuthenticationTokens">
-    <Position X="9.75" Y="2.25" Width="2.75" />
+    <Position X="6" Y="2.25" Width="2.75" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -11,7 +11,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Rest.GetFrobResult">
-    <Position X="10.25" Y="5" Width="1.5" />
+    <Position X="6" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -21,7 +21,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Rest.Authenticator">
-    <Position X="0.5" Y="0.5" Width="5.25" />
+    <Position X="0.5" Y="0.5" Width="5" />
     <TypeIdentifier>
       <HashCode>oAAAAhAAQAAAAAAEAEABgAAgAQAAAAAAICAAAAAAAAg=</HashCode>
       <FileName>MyFlickr.Rest\Authenticator.cs</FileName>
@@ -29,27 +29,30 @@
   </Class>
   <Class Name="MyFlickr.Rest.User">
     <Position X="0.5" Y="5" Width="5.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>CQpsGgQBIBAQUKgQSADAlAgxdmwEIDQDAcEEgO4JCIA=</HashCode>
       <FileName>MyFlickr.Rest\Users.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Rest.AccessPermissionExtensions">
-    <Position X="13" Y="2.75" Width="2.25" />
+    <Position X="29.5" Y="5.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\AccessPermission.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Rest.AuthenticationTokensExtensions">
-    <Position X="15.5" Y="2.75" Width="2.5" />
+    <Position X="9" Y="2.75" Width="2.5" />
     <TypeIdentifier>
       <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\AuthenticationTokens.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Rest.PhotosCollection" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="13" Y="5.25" Width="1.5" />
+    <Position X="14" Y="9" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACAAAAAAAAAQADAgAAAACAAAAAAAQCAAAAAQAAAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
@@ -57,7 +60,7 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="MyFlickr.Rest.Photo">
-    <Position X="13" Y="13" Width="5.5" />
+    <Position X="0.5" Y="22.5" Width="5.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -67,9 +70,10 @@
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Rest.UserInfo">
-    <Position X="15.5" Y="4.75" Width="2.5" />
+    <Position X="6.5" Y="10.75" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAIAAYAIAAAgoQAAgKICAAiCAAAAAAAUAQCQAQQCQAA=</HashCode>
@@ -77,7 +81,10 @@
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Rest.PhotoSetsCollection" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="13" Y="6.75" Width="1.5" />
+    <Position X="13.75" Y="10.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>ACAAAAAAAAAAQBAAAAAAAEAAAAAAACAAAAAQAAAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\PhotoSets.cs</FileName>
@@ -85,17 +92,23 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="MyFlickr.Rest.PhotoSet">
-    <Position X="11" Y="13" Width="1.75" />
-    <Compartments>
-      <Compartment Name="Methods" Collapsed="true" />
-    </Compartments>
+    <Position X="2.25" Y="50.25" Width="1.5" />
+    <InheritanceLine Type="MyFlickr.Rest.PhotoSetBasic" FixedFromPoint="true">
+      <Path>
+        <Point X="3" Y="49.766" />
+        <Point X="3" Y="50.25" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAIAAAAAAAAAQAAAAAAAAAAAAAIgCCAAA=</HashCode>
       <FileName>MyFlickr.Rest\PhotoSets.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Rest.GroupCollection" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="13" Y="6" Width="1.5" />
+    <Position X="14" Y="10" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>ACAAAEAAAAAAABAAAAAAAAAAAAAAAAAAQAAQAAAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\Groups.cs</FileName>
@@ -103,7 +116,7 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="MyFlickr.Rest.Group">
-    <Position X="9" Y="13" Width="1.5" />
+    <Position X="14.25" Y="15" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -113,28 +126,44 @@
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Core.EventArgs&lt;T&gt;">
-    <Position X="18.25" Y="2.25" Width="2" />
+    <Position X="15.25" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAIAAAARAAA=</HashCode>
       <FileName>MyFlickr.Rest\EventArgs.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Rest.CollectionsList" Collapsed="true">
-    <Position X="25" Y="2" Width="1.5" />
+    <Position X="14" Y="8.25" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAACAAAAAQAIAAAAA=</HashCode>
+      <HashCode>ACAAAAAAAAAAABAAABAAAAAAAAAAACAAAAAQAIAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\Collections.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="MyFlickr.Rest.Collection" Collapsed="true">
-    <Position X="28.5" Y="1" Width="1.5" />
+  <Class Name="MyFlickr.Rest.Collection">
+    <Position X="16.5" Y="8" Width="3" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>AQAAAAAAAAAggEAAAAAAAAAAAAAAACAQAIAQAIAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\Collections.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MyFlickr.Rest.PhotosOfUserCollection" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="25" Y="3" Width="1.5" />
+  <Class Name="MyFlickr.Rest.PhotosOfUserCollection" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="17" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>ACAAAAAAAAAQADAgAAAACAAQAAAAQCAAAAAQAAAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
@@ -142,7 +171,7 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="MyFlickr.Rest.Pool">
-    <Position X="11" Y="11" Width="1.75" />
+    <Position X="14.25" Y="13.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -151,31 +180,332 @@
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="MyFlickr.Rest.BlogsCollection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAABAAAAAAAABAAAAAAAAAAAEAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Blogs.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyFlickr.Rest.Blog">
+    <Position X="22.25" Y="8" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAQAACAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>MyFlickr.Rest\Blogs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.ContactsList" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="5" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BCAAAAAAAAAQABAgAAAACAAAAAAAQAAAAAAQAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Contacts.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyFlickr.Rest.Contact">
+    <Position X="6.75" Y="7.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAQAAAKAAAAiCAAAAAAAAAQAAAAAAQAA=</HashCode>
+      <FileName>MyFlickr.Rest\Contacts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.GalleriesCollection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="12.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAQABAgAAAACAAAAAgAQAAAAAAQAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Galleries.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyFlickr.Rest.Gallery">
+    <Position X="20" Y="8" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgqEAAAAAAAAQAgAAAAAAACAAEIgCCAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Galleries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.Exif">
+    <Position X="6.75" Y="22.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEABgCEAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.Person">
+    <Position X="9" Y="30.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAIAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.PhotoInfo">
+    <Position X="6.25" Y="27.75" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AgAgGkQIAAAggMIABAIKQAQyACAgAEABQBgQIgQBCBQ=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.Owner">
+    <Position X="6.5" Y="37" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAACIAAAAAAAAAAAAAAQAQAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.Note">
+    <Position X="8.75" Y="22.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQBgAAgAAACAAAAEAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.Tag">
+    <Position X="9" Y="25.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAgAAiAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.Location">
+    <Position X="9" Y="32.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAkACAAAAgAAYAAAAAAJAABAAAAAUAAACAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.URL">
+    <Position X="11.5" Y="32" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAQAgAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.Permissions">
+    <Position X="11.25" Y="29.5" Width="3.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIABAAAAAAAAAAAAACACAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.PhotoContext">
+    <Position X="11" Y="24.25" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.NeighborPhoto">
+    <Position X="11.5" Y="26" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CAAAAgAAAAAAgEAAAAAAAAQAACAAAAAAAAAAIgAACAQ=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.PhotoContexts">
+    <Position X="11" Y="22.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.Size">
+    <Position X="9" Y="28" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAFgAAAAAAAAAAAEAAAAAAAAAACAAAAAAAAAQ=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.PersonInPhoto">
+    <Position X="9" Y="36.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABAAAAAABAAAgQAAACAAAESAAAAAAAAAAQAAAAAAYAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.Comment">
+    <Position X="6.5" Y="25" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAgAAACAAAAAAAABAAAAAAAAAECAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.PhotoSetBasic">
+    <Position X="0.5" Y="45" Width="5.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAEABAAAAgggEAIAQAAAAAAABAAgSQAAAAAEACABAA=</HashCode>
+      <FileName>MyFlickr.Rest\PhotoSets.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.SortTypeExtensions">
+    <Position X="32.25" Y="6.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Users.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyFlickr.Rest.PhotosCount">
+    <Position X="6.75" Y="19.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAABAABAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Users.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Enum Name="MyFlickr.Rest.AccessPermission">
-    <Position X="11" Y="0.5" Width="1.5" />
+    <Position X="30.25" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAEAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>MyFlickr.Rest\AccessPermission.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="MyFlickr.Rest.SafetyLevel">
-    <Position X="17.75" Y="0.5" Width="1.5" />
+    <Position X="34.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="MyFlickr.Rest.ContentType">
-    <Position X="13" Y="0.5" Width="2" />
+    <Position X="32" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>BAAQAAAEAAAAACAAAAAAgAAAAAAAACCAAAAAAAAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\Users.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="MyFlickr.Rest.PrivacyFilter">
-    <Position X="15.25" Y="0.5" Width="2.25" />
+    <Position X="27.75" Y="2.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAIAAggAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Users.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyFlickr.Rest.ContactFilter">
+    <Position X="30.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAgAAAAAAAAACAAAAAAAAAAAABAA=</HashCode>
+      <FileName>MyFlickr.Rest\Contacts.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyFlickr.Rest.CommentPermission">
+    <Position X="30" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAQAgAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyFlickr.Rest.AddMetadataPermission">
+    <Position X="27.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAQAgAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyFlickr.Rest.Degrees">
+    <Position X="32" Y="2.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAgAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Photos.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyFlickr.Rest.MediaType">
+    <Position X="34.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAIAAAAAAAAg=</HashCode>
+      <FileName>MyFlickr.Rest\Users.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyFlickr.Rest.SortType">
+    <Position X="32.25" Y="4.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAgAAAAAAAAAAAACEAEAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Users.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyFlickr.Rest.TagMode">
+    <Position X="34.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Users.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyFlickr.Rest.GeoContext">
+    <Position X="34.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>MyFlickr.Rest\Users.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyFlickr.Rest.RadiusUnits">
+    <Position X="34.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\Users.cs</FileName>
     </TypeIdentifier>
   </Enum>

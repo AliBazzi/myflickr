@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MyFlickr.Rest
+﻿namespace System
 {
     public static class DateTimeExtensions
     {

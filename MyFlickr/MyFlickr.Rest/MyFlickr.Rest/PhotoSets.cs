@@ -59,7 +59,7 @@ namespace MyFlickr.Rest
         internal PhotoSetBasic(AuthenticationTokens authTkns,XElement elm)
         {
             this.authTkns = authTkns;
-            this.ID = Int64.Parse(elm.Attribute("id").Value);
+            this.ID = elm.Attribute("id").Value;
             this.Title = elm.Element("title") != null ? elm.Element("title").Value : elm.Attribute("title").Value ;
             this.Description = elm.Attribute("description") != null ?  elm.Attribute("description").Value : null;
         }
@@ -67,7 +67,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// the ID that identifies the photoset
         /// </summary>
-        public Int64 ID { get; private set; }
+        public string ID { get; private set; }
 
         /// <summary>
         /// the title of the photoset

@@ -8,7 +8,7 @@ namespace MyFlickr.Rest
     /// <summary>
     /// represents a collection of Flickr Collections
     /// </summary>
-    public class CollectionsList
+    public class CollectionsList : IEnumerable<Collection>
     {
         private XElement data;
         private IEnumerable<XElement> iEnumerable;
@@ -20,7 +20,7 @@ namespace MyFlickr.Rest
             this.data = element;
         }
 
-        public CollectionsList(AuthenticationTokens authTkns,IEnumerable<XElement> iEnumerable)
+        internal CollectionsList(AuthenticationTokens authTkns,IEnumerable<XElement> iEnumerable)
         {
             this.authTkns = authTkns;
             this.iEnumerable = iEnumerable;
@@ -38,6 +38,17 @@ namespace MyFlickr.Rest
                 else
                     return this.iEnumerable.Select(elm => new Collection(this.authTkns,elm));
             }
+        }
+
+        public IEnumerator<Collection> GetEnumerator()
+        {
+            foreach (var item in this.Collections)
+                yield return item;
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 
