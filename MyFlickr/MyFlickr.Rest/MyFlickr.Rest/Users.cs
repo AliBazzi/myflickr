@@ -14,43 +14,40 @@ namespace MyFlickr.Rest
         private readonly AuthenticationTokens authTkns;
 
         /// <summary>
-        /// Flickr API application key
+        /// the authentication tokens that are used by this user instance
         /// </summary>
-        public string ApiKey { get { return this.authTkns.ApiKey; } }
-
-        /// <summary>
-        /// A shared secret for the api key that is issued by flickr , Could Be Null
-        /// </summary>
-        public string SharedSecret { get { return this.authTkns.SharedSecret; } }
+        public AuthenticationTokens AuthenticationTokens { get { return this.authTkns; } }
 
         /// <summary>
         /// The User ID
         /// </summary>
-        public string UserID { get { return this.authTkns.UserID; } }
+        public string UserID { get; private set; }
 
         /// <summary>
-        /// The Access Permission
+        /// Creates an object that represents a Flickr User
         /// </summary>
-        public AccessPermission AccessPermission { get { return this.authTkns.AccessPermission ; } }
-
-        /// <summary>
-        /// the Full Name of the User , Could Be Null
-        /// </summary>
-        public string FullName { get { return this.authTkns.FullName ; } }
-
-        /// <summary>
-        /// the UserName , Could be Null
-        /// </summary>
-        public string UserName { get { return this.authTkns.UserName ; } }
-
-        /// <summary>
-        /// the Authentication Token , Could Be Null
-        /// </summary>
-        public string Token { get { return this.authTkns.Token ; } }
-
-        internal User(AuthenticationTokens tokens)
+        /// <param name="tokens">the authentication tokens to be used</param>
+        public User(AuthenticationTokens tokens)
+            : this(tokens, tokens.UserID) 
         {
+            if (string.IsNullOrEmpty(tokens.UserID))
+                throw new InvalidOperationException("can't create an instance of user from an authentication tokens that don't have UserID");
+        }
+
+        /// <summary>
+        /// Creates an object that represents a Flickr User
+        /// </summary>
+        /// <param name="tokens">the authentication tokens to be used</param>
+        /// <param name="userID">the user id that you want to create instance for</param>
+        public User(AuthenticationTokens tokens, string userID)
+        {
+            if (tokens == null)
+                throw new ArgumentNullException("tokens");
+            if (string.IsNullOrEmpty(userID))
+                throw new ArgumentException("userID");
+
             this.authTkns = tokens;
+            this.UserID = userID;
         }
 
         /// <summary>
@@ -59,12 +56,10 @@ namespace MyFlickr.Rest
         /// <param name="apiKey">Flickr API application key</param>
         /// <param name="userID">The User ID</param>
         public User(string apiKey, string userID)
+            :this(new AuthenticationTokens(apiKey, null, null, Rest.AccessPermission.None, null, null, null),userID)
         {
             if (string.IsNullOrEmpty(apiKey))
                 throw new ArgumentException("apiKey");
-            if (string.IsNullOrEmpty(userID))
-                throw new ArgumentException("userID");
-            this.authTkns = new AuthenticationTokens(apiKey, null, null, Rest.AccessPermission.None, userID, null, null);
         }
 
         /// <summary>
@@ -83,8 +78,8 @@ namespace MyFlickr.Rest
             FlickrCore.IntiateGetRequest(
               element => this.InvokeGetContactsListCompletedEvent(new EventArgs<ContactsList>(token,new ContactsList(element.Element("contacts")))) 
             , e => this.InvokeGetContactsListCompletedEvent(new EventArgs<ContactsList>(token, e))
-            , this.SharedSecret,
-            new Parameter("method", "flickr.contacts.getList"), new Parameter("api_key", this.ApiKey), new Parameter("auth_token", this.authTkns.Token)
+            , this.authTkns.SharedSecret,
+            new Parameter("method", "flickr.contacts.getList"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token)
             ,new Parameter("filter", contactFilter),new Parameter("page", page),new Parameter("per_page",perPage));
 
             return token;
@@ -108,8 +103,8 @@ namespace MyFlickr.Rest
             FlickrCore.IntiateGetRequest(
               element => this.InvokeGetPublicContactsListCompletedEvent(new EventArgs<ContactsList>(token, new ContactsList(element.Element("contacts"))))
             , e => this.InvokeGetPublicContactsListCompletedEvent(new EventArgs<ContactsList>(token, e))
-            , this.SharedSecret, new Parameter("method", "flickr.contacts.getPublicList"),new Parameter("user_id",user.UserID),
-            new Parameter("api_key", this.ApiKey) , new Parameter("page", page), new Parameter("per_page", perPage));
+            , this.authTkns.SharedSecret, new Parameter("method", "flickr.contacts.getPublicList"), new Parameter("user_id", user.UserID),
+            new Parameter("api_key", this.authTkns.ApiKey), new Parameter("page", page), new Parameter("per_page", perPage));
 
             return token;
         }
@@ -176,8 +171,8 @@ namespace MyFlickr.Rest
 
             FlickrCore.IntiateGetRequest(
                   elm => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns,elm.Element("photos")))),
-                  e => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.SharedSecret,
-                  new Parameter("method", "flickr.people.getPhotos"), new Parameter("api_key", this.ApiKey), new Parameter("auth_token", this.Token)
+                  e => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authTkns.SharedSecret,
+                  new Parameter("method", "flickr.people.getPhotos"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token)
                   , new Parameter("user_id", user.UserID), new Parameter("safe_search", safeSearch.HasValue ? (object)(int)safeSearch : null),
                   new Parameter("min_upload_date", minUploadDate),
                   new Parameter("max_upload_date", maxUploadDate), new Parameter("min_taken_date", minTakenDate), new Parameter("max_taken_date", maxTakenDate),
@@ -205,7 +200,7 @@ namespace MyFlickr.Rest
             FlickrCore.IntiateGetRequest(
                   elm => this.InvokeGetPublicPhotosCompletedEvent(new EventArgs<PhotosCollection>(token,new PhotosCollection(this.authTkns,elm.Element("photos"))))
                 , e => this.InvokeGetPublicPhotosCompletedEvent(new EventArgs<PhotosCollection>(token,e)), null
-                , new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.people.getPublicPhotos"), new Parameter("user_id", user.UserID)
+                , new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.people.getPublicPhotos"), new Parameter("user_id", user.UserID)
                 , new Parameter("safe_search", safeSearch.HasValue ? (object)(int)safeSearch: null) , new Parameter("extras", extras),
                   new Parameter("per_page", perPage), new Parameter("page", page));
 
@@ -237,22 +232,12 @@ namespace MyFlickr.Rest
         public Token GetPhotosOfUserAsync(string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             Token token = Core.Token.GenerateToken();
-            if (this.AccessPermission > AccessPermission.None)
-            {
-                FlickrCore.IntiateGetRequest(
-                    elm => this.InvokeGetUserPhotosCompletedEvent(new EventArgs<PhotosOfUserCollection>(token, new PhotosOfUserCollection(this.authTkns,elm.Element("photos"))))
-                    , e => this.InvokeGetUserPhotosCompletedEvent(new EventArgs<PhotosOfUserCollection>(token, e)), this.SharedSecret
-                    , new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.people.getPhotosOf"), new Parameter("user_id", this.UserID)
-                    , new Parameter("extras", extras), new Parameter("per_page", perPage), new Parameter("page", page),new Parameter("auth_token",this.Token));
-            }
-            else
-            {
-                FlickrCore.IntiateGetRequest(
-                    elm => this.InvokeGetUserPhotosCompletedEvent(new EventArgs<PhotosOfUserCollection>(token, new PhotosOfUserCollection(this.authTkns,elm.Element("photos"))))
-                    , e => this.InvokeGetUserPhotosCompletedEvent(new EventArgs<PhotosOfUserCollection>(token, e)), null
-                    , new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.people.getPhotosOf"), new Parameter("user_id", this.UserID)
-                    , new Parameter("extras", extras), new Parameter("per_page", perPage), new Parameter("page", page));
-            }
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetUserPhotosCompletedEvent(new EventArgs<PhotosOfUserCollection>(token, new PhotosOfUserCollection(this.authTkns,elm.Element("photos"))))
+                , e => this.InvokeGetUserPhotosCompletedEvent(new EventArgs<PhotosOfUserCollection>(token, e)), this.authTkns.SharedSecret
+                , new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.people.getPhotosOf"), new Parameter("user_id", this.UserID)
+                , new Parameter("extras", extras), new Parameter("per_page", perPage), new Parameter("page", page), new Parameter("auth_token", this.authTkns.Token));
+            
             return token;
         }
 
@@ -263,22 +248,11 @@ namespace MyFlickr.Rest
         public Token GetInfoAsync()
         {
             Token token = Core.Token.GenerateToken();
-
-            if (this.AccessPermission > AccessPermission.None)
-            {
-                FlickrCore.IntiateGetRequest(
-                    elm => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token,new UserInfo(elm.Element("person"))))
-                    , e => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token,e)), this.SharedSecret
-                    , new Parameter("api_key", this.ApiKey),new Parameter("auth_token",this.Token)
-                    ,new Parameter("method", "flickr.people.getInfo"), new Parameter("user_id", this.UserID));
-            }
-            else
-            {
-                FlickrCore.IntiateGetRequest(
-                    elm => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, new UserInfo(elm.Element("person"))))
-                    , e => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, e)), null,
-                    new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.people.getInfo"), new Parameter("user_id", this.UserID));
-            }
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token,new UserInfo(elm.Element("person"))))
+                , e => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, e)), this.authTkns.SharedSecret
+                , new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token)
+                ,new Parameter("method", "flickr.people.getInfo"), new Parameter("user_id", this.UserID));
 
             return token;
         }
@@ -299,8 +273,8 @@ namespace MyFlickr.Rest
 
             FlickrCore.IntiateGetRequest(
                     elm => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, new UserInfo(elm.Element("person"))))
-                    , e => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, e)), this.SharedSecret
-                    , new Parameter("api_key", this.ApiKey), new Parameter("auth_token", this.Token)
+                    , e => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, e)), this.authTkns.SharedSecret
+                    , new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token)
                     , new Parameter("method", "flickr.people.getInfo"), new Parameter("user_id", user.UserID));
 
             return token;
@@ -318,7 +292,7 @@ namespace MyFlickr.Rest
             FlickrCore.IntiateGetRequest(
                   elm => this.InvokeGetPhotoSetsListCompletedEvent(new EventArgs<PhotoSetsCollection>(token,new PhotoSetsCollection(this.authTkns,elm.Element("photosets"))))
                 , e => this.InvokeGetPhotoSetsListCompletedEvent(new EventArgs<PhotoSetsCollection>(token,e))
-                , null, new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.photosets.getList"), new Parameter("user_id", this.UserID));
+                , null, new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.photosets.getList"), new Parameter("user_id", this.UserID));
 
             return token;
         }
@@ -337,7 +311,7 @@ namespace MyFlickr.Rest
             FlickrCore.IntiateGetRequest(
               elm => this.InvokeGetGalleriesListCompletedEvent(new EventArgs<GalleriesCollection>(token,new GalleriesCollection(elm.Element("galleries")))),
               e => this.InvokeGetGalleriesListCompletedEvent(new EventArgs<GalleriesCollection>(token,e)), null,
-              new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.galleries.getList"),
+              new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.galleries.getList"),
               new Parameter("user_id", this.UserID), new Parameter("per_page", perPage), new Parameter("page", page));
 
             return token;
@@ -355,7 +329,7 @@ namespace MyFlickr.Rest
             FlickrCore.IntiateGetRequest(
                 elm => this.InvokeGetPublicGroupsEvent(new EventArgs<GroupCollection>(token,new GroupCollection(elm.Element("groups")))), 
                 e => this.InvokeGetPublicGroupsEvent(new EventArgs<GroupCollection>(token,e)), null,
-                new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.people.getPublicGroups"), new Parameter("user_id", this.UserID));
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.people.getPublicGroups"), new Parameter("user_id", this.UserID));
 
             return token;
         }
@@ -374,9 +348,9 @@ namespace MyFlickr.Rest
 
             FlickrCore.IntiateGetRequest(
                  elm => this.InvokeGetBlogsListEvent(new EventArgs<BlogsCollection>(token,new BlogsCollection(elm.Element("blogs"))))
-               , e => this.InvokeGetBlogsListEvent(new EventArgs<BlogsCollection>(token,e)), this.SharedSecret
-               , new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.blogs.getList")
-               , new Parameter("auth_token", this.Token), new Parameter("service", serviceID));
+               , e => this.InvokeGetBlogsListEvent(new EventArgs<BlogsCollection>(token, e)), this.authTkns.SharedSecret
+               , new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.blogs.getList")
+               , new Parameter("auth_token", this.authTkns.Token), new Parameter("service", serviceID));
 
             return token;
         }
@@ -394,7 +368,7 @@ namespace MyFlickr.Rest
             FlickrCore.IntiateGetRequest(
                 elm => this.InvokeGetCollectionsTreeEvent(new EventArgs<CollectionsList>(token , new CollectionsList(this.authTkns,elm.Element("collections")))),
                 e => this.InvokeGetCollectionsTreeEvent(new EventArgs<CollectionsList>(token,e)), null,
-                new Parameter("api_key", this.ApiKey), new Parameter("method", "flickr.collections.getTree"), 
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.collections.getTree"), 
                 new Parameter("collection_id", collection != null ? collection.ID : null ), new Parameter("user_id", this.UserID));
 
             return token;
@@ -417,7 +391,7 @@ namespace MyFlickr.Rest
             FlickrCore.IntiateGetRequest(
                 elm => this.InvokeGetPublicFavoritesListCompletedEvent(new EventArgs<PhotosCollection>(token,new PhotosCollection(this.authTkns,elm.Element("photos")))), 
                 e => this.InvokeGetPublicFavoritesListCompletedEvent(new EventArgs<PhotosCollection>(token,e)), null,
-                new Parameter("method", "flickr.favorites.getPublicList"), new Parameter("api_key", this.ApiKey), new Parameter("min_fave_date", minFaveDate),
+                new Parameter("method", "flickr.favorites.getPublicList"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("min_fave_date", minFaveDate),
                 new Parameter("max_fave_date", maxFaveDate), new Parameter("per_page", perPage), new Parameter("page", page),new Parameter("user_id",this.UserID));
 
             return token;
@@ -442,10 +416,10 @@ namespace MyFlickr.Rest
 
             var uri = FlickrCore.IntiateGetRequest(
                 elm => this.InvokeGetFavoritesListCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns,elm.Element("photos")))),
-                e => this.InvokeGetFavoritesListCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.SharedSecret,
-                new Parameter("method", "flickr.favorites.getList"), new Parameter("api_key", this.ApiKey),new Parameter("user_id", this.UserID),
-                new Parameter("min_fave_date", minFaveDate),new Parameter("max_fave_date", maxFaveDate), new Parameter("per_page", perPage), 
-                new Parameter("page", page), new Parameter("auth_token",this.Token));
+                e => this.InvokeGetFavoritesListCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.favorites.getList"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("user_id", this.UserID),
+                new Parameter("min_fave_date", minFaveDate),new Parameter("max_fave_date", maxFaveDate), new Parameter("per_page", perPage),
+                new Parameter("page", page), new Parameter("auth_token", this.authTkns.Token));
 
             return token;
         }
@@ -489,8 +463,8 @@ namespace MyFlickr.Rest
 
             FlickrCore.IntiateGetRequest(
                 elm => this.InvokeGetPhotosNotInListCompletedEvent(new EventArgs<PhotosCollection>(token,new PhotosCollection(this.authTkns,elm.Element("photos")))) ,
-                e => this.InvokeGetPhotosNotInListCompletedEvent(new EventArgs<PhotosCollection>(token,e)), this.SharedSecret ,
-                new Parameter("method","flickr.photos.getNotInSet"), new Parameter("api_key",this.ApiKey), new Parameter("auth_token",this.Token) ,
+                e => this.InvokeGetPhotosNotInListCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.getNotInSet"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
                 new Parameter("max_upload_date",maxUploadDate), new Parameter("min_upload_date",minUploadDate), new Parameter("min_taken_date",minTakenDate) ,
                 new Parameter("max_taken_date",maxTakenDate), new Parameter("privacy_filter",privacyFilter.HasValue ? (object)(int)privacyFilter : null), 
                 new Parameter("media",mediaType), new Parameter("extras",extras), new Parameter("page",page), new Parameter("per_page",perPage));
@@ -522,8 +496,8 @@ namespace MyFlickr.Rest
 
             FlickrCore.IntiateGetRequest(
                 elm => this.InvokeGetUntaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns, elm.Element("photos")))),
-                e => this.InvokeGetUntaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.SharedSecret,
-                new Parameter("method", "flickr.photos.getUntagged"), new Parameter("api_key", this.ApiKey), new Parameter("auth_token", this.Token),
+                e => this.InvokeGetUntaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.getUntagged"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
                 new Parameter("max_upload_date", maxUploadDate), new Parameter("min_upload_date", minUploadDate), new Parameter("min_taken_date", minTakenDate),
                 new Parameter("max_taken_date", maxTakenDate), new Parameter("privacy_filter", privacyFilter.HasValue ? (object)(int)privacyFilter : null),
                 new Parameter("media", mediaType), new Parameter("extras", extras), new Parameter("page", page), new Parameter("per_page", perPage));
@@ -556,8 +530,8 @@ namespace MyFlickr.Rest
 
             FlickrCore.IntiateGetRequest(
                 elm => this.InvokeGetGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns, elm.Element("photos")))),
-                e => this.InvokeGetGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.SharedSecret,
-                new Parameter("method", "flickr.photos.getWithGeoData"), new Parameter("api_key", this.ApiKey), new Parameter("auth_token", this.Token),
+                e => this.InvokeGetGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.getWithGeoData"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
                 new Parameter("max_upload_date", maxUploadDate), new Parameter("min_upload_date", minUploadDate), new Parameter("min_taken_date", minTakenDate),
                 new Parameter("max_taken_date", maxTakenDate), new Parameter("privacy_filter", privacyFilter.HasValue ? (object)(int)privacyFilter : null),
                 new Parameter("sort",sortType.HasValue ? sortType.Value.GetString() : null),
@@ -591,8 +565,8 @@ namespace MyFlickr.Rest
 
             FlickrCore.IntiateGetRequest(
                 elm => this.InvokeGetUnGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns, elm.Element("photos")))),
-                e => this.InvokeGetUnGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.SharedSecret,
-                new Parameter("method", "flickr.photos.getWithoutGeoData"), new Parameter("api_key", this.ApiKey), new Parameter("auth_token", this.Token),
+                e => this.InvokeGetUnGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.getWithoutGeoData"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
                 new Parameter("max_upload_date", maxUploadDate), new Parameter("min_upload_date", minUploadDate), new Parameter("min_taken_date", minTakenDate),
                 new Parameter("max_taken_date", maxTakenDate), new Parameter("privacy_filter", privacyFilter.HasValue ? (object)(int)privacyFilter : null),
                 new Parameter("sort", sortType.HasValue ? sortType.Value.GetString() : null),
@@ -906,6 +880,32 @@ namespace MyFlickr.Rest
         }
         public event EventHandler<EventArgs<ContactsList>> GetContactsListCompleted;
         #endregion
+
+        #region Equality
+        public static bool operator ==(User left, User right)
+        {
+            if (left is User)
+                return left.Equals(right);
+            else if (right is User)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(User left, User right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is User && this.UserID == ((User)obj).UserID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -1175,6 +1175,32 @@ namespace MyFlickr.Rest
         /// determine whether the user is marking you as a friend or Not
         /// </summary>
         public Nullable<bool> IsConsideringYouAsFamily { get { return data.Attribute("revfamily") != null ? new Nullable<bool>(data.Attribute("revfamily").Value.ToBoolean()) : null; } }
+
+        #region Equality
+        public static bool operator ==(UserInfo left, UserInfo right)
+        {
+            if (left is UserInfo)
+                return left.Equals(right);
+            else if (right is UserInfo)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(UserInfo left, UserInfo right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is UserInfo && this.UserID == ((UserInfo)obj).UserID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -1203,6 +1229,32 @@ namespace MyFlickr.Rest
         /// end time of counting
         /// </summary>
         public DateTime ToDate { get; private set; }
+
+        #region Equality
+        public static bool operator ==(PhotosCount left, PhotosCount right)
+        {
+            if (left is PhotosCount)
+                return left.Equals(right);
+            else if (right is PhotosCount)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(PhotosCount left, PhotosCount right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PhotosCount && this.Count == ((PhotosCount)obj).Count && this.FromDate == ((PhotosCount)obj).FromDate && this.ToDate == ((PhotosCount)obj).ToDate;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>

@@ -2,6 +2,9 @@
 
 namespace MyFlickr.Core
 {
+    /// <summary>
+    /// Token that represents a Ticket for the Caller , to Monitor his Request when it's done
+    /// </summary>
     public class Token
     {
         private Guid Guid;
@@ -11,22 +14,19 @@ namespace MyFlickr.Core
             this.Guid = guid;
         }
 
-        public static Token GenerateToken()
+        internal static Token GenerateToken()
         {
             return new Token(Guid.NewGuid());
         }
 
-        public static bool operator == (Token left, Token right)
+        #region Equality
+        public static bool operator ==(Token left, Token right)
         {
             if (left is Token)
-            {
                 return left.Equals(right);
-            }
-            if (right is Token)
-            {
+            else if (right is Token)
                 return right.Equals(left);
-            }
-            return false;
+            return true;
         }
 
         public static bool operator !=(Token left, Token right)
@@ -41,7 +41,8 @@ namespace MyFlickr.Core
 
         public override int GetHashCode()
         {
-            return this.Guid.GetHashCode();
+            return base.GetHashCode();
         }
+        #endregion
     }
 }

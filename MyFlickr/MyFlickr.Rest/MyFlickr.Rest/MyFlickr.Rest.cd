@@ -6,17 +6,17 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAIAAAAAAgAggAgAAAAAAAQAAAAABAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAIAAgAAAgAggAgAAAIAAAQAAAAABAiA=</HashCode>
       <FileName>MyFlickr.Rest\AuthenticationTokens.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MyFlickr.Rest.GetFrobResult">
+  <Class Name="MyFlickr.Rest.Frob">
     <Position X="6" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAACAAgAAAAAiA=</HashCode>
       <FileName>MyFlickr.Rest\Authenticator.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -29,11 +29,35 @@
   </Class>
   <Class Name="MyFlickr.Rest.User">
     <Position X="0.5" Y="5" Width="5.75" />
+    <Members>
+      <Method Name="InvokeGetBlogsListEvent" Hidden="true" />
+      <Method Name="InvokeGetCollectionsTreeEvent" Hidden="true" />
+      <Method Name="InvokeGetContactsListCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetContactsPhotosCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetContactsPublicPhotosCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetFavoritesListCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetGalleriesListCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetGeotaggedPhotosCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetInfoCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetListRecentlyUploadedCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetPhotosCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetPhotosCountsCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetPhotoSetsListCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetPhotosNotInListCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetPublicContactsListCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetPublicFavoritesListCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetPublicGroupsEvent" Hidden="true" />
+      <Method Name="InvokeGetPublicPhotosCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetRecentlyUpdatedPhotosCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetUnGeotaggedPhotosCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetUntaggedPhotosCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetUserPhotosCompletedEvent" Hidden="true" />
+    </Members>
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>CQpsGgQBIBAQUKgQSADAlAgxdmwEIDQDAcEEgO4JCIA=</HashCode>
+      <HashCode>CQpsGgQBIBAQUKgQyADAFAgRdGwEILQDAcEEgO4ICqA=</HashCode>
       <FileName>MyFlickr.Rest\Users.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -61,11 +85,44 @@
   </Class>
   <Class Name="MyFlickr.Rest.Photo">
     <Position X="0.5" Y="22.5" Width="5.5" />
+    <Members>
+      <Method Name="InvokeAddCommentCompletedEvent" Hidden="true" />
+      <Method Name="InvokeAddNoteCompletedEvent" Hidden="true" />
+      <Method Name="InvokeAddPersonCompletedEvent" Hidden="true" />
+      <Method Name="InvokeAddTagCompletedEvent" Hidden="true" />
+      <Method Name="InvokeAddTofavoriteCompletedEvent" Hidden="true" />
+      <Method Name="InvokeDeleteCommentCompletedEvent" Hidden="true" />
+      <Method Name="InvokeDeleteCompletedEvent" Hidden="true" />
+      <Method Name="InvokeDeleteNoteCompletedEvent" Hidden="true" />
+      <Method Name="InvokeEditCommentCompletedEvent" Hidden="true" />
+      <Method Name="InvokeEditNoteCompletedEvent" Hidden="true" />
+      <Method Name="InvokeEditPersonCoordsCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetAllContextsCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetCommentsListCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetContextCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetExifCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetFavoritesCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetInfoCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetPermissionsCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetPersonsListCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetSizesCompletedEvent" Hidden="true" />
+      <Method Name="InvokePostPhotoToBlogCompletedEvent" Hidden="true" />
+      <Method Name="InvokeRemoveFromfavoriteCompletedEvent" Hidden="true" />
+      <Method Name="InvokeRemovePersonCompletedEvent" Hidden="true" />
+      <Method Name="InvokeRemovePersonCoordsCompletedEvent" Hidden="true" />
+      <Method Name="InvokeRemoveTagCompletedEvent" Hidden="true" />
+      <Method Name="InvokeRotateCompletedEvent" Hidden="true" />
+      <Method Name="InvokeSetContentTypeCompletedEvent" Hidden="true" />
+      <Method Name="InvokeSetDatesCompletedEvent" Hidden="true" />
+      <Method Name="InvokeSetMetaCompletedEvent" Hidden="true" />
+      <Method Name="InvokeSetPermissionsCompletedEvent" Hidden="true" />
+      <Method Name="InvokeSetSafetyLevelCompletedEvent" Hidden="true" />
+    </Members>
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>SwFm0hEJEixYiMS4QUEAZgcC13QMiSUDCOgg8wKABII=</HashCode>
+      <HashCode>SwFm0hEJEixYiMS4wUEAZgcC13QMiaUDCOgg8wKABqI=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -76,7 +133,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAIAAYAIAAAgoQAAgKICAAiCAAAAAAAUAQCQAQQCQAA=</HashCode>
+      <HashCode>AAIAAYAIAAAgoQAAgKICAAiCAAAAAIAUAQCQAQQCQiA=</HashCode>
       <FileName>MyFlickr.Rest\Users.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -92,13 +149,7 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="MyFlickr.Rest.PhotoSet">
-    <Position X="2.25" Y="50.25" Width="1.5" />
-    <InheritanceLine Type="MyFlickr.Rest.PhotoSetBasic" FixedFromPoint="true">
-      <Path>
-        <Point X="3" Y="49.766" />
-        <Point X="3" Y="50.25" />
-      </Path>
-    </InheritanceLine>
+    <Position X="2.5" Y="51" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAIAAAAAAAAAQAAAAAAAAAAAAAIgCCAAA=</HashCode>
       <FileName>MyFlickr.Rest\PhotoSets.cs</FileName>
@@ -176,7 +227,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAgEAAgAAAAAAAAAAAAIAAAAAAAAAAAiA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -216,7 +267,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAAAAAQAAAKAAAAiCAAAAAAAAAQAAAAAAQAA=</HashCode>
+      <HashCode>AAAAAAAIAAAAAQAAgKAAAAiCAAAAAIAAAQAAAAAAQiA=</HashCode>
       <FileName>MyFlickr.Rest\Contacts.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -244,7 +295,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAEABgCEAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <HashCode>AAAAAAAAEABgCEAAgAAAAAAAAAAAAIAAAAAAAAAAQiA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -254,7 +305,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAIAAAAAAAAQAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAgAAAgAAAAAAAIAAAAIAAAQAAAAAAAiA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -265,7 +316,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AgAgGkQIAAAggMIABAIKQAQyACAgAEABQBgQIgQBCBQ=</HashCode>
+      <HashCode>AgAgGkQIAAAggMIAhAIKQAQyACAgAMABQBgQIgQBCjQ=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -276,7 +327,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAAAACIAAAAAAAAAAAAAAQAQAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAgAAAgCIAAAAAAAAAAIAAAQAQAAAAAiA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -286,7 +337,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAQBgAAgAAACAAAAEAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <HashCode>AAAAAAAQBgAAgAAAiAAAAEAAAAAAAIAAAAAAAAAAYiA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -296,7 +347,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAQAgAAiAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAQAgAAiAAAgAAAAAAAAAAAAIAAAgAAAAAAAiA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -317,7 +368,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAQAgAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEgAAAAAAAAAAAAIAAAQAgAAAAAiA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -347,7 +398,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>CAAAAgAAAAAAgEAAAAAAAAQAACAAAAAAAAAAIgAACAQ=</HashCode>
+      <HashCode>CAAAAgAAAAAAgEAAgAAAAAQAACAAAIAAAAAAIgAACiQ=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -367,7 +418,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAFgAAAAAAAAAAAEAAAAAAAAAACAAAAAAAAAQ=</HashCode>
+      <HashCode>AAAAAAAAFgAAAAAAgAAAAEAAAAAAAIAACAAAAAAAAiQ=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -377,7 +428,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ABAAAAAABAAAgQAAACAAAESAAAAAAAAAAQAAAAAAYAA=</HashCode>
+      <HashCode>ABAAAAAABAAAgQAAgCAAAESAAAAAAIAAAQAAAAAAYiA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -387,17 +438,23 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAQAAAAgAAACAAAAAAAABAAAAAAAAAECAAAAAA=</HashCode>
+      <HashCode>AAAAAAAQAAAAgAAAiAAAAAAAABAAAIAAAAAECAAAAiA=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Rest.PhotoSetBasic">
-    <Position X="0.5" Y="45" Width="5.5" />
+    <Position X="0.5" Y="45.25" Width="5.5" />
+    <Members>
+      <Method Name="InvokeAddCommentCompletedEvent" Hidden="true" />
+      <Method Name="InvokeDeleteCommentCompletedEvent" Hidden="true" />
+      <Method Name="InvokeEditCommentCompletedEvent" Hidden="true" />
+      <Method Name="InvokeGetCommentsListCompletedEvent" Hidden="true" />
+    </Members>
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAEABAAAAgggEAIAQAAAAAAABAAgSQAAAAAEACABAA=</HashCode>
+      <HashCode>AAAEABAAAAgggEAIgQAAAAAAABAAgaQAAAAAEACABiA=</HashCode>
       <FileName>MyFlickr.Rest\PhotoSets.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -409,12 +466,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Rest.PhotosCount">
-    <Position X="6.75" Y="19.75" Width="1.75" />
+    <Position X="9" Y="17" Width="1.75" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAABAABAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAQAAAAAAIAAAAAABAABAiA=</HashCode>
       <FileName>MyFlickr.Rest\Users.cs</FileName>
     </TypeIdentifier>
   </Class>

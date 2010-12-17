@@ -204,6 +204,32 @@ namespace MyFlickr.Rest
         }
         public event EventHandler<EventArgs<IEnumerable<Comment>>> GetCommentsListCompleted;
         #endregion
+
+        #region Equality
+        public static bool operator ==(PhotoSetBasic left, PhotoSetBasic right)
+        {
+            if (left is PhotoSetBasic)
+                return left.Equals(right);
+            else if (right is PhotoSetBasic)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(PhotoSetBasic left, PhotoSetBasic right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PhotoSetBasic && this.ID == ((PhotoSetBasic)obj).ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>

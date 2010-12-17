@@ -1135,6 +1135,32 @@ namespace MyFlickr.Rest
         }
         public event EventHandler<EventArgs<NoReply>> AddToFavoriteCompleted;
         #endregion
+
+        #region Equality
+        public static bool operator ==(Photo left, Photo right)
+        {
+            if (left is Photo)
+                return left.Equals(right);
+            else if (right is Photo)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(Photo left, Photo right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Photo && this.ID == ((Photo)obj).ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -1249,6 +1275,32 @@ namespace MyFlickr.Rest
         /// contains a pretty-formatted version of the tag where available, Could Be Null
         /// </summary>
         public string Clean { get; private set; }
+
+        #region Equality
+        public static bool operator ==(Exif left, Exif right)
+        {
+            if (left is Exif)
+                return left.Equals(right);
+            else if (right is Exif)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(Exif left, Exif right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Exif && this.Tag == ((Exif)obj).Tag && this.Raw == ((Exif)obj).Raw;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -1277,6 +1329,32 @@ namespace MyFlickr.Rest
         /// the date where the user added the photo to his favorite list
         /// </summary>
         public DateTime FaveDate { get; private set; }
+
+        #region Equality
+        public static bool operator ==(Person left, Person right)
+        {
+            if (left is Person)
+                return left.Equals(right);
+            else if (right is Person)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(Person left, Person right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Person && this.ID == ((Person)obj).ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -1294,7 +1372,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// the ID of the Photo
         /// </summary>
-        public Int64 ID { get { return Int64.Parse(data.Attribute("id").Value); } }
+        public string ID { get { return data.Attribute("id").Value; } }
 
         /// <summary>
         /// the Secret of the Photo
@@ -1478,6 +1556,32 @@ namespace MyFlickr.Rest
         /// the Urls of the Photo
         /// </summary>
         public IEnumerable<URL> Urls { get { return this.data.Element("urls").Elements("url").Select(url => new URL(url)); } }
+
+        #region Equality
+        public static bool operator ==(PhotoInfo left, PhotoInfo right)
+        {
+            if (left is PhotoInfo)
+                return left.Equals(right);
+            else if (right is PhotoInfo)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(PhotoInfo left, PhotoInfo right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PhotoInfo && this.ID ==((PhotoInfo)obj).ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -1510,6 +1614,32 @@ namespace MyFlickr.Rest
         /// the location of the owner
         /// </summary>
         public string Location { get { return this.data.Attribute("location").Value; } }
+
+        #region Equality
+        public static bool operator ==(Owner left, Owner right)
+        {
+            if (left is Owner)
+                return left.Equals(right);
+            else if (right is Owner)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(Owner left, Owner right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Owner && this.ID == ((Owner)obj).ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -1568,6 +1698,32 @@ namespace MyFlickr.Rest
         /// the Note Content
         /// </summary>
         public string Content { get; private set; }
+
+        #region Equality
+        public static bool operator ==(Note left, Note right)
+        {
+            if (left is Note)
+                return left.Equals(right);
+            else if (right is Note)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(Note left, Note right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Note && this.ID == ((Note)obj).ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
     
     /// <summary>
@@ -1608,6 +1764,32 @@ namespace MyFlickr.Rest
         /// the Machine Tag
         /// </summary>
         public int MachineTag { get; private set; }
+
+        #region Equality
+        public static bool operator ==(Tag left, Tag right)
+        {
+            if (left is Tag)
+                return left.Equals(right);
+            else if (right is Tag)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(Tag left, Tag right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Tag && this.ID ==((Tag)obj).ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -1713,6 +1895,32 @@ namespace MyFlickr.Rest
         {
             return this.Value;
         }
+
+        #region Equality
+        public static bool operator ==(URL left, URL right)
+        {
+            if (left is URL)
+                return left.Equals(right);
+            else if (right is URL)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(URL left, URL right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is URL && this.Value == ((URL)obj).Value;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -1910,6 +2118,32 @@ namespace MyFlickr.Rest
         /// relative path for the photo in the Photostream of the Owner
         /// </summary>
         public string URL { get; private set; }
+
+        #region Equality
+        public static bool operator ==(NeighborPhoto left, NeighborPhoto right)
+        {
+            if (left is NeighborPhoto)
+                return left.Equals(right);
+            else if (right is NeighborPhoto)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(NeighborPhoto left, NeighborPhoto right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is NeighborPhoto && this.ID == ((NeighborPhoto)obj).ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
     
     /// <summary>
@@ -1932,6 +2166,32 @@ namespace MyFlickr.Rest
         /// the Title of the Group
         /// </summary>
         public string Title { get; private set; }
+
+        #region Equality
+        public static bool operator ==(Pool left, Pool right)
+        {
+            if (left is Pool)
+                return left.Equals(right);
+            else if (right is Pool)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(Pool left, Pool right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Pool && this.ID == ((Pool)obj).ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -2000,6 +2260,32 @@ namespace MyFlickr.Rest
         /// the URL of the Photo Size Page
         /// </summary>
         public Uri Url { get; private set; }
+
+        #region Equality
+        public static bool operator ==(Size left, Size right)
+        {
+            if (left is Size)
+                return left.Equals(right);
+            else if (right is Size)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(Size left, Size right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Size && this.Label == ((Size)obj).Label;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
     
     /// <summary>
@@ -2076,6 +2362,32 @@ namespace MyFlickr.Rest
         ///  the Width of the Person Box in the  photo  , Could Be Null
         /// </summary>
         public Nullable<int> Width { get; private set; }
+
+        #region Equality
+        public static bool operator ==(PersonInPhoto left, PersonInPhoto right)
+        {
+            if (left is PersonInPhoto)
+                return left.Equals(right);
+            else if (right is PersonInPhoto)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(PersonInPhoto left, PersonInPhoto right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PersonInPhoto && this.ID == ((PersonInPhoto)obj).ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -2140,5 +2452,31 @@ namespace MyFlickr.Rest
         /// the Content of the Comment
         /// </summary>
         public string Text { get; private set; }
+
+        #region Equlaity
+        public static bool operator ==(Comment left, Comment right)
+        {
+            if (left is Comment)
+                return left.Equals(right);
+            else if (right is Comment)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(Comment left, Comment right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Comment && this.ID == ((Comment)obj).ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 }
