@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace MyFlickr.Rest
 {
     /// <summary>
@@ -52,10 +53,42 @@ namespace MyFlickr.Rest
             this.ApiKey = apiKey;
             this.SharedSecret = sharedSecret;
         }
+
+        #region Equality
+        public static bool operator ==(AuthenticationTokens left, AuthenticationTokens right)
+        {
+            if (left is AuthenticationTokens)
+                return left.Equals(right);
+            else if (right is AuthenticationTokens)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(AuthenticationTokens left, AuthenticationTokens right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is AuthenticationTokens && this.ApiKey == ((AuthenticationTokens)obj).ApiKey &&
+                this.SharedSecret == ((AuthenticationTokens)obj).SharedSecret && this.Token == ((AuthenticationTokens)obj).Token;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     public static class AuthenticationTokensExtensions
     {
+        /// <summary>
+        /// Create an Instance of the user Class given those permissions
+        /// </summary>
+        /// <param name="authinticationTokens"></param>
+        /// <returns>User Object</returns>
         public static User CreateUserInstance(this AuthenticationTokens authinticationTokens)
         {
             return new User(authinticationTokens);

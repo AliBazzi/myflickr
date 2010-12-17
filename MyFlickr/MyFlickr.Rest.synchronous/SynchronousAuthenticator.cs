@@ -12,15 +12,15 @@ namespace MyFlickr.Rest
         /// <param name="authenticator">instance</param>
         /// <param name="accessPermission">the permission your want to acquires</param>
         /// <returns>GetFrobResult object</returns>
-        public static GetFrobResult GetFrob(this Authenticator authenticator,AccessPermission accessPermission)
+        public static Frob GetFrob(this Authenticator authenticator,AccessPermission accessPermission)
         {
-            FlickrSynchronousPrmitive<GetFrobResult> FSP = new FlickrSynchronousPrmitive<GetFrobResult>();
+            FlickrSynchronousPrmitive<Frob> FSP = new FlickrSynchronousPrmitive<Frob>();
 
-            Action<object,EventArgs<GetFrobResult>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP,e);
-            authenticator.GetFrobCompleted += new EventHandler<EventArgs<GetFrobResult>>(handler);
+            Action<object,EventArgs<Frob>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP,e);
+            authenticator.GetFrobCompleted += new EventHandler<EventArgs<Frob>>(handler);
             FSP.Token = authenticator.GetFrobAsync(accessPermission);
             FSP.WaitForAsynchronousCall();
-            authenticator.GetFrobCompleted -= new EventHandler<EventArgs<GetFrobResult>>(handler);
+            authenticator.GetFrobCompleted -= new EventHandler<EventArgs<Frob>>(handler);
 
             return FSP.ResultHolder.ReturnOrThrow();
         }

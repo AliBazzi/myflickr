@@ -126,6 +126,32 @@ namespace MyFlickr.Rest
         /// the Number of photos Uploaded recently by the Contact , Could Be null
         /// </summary>
         public Nullable<int> PhotosUploaded { get; private set; }
+
+        #region Equality
+        public static bool operator ==(Contact left, Contact right)
+        {
+            if (left is Contact)
+                return left.Equals(right);
+            else if (right is Contact)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(Contact left, Contact right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Contact && this.UserID == ((Contact)obj).UserID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>

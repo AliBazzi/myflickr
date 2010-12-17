@@ -3,6 +3,9 @@ using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
+    /// <summary>
+    /// Allows you to Authenticate your Application , or Check if the authentication is still valid
+    /// </summary>
     public class Authenticator
     {
         /// <summary>
@@ -49,9 +52,9 @@ namespace MyFlickr.Rest
                 var frob = element.Element("frob").Value;
                 var url = UriHelper.CalculateRedirectionUrl(this.SharedSecret , new Parameter("api_key", this.ApiKey) ,
                     new Parameter("perms", accessPermission.ToString().ToLower()) , new Parameter("frob", element.Element("frob").Value));
-                this.InvokeGetFrobCompleted(new EventArgs<GetFrobResult>(token,new GetFrobResult(frob,url)));
+                this.InvokeGetFrobCompleted(new EventArgs<Frob>(token,new Frob(frob,url)));
             }
-            , e => this.InvokeGetFrobCompleted(new EventArgs<GetFrobResult>(token,e))
+            , e => this.InvokeGetFrobCompleted(new EventArgs<Frob>(token,e))
             , this.SharedSecret , new Parameter("method","flickr.auth.getFrob"),new Parameter("api_key",this.ApiKey));
 
             return token;
@@ -170,27 +173,62 @@ namespace MyFlickr.Rest
         }
         public event EventHandler<EventArgs<AuthenticationTokens>> GetTokenCompleted;
 
-        private void InvokeGetFrobCompleted(EventArgs<GetFrobResult> args)
+        private void InvokeGetFrobCompleted(EventArgs<Frob> args)
         {
             if (GetFrobCompleted !=null)
             {
                 GetFrobCompleted.Invoke(null,args);
             }
         }
-        public event EventHandler<EventArgs<GetFrobResult>> GetFrobCompleted;
+        public event EventHandler<EventArgs<Frob>> GetFrobCompleted;
         #endregion
     }
 
-    public class GetFrobResult
+    /// <summary>
+    /// The frob that will be Used to retrieve the UserToken if Authentication from user was successful
+    /// </summary>
+    public class Frob
     {
+        /// <summary>
+        /// the URL that you can redirects the user to , To Authenticate the you Application
+        /// </summary>
         public Uri Url { get; private set; }
 
-        public string Frob { get; private set; }
+        /// <summary>
+        /// the Value of the frob
+        /// </summary>
+        public string Value { get; private set; }
 
-        internal GetFrobResult(string frob, Uri url)
+        internal Frob(string frob, Uri url)
         {
-            this.Frob = frob;
+            this.Value = frob;
             this.Url = url;
         }
+
+        #region Equality
+        public static bool operator ==(Frob left, Frob right)
+        {
+            if (left is Frob)
+                return left.Equals(right);
+            else if (right is Frob)
+                return right.Equals(left);
+            return true;
+        }
+
+        public static bool operator !=(Frob left, Frob right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Frob && this.Value == ((Frob)obj).Value;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 }
