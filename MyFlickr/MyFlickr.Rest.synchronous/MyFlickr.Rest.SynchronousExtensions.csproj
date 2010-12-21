@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SyhnchronousGallery.cs" />
     <Compile Include="SynchronousAuthenticator.cs" />
     <Compile Include="FlickrSynchronousPrmitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

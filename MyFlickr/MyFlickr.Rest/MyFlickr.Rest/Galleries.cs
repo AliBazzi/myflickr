@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
@@ -12,9 +13,16 @@ namespace MyFlickr.Rest
     {
         private XElement data;
 
-        internal GalleriesCollection(XElement element)
+        private readonly AuthenticationTokens authtkns;
+
+        internal GalleriesCollection(AuthenticationTokens authTkns,XElement element)
         {
+            this.authtkns = authTkns;
             this.data = element;
+            this.Total = int.Parse(element.Attribute("total").Value);
+            this.PerPage = int.Parse(element.Attribute("per_page").Value);
+            this.Page = int.Parse(element.Attribute("page").Value);
+            this.Pages = int.Parse(element.Attribute("pages").Value);
         }
 
         /// <summary>
@@ -44,12 +52,7 @@ namespace MyFlickr.Rest
         {
             get
             {
-                return data.Elements("gallery").Select(
-                    elm => new Gallery(elm.Attribute("id").Value, elm.Attribute("url").Value, elm.Attribute("owner").Value,
-                        Int64.Parse(elm.Attribute("primary_photo_id").Value), int.Parse(elm.Attribute("count_photos").Value),
-                        int.Parse(elm.Attribute("count_videos").Value), int.Parse(elm.Attribute("primary_photo_farm").Value),
-                    int.Parse(elm.Attribute("primary_photo_server").Value), elm.Attribute("primary_photo_secret").Value, elm.Attribute("date_create").Value,
-                    elm.Attribute("date_update").Value, elm.Element("title").Value, elm.Element("description").Value));
+                return data.Elements("gallery").Select(elm => new Gallery(this.authtkns,elm));
             }
         }
 
@@ -70,22 +73,24 @@ namespace MyFlickr.Rest
     /// </summary>
     public class Gallery
     {
-        internal Gallery(string id, string url, string ownerID, Int64 primary, int photosCount, int videosCount, int farm, int server, string secret,
-            string dateCreated, string dateUpdated, string title, string description)
+        private readonly AuthenticationTokens authtkns;
+
+        internal Gallery(AuthenticationTokens authTkns,XElement elm)
         {
-            this.ID = id;
-            this.Url = new Uri(url);
-            this.OwnerID = ownerID;
-            this.Primary = primary;
-            this.PhotosCount = photosCount;
-            this.VideosCount = videosCount;
-            this.Farm = farm;
-            this.Server = server;
-            this.Secret = secret;
-            this.DateCreated = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(double.Parse(dateCreated));
-            this.DateUpdated = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(double.Parse(dateCreated));
-            this.Title = title;
-            this.Description = description;
+            this.authtkns = authTkns;
+            this.ID = elm.Attribute("id").Value;
+            this.Url = new Uri(elm.Attribute("url").Value);
+            this.OwnerID = elm.Attribute("owner").Value;
+            this.Primary = elm.Attribute("primary_photo_id").Value;
+            this.PhotosCount = int.Parse(elm.Attribute("count_photos").Value);
+            this.VideosCount = int.Parse(elm.Attribute("count_videos").Value);
+            this.Farm = elm.Attribute("primary_photo_farm")!=null ? new Nullable<int>(int.Parse(elm.Attribute("primary_photo_farm").Value)) : null;
+            this.Server =elm.Attribute("primary_photo_server")!=null ? new Nullable<int>(int.Parse(elm.Attribute("primary_photo_server").Value)) :  null;
+            this.Secret =elm.Attribute("primary_photo_secret")!= null ? elm.Attribute("primary_photo_secret").Value : null;
+            this.DateCreated = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(double.Parse(elm.Attribute("date_create").Value));
+            this.DateUpdated =new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(double.Parse(elm.Attribute("date_update").Value));
+            this.Title = elm.Element("title").Value;
+            this.Description = elm.Element("description").Value;
         }
 
         /// <summary>
@@ -106,7 +111,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// the ID of the primary photo of the gallery
         /// </summary>
-        public Int64 Primary { get; private set; }
+        public string Primary { get; private set; }
 
         /// <summary>
         /// the number of photos in this gallery
@@ -121,12 +126,12 @@ namespace MyFlickr.Rest
         /// <summary>
         /// the number of server farm that the primary photo of this gallery resides on
         /// </summary>
-        public int Farm { get; private set; }
+        public Nullable<int> Farm { get; private set; }
 
         /// <summary>
         /// the number of server that the primary photo of this gallery resides on
         /// </summary>
-        public int Server { get; private set; }
+        public Nullable<int> Server { get; private set; }
 
         /// <summary>
         /// the secret used to build the URL of primary photo of this gallery
@@ -152,5 +157,224 @@ namespace MyFlickr.Rest
         /// the Description of this gallery , could Be Null
         /// </summary>
         public string Description { get; private set; }
+
+        /// <summary>
+        /// Add a photo to a gallery.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="photoID">The photo ID to add to the gallery</param>
+        /// <param name="comment">A short comment or story to accompany the photo.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token AddPhotoAsync(string photoID, string comment = null)
+        {
+            if (string.IsNullOrEmpty(photoID))
+                throw new ArgumentException("photoID");
+
+            this.authtkns.ValidateGrantedPermission(AccessPermission.Write);
+            Token token = Token.GenerateToken();
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeAddPhotoCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)), 
+                e => this.InvokeAddPhotoCompletedEvent(new EventArgs<NoReply>(token,e)), this.authtkns.SharedSecret,
+                new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token),
+                new Parameter("method", "flickr.galleries.addPhoto"),
+                new Parameter("photo_id", photoID), new Parameter("comment", comment), new Parameter("gallery_id", this.ID));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Modify the meta-data for a gallery.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="title">The new title for the gallery.</param>
+        /// <param name="description">The new description for the gallery.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token EditMetadataAsync(string title, string description=null)
+        {
+            if (string.IsNullOrEmpty(title))
+                throw new ArgumentException("title");
+
+            this.authtkns.ValidateGrantedPermission(AccessPermission.Write);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeEditMetadataCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)),
+                e => this.InvokeEditMetadataCompletedEvent(new EventArgs<NoReply>(token,e)), this.authtkns.SharedSecret, 
+                new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token),
+                new Parameter("method", "flickr.galleries.editMeta"), new Parameter("gallery_id", this.ID), 
+                new Parameter("title", title), new Parameter("description", description));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Edit the comment for a gallery photo.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="photoID">The photo ID to edit in the gallery.</param>
+        /// <param name="comment">The comment .</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token EditPhotoAsync(string photoID, string comment)
+        {
+            if (string.IsNullOrEmpty(photoID))
+                throw new ArgumentException("photoID");
+            if (comment == null)
+                throw new ArgumentNullException("comment");
+
+            this.authtkns.ValidateGrantedPermission(AccessPermission.Write);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeEditPhotoCompeltedEvent(new EventArgs<NoReply>(token,NoReply.Empty)), 
+                e => this.InvokeEditPhotoCompeltedEvent(new EventArgs<NoReply>(token,e)), this.authtkns.SharedSecret, 
+                new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token),
+                new Parameter("method", "flickr.galleries.editPhoto"), new Parameter("photo_id", photoID), 
+                new Parameter("gallery_id", this.ID), new Parameter("comment", comment));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Return the list of photos for a gallery.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o</param>
+        /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetPhotosAsync(string extras = null,Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            Token token = Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authtkns, elm.Element("photos")))),
+                e => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authtkns.SharedSecret,
+                new Parameter("method", "flickr.galleries.getPhotos"), new Parameter("api_key", this.authtkns.ApiKey), 
+                new Parameter("auth_token", this.authtkns.Token),new Parameter("gallery_id",this.ID),
+                new Parameter("photoset_id", this.ID), new Parameter("per_page", perPage), new Parameter("page", page));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Modify the photos in a gallery. Use this method to add, remove and re-order photos.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="primaryPhotoID">The id of the photo to use as the 'primary' photo for the gallery.</param>
+        /// <param name="photosIDs">A comma-delimited list of photo ids to include in the gallery. They will appear in the set in the order sent. This list must contain the primary photo id. This list of photos replaces the existing list.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token EditPhotosAsync(string primaryPhotoID, params string[] photosIDs)
+        {
+            if (string.IsNullOrEmpty(primaryPhotoID))
+                throw new ArgumentException("primaryPhotoID");
+            if (photosIDs == null)
+                throw new ArgumentNullException("photosIDs");
+
+            this.authtkns.ValidateGrantedPermission(AccessPermission.Write);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeEditPhotosCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)), 
+                e => this.InvokeEditPhotosCompletedEvent(new EventArgs<NoReply>(token,e)), this.authtkns.SharedSecret, 
+                new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token),new Parameter("gallery_id",this.ID),
+                new Parameter("method", "flickr.galleries.editPhotos"), new Parameter("primary_photo_id", primaryPhotoID), 
+                new Parameter("photo_ids", photosIDs.Aggregate((left, right) => string.Format("{0},{1}", left, right))));
+
+            return token;
+        }
+
+        #region Events
+        private void InvokeEditPhotosCompletedEvent(EventArgs<NoReply> args)
+        {
+            if (this.EditPhotosCompleted != null)
+            {
+                this.EditPhotosCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> EditPhotosCompleted;
+        private void InvokeGetPhotosCompletedEvent(EventArgs<PhotosCollection> args)
+        {
+            if (this.GetPhotosCompleted != null)
+            {
+                this.GetPhotosCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<PhotosCollection>> GetPhotosCompleted;
+        private void InvokeEditPhotoCompeltedEvent(EventArgs<NoReply> args)
+        {
+            if (this.EditPhotoCompleted != null)
+            {
+                this.EditPhotoCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> EditPhotoCompleted;
+        private void InvokeEditMetadataCompletedEvent(EventArgs<NoReply> args)
+        {
+            if (this.EditMetadataCompleted != null)
+            {
+                this.EditMetadataCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> EditMetadataCompleted;
+        private void InvokeAddPhotoCompletedEvent(EventArgs<NoReply> args)
+        {
+            if (this.AddPhotoCompleted != null)
+            {
+                this.AddPhotoCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> AddPhotoCompleted;
+        #endregion
+    }
+
+    /// <summary>
+    /// represents information of a newly created Gallery
+    /// </summary>
+    public class GalleryToken
+    {
+        private readonly AuthenticationTokens authTkns;
+
+        internal GalleryToken(AuthenticationTokens authTkns, XElement element)
+        {
+            this.authTkns = authTkns;
+            this.ID = element.Attribute("id").Value;
+            this.Url = element.Attribute("url").Value;
+        }
+
+        /// <summary>
+        /// the ID of the newly created Gallery
+        /// </summary>
+        public string ID { get; private set; }
+
+        /// <summary>
+        /// Partial of the Url of the newly created gallery
+        /// </summary>
+        public string Url { get; private set; }
+
+        /// <summary>
+        /// Get an Instance of the newly created Gallery
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token CreateInstanceAsync()
+        {
+            Token token = Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeCreateInstanceCompletedEvent(new EventArgs<Gallery>(token,new Gallery(this.authTkns,elm.Element("gallery")))), 
+                e => this.InvokeCreateInstanceCompletedEvent(new EventArgs<Gallery>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token), 
+                new Parameter("method", "flickr.galleries.getInfo"), new Parameter("gallery_id",this.ID));
+
+            return token;
+        }
+
+        private void InvokeCreateInstanceCompletedEvent(EventArgs<Gallery> args)
+        {
+            if (this.CreateInstanceCompleted != null)
+            {
+                this.CreateInstanceCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<Gallery>> CreateInstanceCompleted;
     }
 }

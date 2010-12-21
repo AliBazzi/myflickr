@@ -624,5 +624,69 @@ namespace MyFlickr.Rest
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
+
+        /// <summary>
+        /// Create a new photoset for the calling user.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="title">A title for the photoset.</param>
+        /// <param name="primaryPhotoID">The id of the photo to represent this set. The photo must belong to the calling user.</param>
+        /// <param name="description">A description of the photoset. May contain limited html.</param>
+        /// <returns>PhotoSetToken object</returns>
+        public static PhotoSetToken CreatePhotoSet(this User user, string title, string primaryPhotoID, string description = null)
+        {
+            FlickrSynchronousPrmitive<PhotoSetToken> FSP = new FlickrSynchronousPrmitive<PhotoSetToken>();
+
+            Action<object, EventArgs<PhotoSetToken>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.CreatePhotoSetCompleted += new EventHandler<EventArgs<PhotoSetToken>>(handler);
+            FSP.Token = user.CreatePhotoSetAsync(title,primaryPhotoID,description);
+            FSP.WaitForAsynchronousCall();
+            user.CreatePhotoSetCompleted -= new EventHandler<EventArgs<PhotoSetToken>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Set the order of photosets for the calling user.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="photosetsIDs">A comma delimited list of photoset IDs, ordered with the set to show first, first in the list. Any set IDs not given in the list will be set to appear at the end of the list, ordered by their IDs.</param>
+        /// <returns>NoReply represents void</returns>
+        public static NoReply OrderSets(this User user ,params string[] photosetsIDs)
+        {
+            FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
+
+            Action<object, EventArgs<NoReply>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.OrderSetsCompleted += new EventHandler<EventArgs<NoReply>>(handler);
+            FSP.Token = user.OrderSetsAsync(photosetsIDs);
+            FSP.WaitForAsynchronousCall();
+            user.OrderSetsCompleted -= new EventHandler<EventArgs<NoReply>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Create a new gallery for the calling user.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="title">The name of the gallery</param>
+        /// <param name="description">A short description for the gallery</param>
+        /// <param name="primaryPhotoID">The first photo to add to your gallery</param>
+        /// <returns>GalleryToken Object</returns>
+        public static GalleryToken CreateGallery(this User user, string title, string description, string primaryPhotoID = null)
+        {
+            FlickrSynchronousPrmitive<GalleryToken> FSP = new FlickrSynchronousPrmitive<GalleryToken>();
+
+            Action<object, EventArgs<GalleryToken>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.CreateGalleryCompleted += new EventHandler<EventArgs<GalleryToken>>(handler);
+            FSP.Token = user.CreateGalleryAsync(title,description,primaryPhotoID);
+            FSP.WaitForAsynchronousCall();
+            user.CreateGalleryCompleted -= new EventHandler<EventArgs<GalleryToken>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
     }
 }
