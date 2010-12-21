@@ -4,6 +4,7 @@ using System.Net;
 using System.Xml.Linq;
 using MyFlickr.Core;
 using MyFlickr.Rest;
+using System.Linq;
 
 namespace APITest
 {

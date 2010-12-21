@@ -52,7 +52,10 @@ namespace MyFlickr.Rest
         {
             get
             {
-                return data.Elements("photo").Select(elm => new Photo(this.authTkns, elm));
+                if (this.data.Attribute("owner") != null)
+                    return data.Elements("photo").Select(elm => new Photo(this.authTkns, elm, this.data.Attribute("owner").Value));
+                else
+                    return data.Elements("photo").Select(elm => new Photo(this.authTkns, elm));
             }
         }
 
@@ -75,9 +78,14 @@ namespace MyFlickr.Rest
     {
         private readonly AuthenticationTokens authTkns;
 
-        internal Photo(AuthenticationTokens authTkns, XElement element)
+        internal Photo(AuthenticationTokens authTkns)
         {
-            this.authTkns = authTkns;
+            this.authTkns = authTkns; 
+        }
+
+        internal Photo(AuthenticationTokens authTkns, XElement element)
+            :this(authTkns)
+        {
             this.IsFriend = element.Attribute("isfriend").Value.ToBoolean();
             this.IsFamily = element.Attribute("isfamily").Value.ToBoolean();
             this.IsPublic = element.Attribute("ispublic").Value.ToBoolean();
@@ -87,22 +95,51 @@ namespace MyFlickr.Rest
             this.Secret = element.Attribute("secret").Value;
             this.Server = int.Parse(element.Attribute("server").Value);
             this.Farm = int.Parse(element.Attribute("farm").Value);
+            this.HasComment = element.Attribute("has_comment") != null ? new Nullable<bool>(element.Attribute("has_comment").Value.ToBoolean()) : null;
+            this.Comment = element.Element("comment") != null ? element.Element("comment").Value : null;
+        }
+
+        internal Photo(AuthenticationTokens authTkns, XElement element, string ownerID)
+            :this(authTkns)
+        {
+            this.OwnerID = ownerID;
+            this.ID = element.Attribute("id").Value;
+            this.Title = element.Attribute("title").Value;
+            this.Secret = element.Attribute("secret").Value;
+            this.Server = int.Parse(element.Attribute("server").Value);
+            this.Farm = int.Parse(element.Attribute("farm").Value);
+            this.IsPrimary = element.Attribute("isprimary").Value.ToBoolean();
         }
 
         /// <summary>
-        /// determine if the Photo could be seen only by friends
+        /// determine if the Photo is primary in the set or Not , Could be Null
         /// </summary>
-        public bool IsFriend { get; private set; }
+        public Nullable<bool> IsPrimary { get; private set; }
 
         /// <summary>
-        /// determine if the Photo could be seen only by family
+        /// determine if the Photo could be seen only by friends, Could be Null
         /// </summary>
-        public bool IsFamily { get; private set; }
+        public Nullable<bool> IsFriend { get; private set; }
 
         /// <summary>
-        /// determine if the Photo is Public
+        /// determine if the Photo could be seen only by family, Could be Null
         /// </summary>
-        public bool IsPublic { get; private set; }
+        public Nullable<bool> IsFamily { get; private set; }
+
+        /// <summary>
+        /// determine if the Photo is Public, Could be Null
+        /// </summary>
+        public Nullable<bool> IsPublic { get; private set; }
+
+        /// <summary>
+        /// determine whether the photo has comment in a given gallery or Not , Could be Null
+        /// </summary>
+        public Nullable<bool> HasComment { get; private set; }
+
+        /// <summary>
+        /// get the Comment of photo in a given gallery , Could Be Null
+        /// </summary>
+        public string Comment { get; private set; }
 
         /// <summary>
         /// The ID of the photo
@@ -525,6 +562,28 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
+        /// Returns next and previous photos for a photo in a set.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="photosetID">The id of the photoset for which to fetch the photo's context.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetContextAsync(string photosetID)
+        {
+            if (string.IsNullOrEmpty(photosetID))
+                throw new ArgumentException("photosetID");
+
+            Token token = Core.Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetContextCompletedEvent(new EventArgs<PhotoContext>(token, new PhotoContext(this.authTkns, elm))),
+                e => this.InvokeGetContextCompletedEvent(new EventArgs<PhotoContext>(token, e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photosets.getContext"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID),new Parameter("photoset_id",photosetID));
+
+            return token;
+        }
+
+        /// <summary>
         /// Returns all visible sets and pools the photo belongs to.
         /// This method does not require authentication.
         /// </summary>
@@ -885,7 +944,36 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Return the list of galleries to which a photo has been added. Galleries are returned sorted by date which the photo was added to the gallery.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="perPage">Number of galleries to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetGalleriesListAsync(Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            Token token = Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetGalleriesCompletedEvent(new EventArgs<GalleriesCollection>(token, new GalleriesCollection(this.authTkns, elm.Element("galleries")))), 
+                e => this.InvokeGetGalleriesCompletedEvent(new EventArgs<GalleriesCollection>(token,e)), this.authTkns.SharedSecret, 
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
+                new Parameter("method", "flickr.galleries.getListForPhoto"), new Parameter("photo_id", this.ID), 
+                new Parameter("per_page", perPage), new Parameter("page", page));
+
+            return token;
+        }
+
         #region Events
+        private void InvokeGetGalleriesCompletedEvent(EventArgs<GalleriesCollection> args)
+        {
+            if (this.GetGalleriesCompleted != null)
+            {
+                this.GetGalleriesCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<GalleriesCollection>> GetGalleriesCompleted;
         private void InvokeGetCommentsListCompletedEvent(EventArgs<IEnumerable<Comment>> args)
         {
             if (this.GetCommentsListCompleted != null)
@@ -2037,6 +2125,7 @@ namespace MyFlickr.Rest
             {
                 this.PreviousPhoto = new NeighborPhoto(authTkns, element.Element("prevphoto"));
             }
+            this.Count = int.Parse(element.Element("count").Value);
         }
 
         /// <summary>
@@ -2048,6 +2137,11 @@ namespace MyFlickr.Rest
         /// next photo in the current context , Could be Null when there is no Next Photo
         /// </summary>
         public NeighborPhoto NextPhoto { get; private set; }
+
+        /// <summary>
+        /// the total number of photos in the current Context
+        /// </summary>
+        public int Count { get; private set; }
 
     }
 

@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data.cs" />
+    <Compile Include="GalleryTest.cs" />
     <Compile Include="photoSetTest.cs" />
     <Compile Include="PhotoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

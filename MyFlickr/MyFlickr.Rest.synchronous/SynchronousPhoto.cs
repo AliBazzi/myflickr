@@ -652,5 +652,46 @@ namespace MyFlickr.Rest
 
             return FSP.ResultHolder.ReturnOrThrow(); 
         }
+
+        /// <summary>
+        /// Returns next and previous photos for a photo in a set.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="photosetID">The id of the photoset for which to fetch the photo's context.</param>
+        /// <returns>PhotoContext object</returns>
+        public static PhotoContext GetContext(this Photo photo, string photosetID)
+        {
+            FlickrSynchronousPrmitive<PhotoContext> FSP = new FlickrSynchronousPrmitive<PhotoContext>();
+
+            Action<object, EventArgs<PhotoContext>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.GetContextCompleted += new EventHandler<EventArgs<PhotoContext>>(handler);
+            FSP.Token = photo.GetContextAsync(photosetID);
+            FSP.WaitForAsynchronousCall();
+            photo.GetContextCompleted -= new EventHandler<EventArgs<PhotoContext>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow(); 
+        }
+
+        /// <summary>
+        /// Return the list of galleries to which a photo has been added. Galleries are returned sorted by date which the photo was added to the gallery.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="perPage">Number of galleries to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public static GalleriesCollection GetGalleriesList(this Photo photo,Nullable<int> perPage = null, Nullable<int> page = null)
+        {
+            FlickrSynchronousPrmitive<GalleriesCollection> FSP = new FlickrSynchronousPrmitive<GalleriesCollection>();
+
+            Action<object, EventArgs<GalleriesCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.GetGalleriesCompleted += new EventHandler<EventArgs<GalleriesCollection>>(handler);
+            FSP.Token = photo.GetGalleriesListAsync(perPage,page);
+            FSP.WaitForAsynchronousCall();
+            photo.GetGalleriesCompleted -= new EventHandler<EventArgs<GalleriesCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow(); 
+        }
     }
 }

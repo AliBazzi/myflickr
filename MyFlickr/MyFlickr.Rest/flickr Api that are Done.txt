@@ -18,8 +18,16 @@ favorites:4/4
     * flickr.favorites.getPublicList
     * flickr.favorites.remove
 
-galleries:1
+galleries:9/9
     * flickr.galleries.getList
+	* flickr.galleries.getInfo
+	* flickr.galleries.addPhoto
+	* flickr.galleries.create
+	* flickr.galleries.getPhotos
+	* flickr.galleries.editPhoto
+	* flickr.galleries.editMeta
+	* flickr.galleries.editPhotos
+	* flickr.galleries.getListForPhoto
 
 groups:1
     * flickr.groups.getinfo
@@ -86,8 +94,21 @@ photos.comments 4/5
 photos.people:1
     * flickr.photos.people.getList
 
-photosets:1
+photosets:14/14
     * flickr.photosets.getList
+	* flickr.photosets.create
+	* flickr.photosets.delete
+	* flickr.photosets.getInfo
+	* flickr.photosets.addPhoto
+	* flickr.photosets.removePhotos
+	* flickr.photosets.removePhoto
+	* flickr.photosets.getPhotos
+	* flickr.photosets.editPhotos
+	* flickr.photosets.setPrimaryPhoto
+	* flickr.photosets.reorderPhotos
+	* flickr.photosets.getContext
+	* flickr.photosets.orderSets
+	* flickr.photosets.editMeta
 
 photosets.comments 4/4
     * flickr.photosets.comments.addComment

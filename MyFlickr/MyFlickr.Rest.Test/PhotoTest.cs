@@ -340,5 +340,17 @@ namespace MyFlickr.Rest.Test
             photo.EditComment(id, "Test Edited !");
             photo.DeleteComment(id);
         }
+
+        [TestMethod]
+        public void GetAllGaleriesOfPhotosTest()
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var gallery = user.GetGalleriesList().First();
+            var photo = gallery.GetPhotos().First();
+            foreach (var gal in photo.GetGalleriesList())
+            {
+
+            }
+        }
     }
 }

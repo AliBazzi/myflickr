@@ -309,7 +309,7 @@ namespace MyFlickr.Rest
             Token token = Core.Token.GenerateToken();
 
             FlickrCore.IntiateGetRequest(
-              elm => this.InvokeGetGalleriesListCompletedEvent(new EventArgs<GalleriesCollection>(token,new GalleriesCollection(elm.Element("galleries")))),
+              elm => this.InvokeGetGalleriesListCompletedEvent(new EventArgs<GalleriesCollection>(token,new GalleriesCollection(this.authTkns,elm.Element("galleries")))),
               e => this.InvokeGetGalleriesListCompletedEvent(new EventArgs<GalleriesCollection>(token,e)), null,
               new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.galleries.getList"),
               new Parameter("user_id", this.UserID), new Parameter("per_page", perPage), new Parameter("page", page));
@@ -359,7 +359,7 @@ namespace MyFlickr.Rest
         /// Returns a tree (or sub tree) of collections belonging to a given user.
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="collectionID">The ID of the collection to fetch a tree for, or Null to fetch the root collection.</param>
+        /// <param name="collection">The ID of the collection to fetch a tree for, or Null to fetch the root collection.</param>
         /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
         public Token GetCollectionsTreeAsync(Collection collection = null)
         {
@@ -683,7 +683,7 @@ namespace MyFlickr.Rest
         /// This method is still considered experimental. We don't plan for it to change or to go away but so long as this notice is present you should write your code accordingly.
         /// This method requires authentication with 'read' permission.
         /// </summary>
-        /// <param name="date_lastUpload">Limits the resultset to contacts that have uploaded photos since this date. The date should be in the form of a Unix timestamp. The default offset is (1) hour and the maximum (24) hours. </param>
+        /// <param name="dateLastUpload">Limits the resultset to contacts that have uploaded photos since this date. The date should be in the form of a Unix timestamp. The default offset is (1) hour and the maximum (24) hours. </param>
         /// <param name="filter">Limit the result set to all contacts or only those who are friends or family. Valid options are:
         ///* ff friends and family
         ///* all all your contacts
@@ -702,7 +702,110 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Create a new photoset for the calling user.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="title">A title for the photoset.</param>
+        /// <param name="primaryPhotoID">The id of the photo to represent this set. The photo must belong to the calling user.</param>
+        /// <param name="description">A description of the photoset. May contain limited html.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token CreatePhotoSetAsync(string title, string primaryPhotoID, string description = null)
+        {
+            if (string.IsNullOrEmpty(title))
+                throw new ArgumentException("title");
+            if (string.IsNullOrEmpty(primaryPhotoID))
+                throw new ArgumentException("primaryPhotoID");
+
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+
+            Token token = Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeCreatePhotoSetCompletedEvent(new EventArgs<PhotoSetToken>(token,new PhotoSetToken(this.authTkns,elm.Element("photoset")))), 
+                e => this.InvokeCreatePhotoSetCompletedEvent(new EventArgs<PhotoSetToken>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),new Parameter("method", "flickr.photosets.create"),
+                new Parameter("title", title), new Parameter("description", description), new Parameter("primary_photo_id", primaryPhotoID));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Set the order of photosets for the calling user.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="photosetsIDs">A comma delimited list of photoset IDs, ordered with the set to show first, first in the list. Any set IDs not given in the list will be set to appear at the end of the list, ordered by their IDs.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token OrderSetsAsync(params string[] photosetsIDs)
+        {
+            if (photosetsIDs == null)
+                throw new ArgumentNullException("photosetsIDs");
+
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeOrderSetsCompeltedEvent(new EventArgs<NoReply>(token,NoReply.Empty)), 
+                e => this.InvokeOrderSetsCompeltedEvent(new EventArgs<NoReply>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token), new Parameter("method", "flickr.photosets.orderSets"), 
+                new Parameter("photoset_ids", photosetsIDs.Aggregate((left, right) => string.Format("{0},{1}", left, right))));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Create a new gallery for the calling user.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="title">The name of the gallery</param>
+        /// <param name="description">A short description for the gallery</param>
+        /// <param name="primaryPhotoID">The first photo to add to your gallery</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token CreateGalleryAsync(string title, string description, string primaryPhotoID = null)
+        {
+            if (string.IsNullOrEmpty(title))
+                throw new ArgumentException("title");
+            if (string.IsNullOrEmpty(description))
+                throw new ArgumentException("description");
+
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeCreateGalleryCompletedEvent(new EventArgs<GalleryToken>(token,new GalleryToken(this.authTkns,elm.Element("gallery")))), 
+                e => this.InvokeCreateGalleryCompletedEvent(new EventArgs<GalleryToken>(token,e)), this.authTkns.SharedSecret, 
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token), 
+                new Parameter("method", "flickr.galleries.create"), new Parameter("title", title), 
+                new Parameter("description", description), new Parameter("primary_photo_id", primaryPhotoID));
+
+            return token;
+        }
+
         #region Events
+        private void InvokeCreateGalleryCompletedEvent(EventArgs<GalleryToken> args)
+        {
+            if (this.CreateGalleryCompleted != null)
+            {
+                this.CreateGalleryCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<GalleryToken>> CreateGalleryCompleted;
+        private void InvokeOrderSetsCompeltedEvent(EventArgs<NoReply> args)
+        {
+            if (this.OrderSetsCompleted != null)
+            {
+                this.OrderSetsCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> OrderSetsCompleted;
+        private void InvokeCreatePhotoSetCompletedEvent(EventArgs<PhotoSetToken> args)
+        {
+            if (this.CreatePhotoSetCompleted != null)
+            {
+                this.CreatePhotoSetCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<PhotoSetToken>> CreatePhotoSetCompleted;
         private void InvokeGetListRecentlyUploadedCompletedEvent(EventArgs<IEnumerable<Contact>> args)
         {
             if (this.GetListRecentlyUploadedCompleted != null)
