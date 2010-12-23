@@ -660,17 +660,37 @@ namespace MyFlickr.Rest
         /// <param name="photo"></param>
         /// <param name="photosetID">The id of the photoset for which to fetch the photo's context.</param>
         /// <returns>PhotoContext object</returns>
-        public static PhotoContext GetContext(this Photo photo, string photosetID)
+        public static PhotoContext GetContextinSet(this Photo photo, string photosetID)
         {
             FlickrSynchronousPrmitive<PhotoContext> FSP = new FlickrSynchronousPrmitive<PhotoContext>();
 
             Action<object, EventArgs<PhotoContext>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
             photo.GetContextCompleted += new EventHandler<EventArgs<PhotoContext>>(handler);
-            FSP.Token = photo.GetContextAsync(photosetID);
+            FSP.Token = photo.GetContextinSetAsync(photosetID);
             FSP.WaitForAsynchronousCall();
             photo.GetContextCompleted -= new EventHandler<EventArgs<PhotoContext>>(handler);
 
             return FSP.ResultHolder.ReturnOrThrow(); 
+        }
+
+        /// <summary>
+        /// Returns next and previous photos for a photo in a group pool.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="groupID">The nsid of the group who's pool to fetch the photo's context for.</param>
+        /// <returns>PhotoContext object</returns>
+        public static PhotoContext GetContext(this Photo photo, string groupID)
+        {
+            FlickrSynchronousPrmitive<PhotoContext> FSP = new FlickrSynchronousPrmitive<PhotoContext>();
+
+            Action<object, EventArgs<PhotoContext>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.GetContextCompleted += new EventHandler<EventArgs<PhotoContext>>(handler);
+            FSP.Token = photo.GetContextAsync(groupID);
+            FSP.WaitForAsynchronousCall();
+            photo.GetContextCompleted -= new EventHandler<EventArgs<PhotoContext>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
         }
 
         /// <summary>

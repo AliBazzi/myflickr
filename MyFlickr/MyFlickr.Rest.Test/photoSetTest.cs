@@ -131,7 +131,7 @@ namespace MyFlickr.Rest.Test
             var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
             var photoset = user.GetPhotoSetsList().First();
             var photos = photoset.GetPhotos();
-            var context = photos.Skip(1).First().GetContext(photoset.ID);
+            var context = photos.Skip(1).First().GetContextinSet(photoset.ID);
         }
 
         [TestMethod]

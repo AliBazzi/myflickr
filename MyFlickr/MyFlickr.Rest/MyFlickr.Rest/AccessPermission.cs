@@ -1,14 +1,32 @@
 ﻿using System;
 namespace MyFlickr.Rest
 {
+    /// <summary>
+    /// represents Access Permission options
+    /// </summary>
     public enum AccessPermission
     {
-        None=-1,Read=0,Write=1,Delete=2
+        /// <summary>
+        /// no permission
+        /// </summary>
+        None=-1,
+        /// <summary>
+        /// Read Permission
+        /// </summary>
+        Read=0,
+        /// <summary>
+        /// Write Permission
+        /// </summary>
+        Write=1,
+        /// <summary>
+        /// Delete Permission
+        /// </summary>
+        Delete=2
     }
 
     internal static class AccessPermissionExtensions
     {
-        public static AccessPermission GetValue(this string value)
+        public static AccessPermission GetValue(string value)
         {
             switch (value)
             {

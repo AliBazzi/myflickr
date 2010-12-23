@@ -97,6 +97,8 @@ namespace MyFlickr.Rest
             this.Farm = int.Parse(element.Attribute("farm").Value);
             this.HasComment = element.Attribute("has_comment") != null ? new Nullable<bool>(element.Attribute("has_comment").Value.ToBoolean()) : null;
             this.Comment = element.Element("comment") != null ? element.Element("comment").Value : null;
+            this.DateAdded = element.Attribute("dateadded") != null ? new Nullable<DateTime>(double.Parse(element.Attribute("dateadded").Value).ToDateTimeFromUnix()) : null;
+            this.OwnerName = element.Attribute("ownername") != null ? element.Attribute("ownername").Value : null;
         }
 
         internal Photo(AuthenticationTokens authTkns, XElement element, string ownerID)
@@ -170,6 +172,16 @@ namespace MyFlickr.Rest
         /// The server Farm number which the photo is on
         /// </summary>
         public int Farm { get; private set; }
+
+        /// <summary>
+        /// the date when this photo was added to the group , Could be Null
+        /// </summary>
+        public Nullable<DateTime> DateAdded { get; private set; }
+
+        /// <summary>
+        /// the name of the Owner of the Photo , Could be Null
+        /// </summary>
+        public string OwnerName { get; private set; }
 
         /// <summary>
         /// Get the URL that leads to the Photo Web page on Flickr
@@ -567,7 +579,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="photosetID">The id of the photoset for which to fetch the photo's context.</param>
         /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
-        public Token GetContextAsync(string photosetID)
+        public Token GetContextinSetAsync(string photosetID)
         {
             if (string.IsNullOrEmpty(photosetID))
                 throw new ArgumentException("photosetID");
@@ -583,6 +595,27 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Returns next and previous photos for a photo in a group pool.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="GroupID">The nsid of the group who's pool to fetch the photo's context for.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetContextAsync(string GroupID)
+        {
+            if (string.IsNullOrEmpty(GroupID))
+                throw new ArgumentException("GroupID");
+
+            Token token = Token.GenerateToken();
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeGetContextCompletedEvent(new EventArgs<PhotoContext>(token,new PhotoContext(this.authTkns,elm))),
+                e => this.InvokeGetContextCompletedEvent(new EventArgs<PhotoContext>(token,e)), this.authTkns.SharedSecret, 
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
+                new Parameter("method", "flickr.groups.pools.getContext"), new Parameter("photo_id", this.ID), new Parameter("group_id", GroupID));
+
+            return token;
+        }
+        
         /// <summary>
         /// Returns all visible sets and pools the photo belongs to.
         /// This method does not require authentication.
@@ -2241,61 +2274,13 @@ namespace MyFlickr.Rest
     }
     
     /// <summary>
-    /// represents a group Pool
-    /// </summary>
-    public class Pool
-    {
-        internal Pool(XElement element)
-        {
-            this.ID = element.Attribute("id").Value;
-            this.Title = element.Attribute("title").Value;
-        }
-
-        /// <summary>
-        /// the ID of the Group
-        /// </summary>
-        public string ID { get; private set; }
-
-        /// <summary>
-        /// the Title of the Group
-        /// </summary>
-        public string Title { get; private set; }
-
-        #region Equality
-        public static bool operator ==(Pool left, Pool right)
-        {
-            if (left is Pool)
-                return left.Equals(right);
-            else if (right is Pool)
-                return right.Equals(left);
-            return true;
-        }
-
-        public static bool operator !=(Pool left, Pool right)
-        {
-            return !(left == right);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Pool && this.ID == ((Pool)obj).ID;
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-        #endregion
-    }
-
-    /// <summary>
     /// represents a collection of sets and pools that a photo is contained in
     /// </summary>
     public class PhotoContexts
     {
         internal PhotoContexts(AuthenticationTokens authTkns,XElement element)
         {
-            this.Pools = element.Elements("pool").Select(pool => new Pool(pool));
+            this.Pools = element.Elements("pool").Select(pool => new Pool(authTkns,pool));
             this.Sets = element.Elements("set").Select(set => new PhotoSetBasic(authTkns,set));
         }
 

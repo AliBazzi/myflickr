@@ -79,7 +79,7 @@ namespace MyFlickr.Rest
                 {
                     this.InvokeGetTokenCompleted(new EventArgs<AuthenticationTokens>(token ,new AuthenticationTokens
                              (this.ApiKey,this.SharedSecret,element.Element("auth").Element("token").Value
-                            , element.Element("auth").Element("perms").Value.GetValue()
+                            , AccessPermissionExtensions.GetValue(element.Element("auth").Element("perms").Value)
                             , element.Element("auth").Element("user").Attribute("nsid").Value
                             , element.Element("auth").Element("user").Attribute("username").Value
                             , element.Element("auth").Element("user").Attribute("fullname").Value)));
@@ -106,7 +106,7 @@ namespace MyFlickr.Rest
             {
                 this.InvokeCheckTokenCompleted(new EventArgs<AuthenticationTokens>(token, new AuthenticationTokens
                          (this.ApiKey,this.SharedSecret,element.Element("auth").Element("token").Value
-                        , element.Element("auth").Element("perms").Value.GetValue()
+                        , AccessPermissionExtensions.GetValue(element.Element("auth").Element("perms").Value)
                         , element.Element("auth").Element("user").Attribute("nsid").Value
                         , element.Element("auth").Element("user").Attribute("username").Value
                         , element.Element("auth").Element("user").Attribute("fullname").Value)));
@@ -133,7 +133,7 @@ namespace MyFlickr.Rest
             {
                 this.InvokeGetFullTokenCompleted(new EventArgs<AuthenticationTokens>(token, new AuthenticationTokens
                          (this.ApiKey,this.SharedSecret,element.Element("auth").Element("token").Value
-                        , element.Element("auth").Element("perms").Value.GetValue()
+                        , AccessPermissionExtensions.GetValue(element.Element("auth").Element("perms").Value)
                         , element.Element("auth").Element("user").Attribute("nsid").Value
                         , element.Element("auth").Element("user").Attribute("username").Value
                         , element.Element("auth").Element("user").Attribute("fullname").Value)));
