@@ -688,5 +688,26 @@ namespace MyFlickr.Rest
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
+
+        /// <summary>
+        /// Returns a list of groups to which you can add photos.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <param name="perPage">Number of groups to return per page. If this argument is omitted, it defaults to 400. The maximum allowed value is 400.</param>
+        /// <returns>GroupCollection Object</returns>
+        public static GroupCollection GetGroups(this User user,Nullable<int> page = null ,Nullable<int> perPage = null)
+        {
+            FlickrSynchronousPrmitive<GroupCollection> FSP = new FlickrSynchronousPrmitive<GroupCollection>();
+
+            Action<object, EventArgs<GroupCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetGroupsCompleted += new EventHandler<EventArgs<GroupCollection>>(handler);
+            FSP.Token = user.GetGroupsAsync(page,perPage);
+            FSP.WaitForAsynchronousCall();
+            user.GetGroupsCompleted -= new EventHandler<EventArgs<GroupCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
     }
 }

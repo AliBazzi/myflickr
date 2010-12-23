@@ -32,6 +32,16 @@ galleries:9/9
 groups:1
     * flickr.groups.getinfo
 
+groups.members:1/1
+    * flickr.groups.members.getList
+
+groups.pools:5
+	* flickr.groups.pools.getGroups
+	* flickr.groups.pools.getContext
+	* flickr.groups.pools.add
+	* flickr.groups.pools.remove
+	* flickr.groups.pools.getPhotos
+
 people:5
     * flickr.people.getInfo
     * flickr.people.getPhotos

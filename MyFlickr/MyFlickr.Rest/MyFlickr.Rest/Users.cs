@@ -327,7 +327,7 @@ namespace MyFlickr.Rest
             Token token = Core.Token.GenerateToken();
 
             FlickrCore.IntiateGetRequest(
-                elm => this.InvokeGetPublicGroupsEvent(new EventArgs<GroupCollection>(token,new GroupCollection(elm.Element("groups")))), 
+                elm => this.InvokeGetPublicGroupsEvent(new EventArgs<GroupCollection>(token,new GroupCollection(this.authTkns,elm.Element("groups")))), 
                 e => this.InvokeGetPublicGroupsEvent(new EventArgs<GroupCollection>(token,e)), null,
                 new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.people.getPublicGroups"), new Parameter("user_id", this.UserID));
 
@@ -781,7 +781,36 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Returns a list of groups to which you can add photos.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <param name="perPage">Number of groups to return per page. If this argument is omitted, it defaults to 400. The maximum allowed value is 400.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetGroupsAsync(Nullable<int> page = null, Nullable<int> perPage = null)
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeGetGroupsCompletedEvent(new EventArgs<GroupCollection>(token, new GroupCollection(this.authTkns, elm.Element("groups")))), 
+                e => this.InvokeGetGroupsCompletedEvent(new EventArgs<GroupCollection>(token,e)), this.authTkns.SharedSecret, 
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
+                new Parameter("method", "flickr.groups.pools.getGroups"), new Parameter("page", page), new Parameter("per_page", perPage));
+
+            return token;
+        }
+
         #region Events
+        private void InvokeGetGroupsCompletedEvent(EventArgs<GroupCollection> args)
+        {
+            if (this.GetGroupsCompleted != null)
+            {
+                this.GetGroupsCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<GroupCollection>> GetGroupsCompleted;
         private void InvokeCreateGalleryCompletedEvent(EventArgs<GalleryToken> args)
         {
             if (this.CreateGalleryCompleted != null)

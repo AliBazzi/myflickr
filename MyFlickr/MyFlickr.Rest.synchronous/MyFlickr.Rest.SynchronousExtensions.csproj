@@ -49,6 +49,7 @@
     <Compile Include="SynchronousAuthenticator.cs" />
     <Compile Include="FlickrSynchronousPrmitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SynchronousGroup.cs" />
     <Compile Include="SynchronousPhoto.cs" />
     <Compile Include="SynchronousPhotoSets.cs" />
     <Compile Include="SynchronousUser.cs" />

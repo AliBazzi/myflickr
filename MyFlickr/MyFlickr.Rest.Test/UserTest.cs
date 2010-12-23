@@ -383,5 +383,12 @@ namespace MyFlickr.Rest.Test
 
             }
         }
+
+        [TestMethod]
+        public void GetGroupsTest()
+        {
+            var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetGroups();
+            foreach (var group in res.Groups) { }
+        }
     }
 }
