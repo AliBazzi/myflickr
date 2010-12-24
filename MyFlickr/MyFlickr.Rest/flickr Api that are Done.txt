@@ -139,3 +139,10 @@ test 3/3
     * flickr.test.login
     * flickr.test.null
 
+urls 6/6
+    * flickr.urls.getGroup
+    * flickr.urls.getUserPhotos
+    * flickr.urls.getUserProfile
+    * flickr.urls.lookupGallery
+    * flickr.urls.lookupGroup
+    * flickr.urls.lookupUser
