@@ -54,6 +54,8 @@
     <Compile Include="MyFlickr.Rest\Groups.cs" />
     <Compile Include="MyFlickr.Rest\Photos.cs" />
     <Compile Include="MyFlickr.Rest\PhotoSets.cs" />
+    <Compile Include="MyFlickr.Rest\Reflection.cs" />
+    <Compile Include="MyFlickr.Rest\Test.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="MyFlickr.Rest\AccessPermission.cs" />
     <Compile Include="MyFlickr.Rest\Authenticator.cs" />
