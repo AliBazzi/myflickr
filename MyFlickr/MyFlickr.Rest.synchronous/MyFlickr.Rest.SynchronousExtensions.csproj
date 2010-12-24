@@ -54,6 +54,7 @@
     <Compile Include="SynchronousPhoto.cs" />
     <Compile Include="SynchronousPhotoSets.cs" />
     <Compile Include="SynchronousReflection.cs" />
+    <Compile Include="SynchronousUrls.cs" />
     <Compile Include="SynchronousUser.cs" />
   </ItemGroup>
   <ItemGroup>
