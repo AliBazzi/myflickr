@@ -73,7 +73,7 @@ namespace MyFlickr.Rest
         public Token GetContactsListAsync(Nullable<ContactFilter> contactFilter = null, Nullable<int> page = null , Nullable<int> perPage = null)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
-            Token token = MyFlickr.Core.Token.GenerateToken();
+            Token token = Token.GenerateToken();
 
             FlickrCore.IntiateGetRequest(
               element => this.InvokeGetContactsListCompletedEvent(new EventArgs<ContactsList>(token,new ContactsList(element.Element("contacts")))) 

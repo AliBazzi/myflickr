@@ -9,7 +9,7 @@
     <ProjectGuid>{9114B8DC-5723-45CA-9F8B-AD5957CFAF93}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MyFlickr.Rest.Test</RootNamespace>
+    <RootNamespace>MyFlickr.Rest.Tests</RootNamespace>
     <AssemblyName>MyFlickr.Rest.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -57,7 +57,9 @@
     <Compile Include="PhotoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AuthenticatorTest.cs" />
+    <Compile Include="ReflectionTest.cs" />
     <Compile Include="Serialization.cs" />
+    <Compile Include="TestTest.cs" />
     <Compile Include="UserTest.cs" />
   </ItemGroup>
   <ItemGroup>

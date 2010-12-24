@@ -129,3 +129,13 @@ photosets.comments 4/4
 blogs:2/3
     * flickr.blogs.getList
 	* flickr.blogs.postPhoto
+
+reflection 2/2
+    * flickr.reflection.getMethodInfo
+    * flickr.reflection.getMethods
+
+test 3/3
+    * flickr.test.echo
+    * flickr.test.login
+    * flickr.test.null
+

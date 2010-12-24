@@ -61,7 +61,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>CS5sGgQRMBAQUCgQyADAFAgRdGyFILQDAMEEgO4IC6A=</HashCode>
+      <HashCode>CS5sGgQRMBAQUCgQyAjAFggTdGyFILQDAMEEgO4IC6A=</HashCode>
       <FileName>MyFlickr.Rest\Users.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -129,7 +129,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ACAAAEAAAAAAABAAAAAAAAAAAAAAAAAAQAAQAAAAAAA=</HashCode>
+      <HashCode>ACAAAEAAAAAQABAgAAAACAAAAABAQAAAAAAQAAAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\Groups.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -480,7 +480,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>SwFm0hENUixYiMS4wUEAZgcC13QMiaUDCOgg8wqEBqI=</HashCode>
+      <HashCode>SwFm0hENUixYiMS4wUEAZgcC93QMiaUDCegg8wqEBqI=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -518,7 +518,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgEAAgAAAAAAAAAAAAIAAAAAAAAAAAiA=</HashCode>
+      <HashCode>AABkACAAAAAAgEIAgAgAEAEAAAQEAIQABKAAAEAAAiA=</HashCode>
       <FileName>MyFlickr.Rest\Groups.cs</FileName>
     </TypeIdentifier>
   </Class>

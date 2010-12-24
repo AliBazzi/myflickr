@@ -43,6 +43,23 @@ namespace MyFlickr.Rest
             }
         }
 
+        public static AccessPermission GetValue(int value)
+        {
+            switch (value)
+            {
+                case 0:
+                    return AccessPermission.None;
+                case 1:
+                    return AccessPermission.Read;
+                case 2:
+                    return AccessPermission.Write;
+                case 3:
+                    return AccessPermission.Delete;
+                default:
+                    throw new ArgumentException("value");
+            }
+        }
+
         public static void ValidateRange(this AccessPermission accessPermission)
         {
             if ((int)accessPermission >2 || (int)accessPermission <0)

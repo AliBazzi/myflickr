@@ -201,7 +201,7 @@ namespace MyFlickr.Rest
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
 
-            Token token = MyFlickr.Core.Token.GenerateToken();
+            Token token = Token.GenerateToken();
 
             FlickrCore.InitiatePostRequest(
                 elm => this.InvokeAddTofavoriteCompletedEvent(new EventArgs<NoReply>(token, NoReply.Empty)),

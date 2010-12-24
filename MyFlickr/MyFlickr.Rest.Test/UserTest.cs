@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace MyFlickr.Rest.Test
+namespace MyFlickr.Rest.Tests
 {
     [TestClass]
     public class UserTest

@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace MyFlickr.Rest.Test
+namespace MyFlickr.Rest.Tests
 {
     [XmlRoot]
     public class Data

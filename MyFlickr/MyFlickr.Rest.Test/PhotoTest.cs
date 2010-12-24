@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyFlickr.Core;
 
-namespace MyFlickr.Rest.Test
+namespace MyFlickr.Rest.Tests
 {
     [TestClass]
     public class PhotoTest
