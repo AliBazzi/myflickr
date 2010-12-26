@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Xml.Linq;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
+using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
@@ -110,5 +111,103 @@ namespace MyFlickr.Rest
         /// the URL of the small icon of this Collection , Note : could be relative path for a default when not set by the User
         /// </summary>
         public string IconSmall { get; private set; }
+
+        /// <summary>
+        /// Returns information for a single collection. Currently can only be called by the collection owner, this may change.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetInfoAsync()
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetInfoCompletedEvent(new EventArgs<CollectionInfo>(token,new CollectionInfo(this.authTkns,elm.Element("collection")))), 
+                e => this.InvokeGetInfoCompletedEvent(new EventArgs<CollectionInfo>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.collections.getInfo"), 
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("collection_id", this.ID));
+
+            return token;
+        }
+
+        private void InvokeGetInfoCompletedEvent(EventArgs<CollectionInfo> args)
+        {
+            if (this.GetInfoCompleted != null)
+            {
+                this.GetInfoCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<CollectionInfo>> GetInfoCompleted;
+    }
+
+    /// <summary>
+    /// represents Collection Info
+    /// </summary>
+    public class CollectionInfo
+    {
+        internal CollectionInfo(AuthenticationTokens authtkns,XElement element)
+        {
+            this.ID = element.Attribute("id").Value;
+            this.ChildCount = int.Parse(element.Attribute("child_count").Value);
+            this.DateCreated = double.Parse(element.Attribute("datecreate").Value).ToDateTimeFromUnix();
+            this.IconLarge = element.Attribute("iconlarge").Value;
+            this.IconSmall = element.Attribute("iconsmall").Value;
+            this.Server = element.Attribute("server")!= null ? new Nullable<int>(int.Parse(element.Attribute("server").Value)): null;
+            this.Secret = element.Attribute("secret") != null ? element.Attribute("secret").Value : null;
+            this.Title = element.Element("title").Value;
+            this.Description = element.Element("description").Value;
+            this.IconPhotos = element.Element("iconphotos")!= null ? element.Element("iconphotos").Elements("photo").Select(ph => new Photo(authtkns, ph)) : null;
+        }
+
+        /// <summary>
+        /// the ID of the Collection
+        /// </summary>
+        public string ID { get; private set; }
+
+        /// <summary>
+        /// the Title of the Collection
+        /// </summary>
+        public string Title { get; private set; }
+
+        /// <summary>
+        /// the Description of the Collection
+        /// </summary>
+        public string Description { get; private set; }
+
+        /// <summary>
+        /// the Number of Childs of this collection
+        /// </summary>
+        public int ChildCount { get; private set; }
+
+        /// <summary>
+        /// the Date where this Collection was Created
+        /// </summary>
+        public DateTime DateCreated { get; private set; }
+
+        /// <summary>
+        /// the Url of the Icon that represents this Collection (large) , Could Be Partial Url
+        /// </summary>
+        public string IconLarge { get; private set; }
+
+        /// <summary>
+        /// the Url of the Icon that represents this Collection (small) , Could Be Partial Url
+        /// </summary>
+        public string IconSmall { get; private set; }
+
+        /// <summary>
+        /// the Server Number , Could Be Null
+        /// </summary>
+        public Nullable<int> Server { get; private set; }
+
+        /// <summary>
+        /// Secret of the Collection , Could Be Null
+        /// </summary>
+        public string Secret { get; private set; }
+
+        /// <summary>
+        /// Enumerable of Photos that Represents the Icon Photos of the Collection , Could Be Null
+        /// </summary>
+        public IEnumerable<Photo> IconPhotos { get; private set; }
     }
 }

@@ -46,12 +46,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateTimeExtensions.cs" />
+    <Compile Include="MyFlickr.Rest\Commons.cs" />
     <Compile Include="MyFlickr.Rest\Contacts.cs" />
     <Compile Include="MyFlickr.Core\NoReply.cs" />
     <Compile Include="MyFlickr.Rest\Blogs.cs" />
     <Compile Include="MyFlickr.Rest\Collections.cs" />
     <Compile Include="MyFlickr.Rest\Galleries.cs" />
     <Compile Include="MyFlickr.Rest\Groups.cs" />
+    <Compile Include="MyFlickr.Rest\Interestingness.cs" />
+    <Compile Include="MyFlickr.Rest\Licenses.cs" />
+    <Compile Include="MyFlickr.Rest\MachineTags.cs" />
+    <Compile Include="MyFlickr.Rest\Panda.cs" />
     <Compile Include="MyFlickr.Rest\Photos.cs" />
     <Compile Include="MyFlickr.Rest\PhotoSets.cs" />
     <Compile Include="MyFlickr.Rest\Reflection.cs" />

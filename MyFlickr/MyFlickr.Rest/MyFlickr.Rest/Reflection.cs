@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents reflection methods
+    /// represents the Methods that exist in flickr.reflection namespace
     /// </summary>
     public class Reflection
     {

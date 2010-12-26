@@ -7,7 +7,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents the Method that exist in flickr.urls namespace
+    /// represents the Methods that exist in flickr.urls namespace
     /// </summary>
     public class Urls
     {

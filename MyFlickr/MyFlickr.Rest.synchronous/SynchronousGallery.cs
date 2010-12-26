@@ -6,7 +6,7 @@ using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
-    public static class SyhnchronousGallery
+    public static class SynchronousGallery
     {
         /// <summary>
         /// Add a photo to a gallery.

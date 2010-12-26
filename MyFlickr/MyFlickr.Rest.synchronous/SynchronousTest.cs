@@ -7,7 +7,7 @@ using MyFlickr.Rest;
 
 namespace MyFlickr.Rest
 {
-    public static class SyhncronousTest
+    public static class SynchronousTest
     {
         /// <summary>
         /// A testing method which echo's all parameters back in the response.

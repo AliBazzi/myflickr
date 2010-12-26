@@ -166,14 +166,14 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="MyFlickr.Rest.Collection">
+  <Class Name="MyFlickr.Rest.CollectionInfo">
     <Position X="16.5" Y="8" Width="3" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AQAAAAAAAAAggEAAAAAAAAAAAAAAACAQAIAQAIAAAAA=</HashCode>
+      <HashCode>AQAAAQAAAAAogEAAAAAAAAAAAAAAAAAAAIAEIgAAAAA=</HashCode>
       <FileName>MyFlickr.Rest\Collections.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -480,7 +480,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>SwFm0hENUixYiMS4wUEAZgcC93QMiaUDCegg8wqEBqI=</HashCode>
+      <HashCode>SwFm0hENUixYiMS4wUEAZicC93QMjaUDCegg8wqEBqI=</HashCode>
       <FileName>MyFlickr.Rest\Photos.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -513,9 +513,10 @@
     </TypeIdentifier>
   </Class>
   <Class Name="MyFlickr.Rest.Pool">
-    <Position X="0.5" Y="60.5" Width="1.5" />
+    <Position X="4.5" Y="61" Width="4.75" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AABkACAAAAAAgEIAgAgAEAEAAAQEAIQABKAAAEAAAiA=</HashCode>

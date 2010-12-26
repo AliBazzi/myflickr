@@ -86,9 +86,9 @@ namespace MyFlickr.Rest
         internal Photo(AuthenticationTokens authTkns, XElement element)
             :this(authTkns)
         {
-            this.IsFriend = element.Attribute("isfriend").Value.ToBoolean();
-            this.IsFamily = element.Attribute("isfamily").Value.ToBoolean();
-            this.IsPublic = element.Attribute("ispublic").Value.ToBoolean();
+            this.IsFriend = element.Attribute("isfriend")!= null ? new Nullable<bool>(element.Attribute("isfriend").Value.ToBoolean()) : null ;
+            this.IsFamily = element.Attribute("isfamily") != null ? new Nullable<bool>(element.Attribute("isfamily").Value.ToBoolean()) : null;
+            this.IsPublic = element.Attribute("ispublic") != null ? new Nullable<bool>(element.Attribute("ispublic").Value.ToBoolean()) : null;
             this.ID = element.Attribute("id").Value;
             this.Title = element.Attribute("title").Value;
             this.OwnerID = element.Attribute("owner").Value;
@@ -998,7 +998,35 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Sets the license for a photo.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="licenseID">The license to apply, or 0 (zero) to remove the current license. Note : as of this writing the "no known copyright restrictions" license (7) is not a valid argument.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token SetLicenseAsync(int licenseID)
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.InitiatePostRequest(
+                elm => this.InvokeSetLicenseCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)), 
+                e => this.InvokeSetLicenseCompletedEvent(new EventArgs<NoReply>(token,e)), this.authTkns.SharedSecret, 
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
+                new Parameter("method", "flickr.photos.licenses.setLicense"), new Parameter("photo_id", this.ID), new Parameter("license_id", licenseID));
+
+            return token;
+        }
+
         #region Events
+        private void InvokeSetLicenseCompletedEvent(EventArgs<NoReply> args)
+        {
+            if (this.SetLicenseCompleted != null)
+            {
+                this.SetLicenseCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<NoReply>> SetLicenseCompleted;
         private void InvokeGetGalleriesCompletedEvent(EventArgs<GalleriesCollection> args)
         {
             if (this.GetGalleriesCompleted != null)

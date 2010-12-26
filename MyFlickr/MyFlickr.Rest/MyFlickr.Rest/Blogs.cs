@@ -2,9 +2,56 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
+    /// <summary>
+    /// represents the Method that exist in flickr.blogs namespace
+    /// </summary>
+    public class Blogs
+    {
+        private readonly string apiKey;
+
+        /// <summary>
+        /// Create Blogs Object
+        /// </summary>
+        /// <param name="apiKey">The API Key of your Application</param>
+        public Blogs(string apiKey)
+        {
+            if (string.IsNullOrEmpty(apiKey))
+                throw new ArgumentException("apiKey");
+            this.apiKey = apiKey;
+        }
+
+        /// <summary>
+        /// Return a list of Flickr supported blogging services.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetServicesAsync()
+        {
+            Token token = Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetServicesCompletedEvent(new EventArgs<IEnumerable<BloggingService>>(token,
+                    elm.Element("services").Elements("service").Select(srvc => new BloggingService(srvc)))), 
+                e => this.InvokeGetServicesCompletedEvent(new EventArgs<IEnumerable<BloggingService>>(token,e)),
+                null, new Parameter("api_key", this.apiKey), new Parameter("method", "flickr.blogs.getServices"));
+
+            return token;
+        }
+
+        private void InvokeGetServicesCompletedEvent(EventArgs<IEnumerable<BloggingService>> args)
+        {
+            if (this.GetServicesCompleted != null)
+            {
+                this.GetServicesCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<IEnumerable<BloggingService>>> GetServicesCompleted;
+    }
+
     /// <summary>
     /// represents a Collection of Blogs
     /// </summary>
@@ -76,6 +123,28 @@ namespace MyFlickr.Rest
 
         /// <summary>
         /// the name of the Blog Service
+        /// </summary>
+        public string Name { get; private set; }
+    }
+
+    /// <summary>
+    /// represents Blogging Service Info
+    /// </summary>
+    public class BloggingService
+    {
+        internal BloggingService(XElement element)
+        {
+            this.ID = element.Attribute("id").Value;
+            this.Name = element.Value;
+        }
+
+        /// <summary>
+        /// the ID of the Service
+        /// </summary>
+        public string ID { get; private set; }
+
+        /// <summary>
+        /// the Name of the Service
         /// </summary>
         public string Name { get; private set; }
     }

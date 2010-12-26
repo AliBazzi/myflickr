@@ -7,6 +7,55 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
+    /// represents the Method that exist in flickr.groups namespace
+    /// </summary>
+    public class Groups
+    {
+        private readonly AuthenticationTokens authtkns;
+
+        /// <summary>
+        /// Create Groups Object
+        /// </summary>
+        /// <param name="authenticationTokens">Authentication Tokens Object</param>
+        public Groups(AuthenticationTokens authenticationTokens)
+        {
+            if (authenticationTokens == null)
+                throw new ArgumentNullException("authenticationTokens");
+            this.authtkns = authenticationTokens;
+        }
+
+        /// <summary>
+        /// Search for groups. 18+ groups will only be returned for authenticated calls where the authenticated user is over 18.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="text">The text to search for.</param>
+        /// <param name="page">The page of results to return. If this argument is ommited, it defaults to 1. </param>
+        /// <param name="perPage">Number of groups to return per page. If this argument is ommited, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token SearchAsync(string text,Nullable<int> page = null , Nullable<int> perPage= null )
+        {
+            Token token = Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeSearchCompletedEvent(new EventArgs<GroupCollection>(token,new GroupCollection(this.authtkns,elm.Element("groups")))), 
+                e => this.InvokeSearchCompletedEvent( new EventArgs<GroupCollection>(token,e)), this.authtkns.SharedSecret, 
+                new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token),
+                new Parameter("method", "flickr.groups.search"), new Parameter("text", text), new Parameter("per_page", perPage), new Parameter("page", page));
+
+            return token;
+        }
+
+        private void InvokeSearchCompletedEvent(EventArgs<GroupCollection> args)
+        {
+            if (this.SearchCompleted != null)
+            {
+                this.SearchCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<GroupCollection>> SearchCompleted;
+    }
+
+    /// <summary>
     /// represents a Collection of Groups
     /// </summary>
     public class GroupCollection : IEnumerable<Group>
@@ -22,7 +71,7 @@ namespace MyFlickr.Rest
             this.Total = element.Attribute("total")!=null ? new Nullable<int>(int.Parse(element.Attribute("total").Value)) : null;
             this.Page = element.Attribute("page") != null ? new Nullable<int>(int.Parse(element.Attribute("page").Value)) : null;
             this.Pages = element.Attribute("pages") != null ? new Nullable<int>(int.Parse(element.Attribute("pages").Value)) : null;
-            this.PerPage = element.Attribute("per_page") != null ? new Nullable<int>(int.Parse(element.Attribute("per_page").Value)) : null;
+            this.PerPage = element.Attribute("perpage") != null ? new Nullable<int>(int.Parse(element.Attribute("perpage").Value)) : null;
         }
 
         /// <summary>
@@ -78,7 +127,7 @@ namespace MyFlickr.Rest
         internal Pool(AuthenticationTokens authtkns,XElement element)
         {
             this.authtkns = authtkns;
-            this.ID = element.Attribute("id").Value;
+            this.ID = element.Attribute("nsid") != null ? element.Attribute("nsid").Value : element.Attribute("id").Value;
             this.Title = element.Attribute("title")!=null ? element.Attribute("title").Value : element.Attribute("name").Value;
         }
 
@@ -286,14 +335,14 @@ namespace MyFlickr.Rest
         internal Group(AuthenticationTokens authtkns,XElement element)
             :base(authtkns,element)
         {
-            this.IsAdmin = element.Attribute("admin").Value.ToBoolean();
+            this.IsAdmin = element.Attribute("admin")!=null ? new Nullable<bool>(element.Attribute("admin").Value.ToBoolean()): null ;
             this.IsOver18 = element.Attribute("eighteenplus")!= null ? new Nullable<bool>(element.Attribute("eighteenplus").Value.ToBoolean()) : null ;
         }
 
         /// <summary>
         /// determine whether the calling user is an administrator of the group.
         /// </summary>
-        public bool IsAdmin { get; private set; }
+        public Nullable<bool> IsAdmin { get; private set; }
 
         /// <summary>
         /// determine if the group is visible to members over 18 only.

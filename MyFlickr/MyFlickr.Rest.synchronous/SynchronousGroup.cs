@@ -118,5 +118,27 @@ namespace MyFlickr.Rest
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
+
+        /// <summary>
+        /// Search for groups. 18+ groups will only be returned for authenticated calls where the authenticated user is over 18.
+        /// This method does not require authentication.
+        /// </summary>
+        /// <param name="groups"></param>
+        /// <param name="text">The text to search for.</param>
+        /// <param name="page">The page of results to return. If this argument is ommited, it defaults to 1. </param>
+        /// <param name="perPage">Number of groups to return per page. If this argument is ommited, it defaults to 100. The maximum allowed value is 500.</param>
+        /// <returns>GroupCollection Object</returns>
+        public static GroupCollection Search(this Groups groups, string text, Nullable<int> page = null, Nullable<int> perPage = null)
+        {
+            FlickrSynchronousPrmitive<GroupCollection> FSP = new FlickrSynchronousPrmitive<GroupCollection>();
+
+            Action<object, EventArgs<GroupCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            groups.SearchCompleted += new EventHandler<EventArgs<GroupCollection>>(handler);
+            FSP.Token = groups.SearchAsync(text, page, perPage);
+            FSP.WaitForAsynchronousCall();
+            groups.SearchCompleted -= new EventHandler<EventArgs<GroupCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
     }
 }

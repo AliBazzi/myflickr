@@ -4,8 +4,9 @@ auth:4/4
     * flickr.auth.getFullToken
     * flickr.auth.getToken
 
-collections:1
+collections:2/2
     * flickr.collections.getTree
+	* flickr.collections.getInfo
 
 contacts:3/3
     * flickr.contacts.getList
@@ -29,13 +30,14 @@ galleries:9/9
 	* flickr.galleries.editPhotos
 	* flickr.galleries.getListForPhoto
 
-groups:1
+groups:2/3
     * flickr.groups.getinfo
+	* flickr.groups.search
 
 groups.members:1/1
     * flickr.groups.members.getList
 
-groups.pools:5
+groups.pools:5/5
 	* flickr.groups.pools.getGroups
 	* flickr.groups.pools.getContext
 	* flickr.groups.pools.add
@@ -126,9 +128,10 @@ photosets.comments 4/4
     * flickr.photosets.comments.editComment
     * flickr.photosets.comments.getList
 
-blogs:2/3
+blogs:3/3
     * flickr.blogs.getList
 	* flickr.blogs.postPhoto
+	* flickr.blogs.getServices
 
 reflection 2/2
     * flickr.reflection.getMethodInfo
@@ -146,3 +149,26 @@ urls 6/6
     * flickr.urls.lookupGallery
     * flickr.urls.lookupGroup
     * flickr.urls.lookupUser
+
+photos.licenses 2/2
+    * flickr.photos.licenses.getInfo
+    * flickr.photos.licenses.setLicense
+
+interestingness 1/1
+    * flickr.interestingness.getList
+
+machinetags 5/5
+    * flickr.machinetags.getNamespaces
+    * flickr.machinetags.getPairs
+    * flickr.machinetags.getPredicates
+    * flickr.machinetags.getRecentValues
+    * flickr.machinetags.getValues
+
+panda 2/2
+    * flickr.panda.getList
+    * flickr.panda.getPhotos
+
+commons 1/1
+    * flickr.commons.getInstitutions
+
+

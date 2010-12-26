@@ -50,9 +50,16 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlogsTest.cs" />
+    <Compile Include="CollectionsTest.cs" />
+    <Compile Include="CommonsTest.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="GalleryTest.cs" />
     <Compile Include="GroupsTest.cs" />
+    <Compile Include="InterestingnessTest.cs" />
+    <Compile Include="LicensesTest.cs" />
+    <Compile Include="MachineTagsTest.cs" />
+    <Compile Include="PandaTest.cs" />
     <Compile Include="photoSetTest.cs" />
     <Compile Include="PhotoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
