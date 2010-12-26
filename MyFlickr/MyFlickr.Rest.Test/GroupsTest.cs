@@ -69,5 +69,16 @@ namespace MyFlickr.Rest.Tests
 
             }
         }
+
+        [TestMethod]
+        public void SearchTest()
+        {
+            Groups grps = new Groups(new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token));
+            var res = grps.Search("Damascus");
+            foreach (var item in res)
+            {
+
+            }
+        }
     }
 }

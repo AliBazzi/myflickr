@@ -45,12 +45,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SyhnchronousGallery.cs" />
-    <Compile Include="SyhncronousTest.cs" />
+    <Compile Include="SynchronousGallery.cs" />
+    <Compile Include="SynchronousCommons.cs" />
+    <Compile Include="SynchronousInterestingness.cs" />
+    <Compile Include="SynchronousMachineTags.cs" />
+    <Compile Include="SynchronousTest.cs" />
     <Compile Include="SynchronousAuthenticator.cs" />
     <Compile Include="FlickrSynchronousPrmitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SynchronousBlogs.cs" />
+    <Compile Include="SynchronousCollections.cs" />
     <Compile Include="SynchronousGroup.cs" />
+    <Compile Include="SynchronousLicenses.cs" />
+    <Compile Include="SynchronousPanda.cs" />
     <Compile Include="SynchronousPhoto.cs" />
     <Compile Include="SynchronousPhotoSets.cs" />
     <Compile Include="SynchronousReflection.cs" />

@@ -7,7 +7,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents the Method that exist in flickr.test namespace
+    /// represents the Methods that exist in flickr.test namespace
     /// </summary>
     public class Test
     {
@@ -55,7 +55,7 @@ namespace MyFlickr.Rest
             this.authtkns.ValidateGrantedPermission(AccessPermission.Read);
             Token token = Token.GenerateToken();
 
-            Uri url = FlickrCore.IntiateGetRequest(
+            FlickrCore.IntiateGetRequest(
                 elm => this.InvokeNullCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)),
                 e => this.InvokeNullCompletedEvent(new EventArgs<NoReply>(token,e)), this.authtkns.SharedSecret, 
                 new Parameter("method", "flickr.test.null"), new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token));

@@ -493,6 +493,7 @@ namespace MyFlickr.Rest
         /// Remove the bounding box from a person in a photo.
         /// This method requires authentication with 'write' permission.
         /// </summary>
+        /// <param name="photo"></param>
         /// <param name="personID">The NSID of the person whose bounding box you want to remove.</param>
         /// <returns>NoReply Represents Void</returns>
         public static NoReply RemovePersonCoords(this Photo photo, string personID)
@@ -637,6 +638,7 @@ namespace MyFlickr.Rest
         /// Returns the comments for a photo.
         /// This method does not require authentication.
         /// </summary>
+        /// <param name="photo"></param>
         /// <param name="minCommentDate">Minimum date that a a comment was added. The date should be in the form of a unix timestamp.</param>
         /// <param name="maxCommentDate">Maximum date that a comment was added. The date should be in the form of a unix timestamp.</param>
         /// <returns>Enumerable of Comments Object</returns>
@@ -710,6 +712,26 @@ namespace MyFlickr.Rest
             FSP.Token = photo.GetGalleriesListAsync(perPage,page);
             FSP.WaitForAsynchronousCall();
             photo.GetGalleriesCompleted -= new EventHandler<EventArgs<GalleriesCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow(); 
+        }
+
+        /// <summary>
+        /// Sets the license for a photo.
+        /// This method requires authentication with 'write' permission.
+        /// </summary>
+        /// <param name="photo"></param>
+        /// <param name="licenseID">The license to apply, or 0 (zero) to remove the current license. Note : as of this writing the "no known copyright restrictions" license (7) is not a valid argument.</param>
+        /// <returns>NoReply represents Void</returns>
+        public static NoReply SetLicense(this Photo photo, int licenseID)
+        {
+            FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
+
+            Action<object, EventArgs<NoReply>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            photo.SetLicenseCompleted += new EventHandler<EventArgs<NoReply>>(handler);
+            FSP.Token = photo.SetLicenseAsync(licenseID);
+            FSP.WaitForAsynchronousCall();
+            photo.SetLicenseCompleted -= new EventHandler<EventArgs<NoReply>>(handler);
 
             return FSP.ResultHolder.ReturnOrThrow(); 
         }
