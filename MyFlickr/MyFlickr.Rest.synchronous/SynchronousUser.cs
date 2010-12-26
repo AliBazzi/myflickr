@@ -709,5 +709,48 @@ namespace MyFlickr.Rest
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
+
+        /// <summary>
+        /// Returns a list of recent activity on photos belonging to the calling user. Do not poll this method more than once an hour (as Flickr Team Recommends).
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="timeFrame">The timeframe in which to return updates for. This can be specified in days ('2d') or hours ('4h'). The default behavoir is to return changes since the beginning of the previous user session.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <param name="perPage">Number of items to return per page. If this argument is omitted, it defaults to 10. The maximum allowed value is 50.</param>
+        /// <returns>ItemsCollection Object</returns>
+        public static ItemsCollection GetPhotosActivities(this User user, string timeFrame = null, Nullable<int> page = null, Nullable<int> perPage = null)
+        {
+            FlickrSynchronousPrmitive<ItemsCollection> FSP = new FlickrSynchronousPrmitive<ItemsCollection>();
+
+            Action<object, EventArgs<ItemsCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetPhotosActivitiesCompleted += new EventHandler<EventArgs<ItemsCollection>>(handler);
+            FSP.Token = user.GetPhotosActivitesAsync(timeFrame,page, perPage);
+            FSP.WaitForAsynchronousCall();
+            user.GetPhotosActivitiesCompleted -= new EventHandler<EventArgs<ItemsCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns a list of recent activity on photos commented on by the calling user. Do not poll this method more than once an hour (as Flickr Team Recommends , Not me ;) ).
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <param name="perPage">Number of items to return per page. If this argument is omitted, it defaults to 10. The maximum allowed value is 50.</param>
+        /// <returns>ItemsCollection Object</returns>
+        public static ItemsCollection GetCommentsActivities(this User user, Nullable<int> page = null, Nullable<int> perPage = null)
+        {
+            FlickrSynchronousPrmitive<ItemsCollection> FSP = new FlickrSynchronousPrmitive<ItemsCollection>();
+
+            Action<object, EventArgs<ItemsCollection>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetCommentsActivitiesCompleted += new EventHandler<EventArgs<ItemsCollection>>(handler);
+            FSP.Token = user.GetCommentsActivitiesAsync( page, perPage);
+            FSP.WaitForAsynchronousCall();
+            user.GetCommentsActivitiesCompleted -= new EventHandler<EventArgs<ItemsCollection>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
     }
 }

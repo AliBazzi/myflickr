@@ -802,7 +802,67 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Returns a list of recent activity on photos belonging to the calling user. Do not poll this method more than once an hour (as Flickr Team Recommends , Not me ;) ).
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="timeFrame">The timeframe in which to return updates for. This can be specified in days ('2d') or hours ('4h'). The default behavoir is to return changes since the beginning of the previous user session.</param>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <param name="perPage">Number of items to return per page. If this argument is omitted, it defaults to 10. The maximum allowed value is 50.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetPhotosActivitesAsync(string timeFrame = null, Nullable<int> page = null, Nullable<int> perPage = null)
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetPhotosActivitiesCompletedEvent(new EventArgs<ItemsCollection>(token, new ItemsCollection(this.authTkns, elm.Element("items")))),
+                e => this.InvokeGetPhotosActivitiesCompletedEvent(new EventArgs<ItemsCollection>(token, e)), this.authTkns.SharedSecret,
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
+                new Parameter("method", "flickr.activity.userPhotos"), new Parameter("per_page", perPage), 
+                new Parameter("page", page), new Parameter("timeframe", timeFrame));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Returns a list of recent activity on photos commented on by the calling user. Do not poll this method more than once an hour (as Flickr Team Recommends , Not me ;) ).
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
+        /// <param name="perPage">Number of items to return per page. If this argument is omitted, it defaults to 10. The maximum allowed value is 50.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        public Token GetCommentsActivitiesAsync(Nullable<int> page = null, Nullable<int> perPage = null)
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.IntiateGetRequest(
+                elm => this.InvokeGetCommentsActivitiesCompletedEvent(new EventArgs<ItemsCollection>(token, new ItemsCollection(this.authTkns, elm.Element("items")))),
+                e => this.InvokeGetCommentsActivitiesCompletedEvent(new EventArgs<ItemsCollection>(token, e)), this.authTkns.SharedSecret,
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
+                new Parameter("method", "flickr.activity.userComments"), new Parameter("per_page", perPage), new Parameter("page", page));
+
+            return token;
+        }
+
         #region Events
+        private void InvokeGetCommentsActivitiesCompletedEvent(EventArgs<ItemsCollection> args)
+        {
+            if (this.GetCommentsActivitiesCompleted != null)
+            {
+                this.GetCommentsActivitiesCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<ItemsCollection>> GetCommentsActivitiesCompleted;
+        private void InvokeGetPhotosActivitiesCompletedEvent(EventArgs<ItemsCollection> args)
+        {
+            if (this.GetPhotosActivitiesCompleted != null)
+            {
+                this.GetPhotosActivitiesCompleted.Invoke(this, args);
+            }
+        }
+        public event EventHandler<EventArgs<ItemsCollection>> GetPhotosActivitiesCompleted;
         private void InvokeGetGroupsCompletedEvent(EventArgs<GroupCollection> args)
         {
             if (this.GetGroupsCompleted != null)
@@ -1436,5 +1496,303 @@ namespace MyFlickr.Rest
         /// Kilometers
         /// </summary>
         Km = 1
+    }
+
+    /// <summary>
+    /// represents collection of items
+    /// </summary>
+    public class ItemsCollection : IEnumerable<Item>
+    {
+        private XElement data;
+
+        private readonly AuthenticationTokens authtkns;
+
+        internal ItemsCollection(AuthenticationTokens authtkns,XElement element)
+        {
+            this.authtkns = authtkns;
+            this.data = element;
+            this.Total = int.Parse(data.Attribute("total").Value);
+            this.PerPage = int.Parse(data.Attribute("perpage").Value);
+            this.Page = int.Parse(data.Attribute("page").Value);
+            this.Pages = int.Parse(data.Attribute("pages").Value);
+        }
+
+        /// <summary>
+        /// the number of total pages
+        /// </summary>
+        public int Pages { get; private set; }
+
+        /// <summary>
+        /// the number of current page
+        /// </summary>
+        public int Page { get; private set; }
+
+        /// <summary>
+        /// the number of items per page
+        /// </summary>
+        public int PerPage { get; private set; }
+
+        /// <summary>
+        /// the Total Number of items 
+        /// </summary>
+        public int Total { get; private set; }
+
+        /// <summary>
+        /// Enumerable of Item Objects
+        /// </summary>
+        public IEnumerable<Item> Items { get { return this.data.Elements("item").Select(item => new Item(this.authtkns,item)); } }
+
+        public IEnumerator<Item> GetEnumerator()
+        {
+            foreach (var item in this.Items)
+                yield return item;
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+    }
+
+    /// <summary>
+    /// represents an item that has an activity
+    /// </summary>
+    public class Item : IEnumerable<Event>
+    {
+        private XElement data;
+
+        private readonly AuthenticationTokens authtkns;
+
+        internal Item(AuthenticationTokens authtkns,XElement element)
+        {
+            this.authtkns = authtkns;
+            this.data = element;
+            this.ID = element.Attribute("id").Value;
+            this.OwnerID = element.Attribute("owner").Value;
+            this.OwnerName = element.Attribute("ownername").Value;
+            this.Primary = element.Attribute("primary") != null ? element.Attribute("primary").Value : null;
+            this.Secret = element.Attribute("secret").Value;
+            this.Server = int.Parse(element.Attribute("server").Value);
+            this.Farm = int.Parse(element.Attribute("farm").Value);
+            this.CommentsCount = int.Parse(element.Attribute("comments").Value);
+            this.ViewsCount = int.Parse(element.Attribute("views").Value);
+            this.FavesCount = element.Attribute("faves") != null ? new Nullable<int>(int.Parse(element.Attribute("faves").Value)) : null;
+            this.NotesCount = element.Attribute("notes") != null ? new Nullable<int>(int.Parse(element.Attribute("notes").Value)) : null;
+            this.PhotosCount = element.Attribute("photos") != null ? new Nullable<int>(int.Parse(element.Attribute("photos").Value)) : null;
+            this.Type = ItemTypeExtensions.GetValue(element.Attribute("type").Value);
+        }
+
+        /// <summary>
+        /// the Type of the Item
+        /// </summary>
+        public ItemType Type { get; private set; }
+
+        /// <summary>
+        /// the ID of the Item
+        /// </summary>
+        public string ID { get; private set; }
+
+        /// <summary>
+        /// the Owner ID
+        /// </summary>
+        public string OwnerID { get; private set; }
+
+        /// <summary>
+        /// the Owner Name
+        /// </summary>
+        public string OwnerName { get; private set; }
+
+        /// <summary>
+        /// the Secret of the Item
+        /// </summary>
+        public string Secret { get; private set; }
+
+        /// <summary>
+        /// the Server number which the item is on
+        /// </summary>
+        public int Server { get; private set; }
+
+        /// <summary>
+        /// The server Farm number which the item is on
+        /// </summary>
+        public int Farm { get; private set; }
+
+        /// <summary>
+        /// the Total Number of Comments on the Item
+        /// </summary>
+        public int CommentsCount { get; private set; }
+
+        /// <summary>
+        /// the Total Number of Notes on the Item , Could Be Null
+        /// </summary>
+        public Nullable<int> NotesCount { get; private set; }
+
+        /// <summary>
+        /// the Total Number of Views of the Item
+        /// </summary>
+        public int ViewsCount { get; private set; }
+
+        /// <summary>
+        /// the Total Number of favorites of this Item , Could Be Null
+        /// </summary>
+        public Nullable<int> FavesCount { get; private set; }
+
+        /// <summary>
+        /// the Number of the Photos in the Photoset , Could Be Null
+        /// </summary>
+        public Nullable<int> PhotosCount { get; private set; }
+
+        /// <summary>
+        /// the primary photo ID of the Photoset , Could Be Null
+        /// </summary>
+        public string Primary { get; private set; }
+
+        /// <summary>
+        /// Enumerable of Event Objects that represents the Activity on the Item
+        /// </summary>
+        public IEnumerable<Event> Activities { get { return this.data.Element("activity").Elements("event").Select(evnt => new Event(this.authtkns,evnt)); } }
+
+        public IEnumerator<Event> GetEnumerator()
+        {
+            foreach (var evnt in this.Activities)
+                yield return evnt;
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+    }
+
+    /// <summary>
+    /// represents an Event Info on an Item
+    /// </summary>
+    public class Event
+    {
+        private XElement data;
+
+        private readonly AuthenticationTokens authtkns;
+
+        internal Event(AuthenticationTokens authtkns,XElement element)
+        {
+            this.data = element;
+            this.authtkns = authtkns;
+            this.UserID = element.Attribute("user").Value;
+            this.UserName = element.Attribute("username").Value;
+            this.DateCreated = double.Parse(element.Attribute("dateadded").Value).ToDateTimeFromUnix();
+            this.CommentID = element.Attribute("commentid") != null ? element.Attribute("commentid").Value : null;
+            this.CommentID = element.Attribute("noteid") != null ? element.Attribute("noteid").Value : null;
+            this.Content = element.Value;
+            this.type = EventTypeExtensions.GetValue(element.Attribute("type").Value);
+        }
+
+        /// <summary>
+        /// the User that Created the Event
+        /// </summary>
+        public string UserID { get; private set; }
+
+        /// <summary>
+        /// the Name of the User that Created the Event
+        /// </summary>
+        public string UserName { get; private set; }
+
+        /// <summary>
+        /// the date when the Event was Created
+        /// </summary>
+        public DateTime DateCreated { get; private set; }
+
+        /// <summary>
+        /// the ID of the Comment , Could Be Null
+        /// </summary>
+        public string CommentID { get; private set; }
+
+        /// <summary>
+        /// the Content of the Event
+        /// </summary>
+        public string Content { get; private set; }
+
+        /// <summary>
+        /// the Type of the Event
+        /// </summary>
+        public EventType type { get; private set; }
+
+        /// <summary>
+        /// the Note ID , Could Be Null
+        /// </summary>
+        public string NoteID { get; private set; }
+    }
+
+    /// <summary>
+    /// represents the Type of an Event
+    /// </summary>
+    public enum EventType 
+    {
+        /// <summary>
+        /// a Comment Event
+        /// </summary>
+        Comment = 0,
+        /// <summary>
+        /// a Favorite Event
+        /// </summary>
+        Favorite =1,
+        /// <summary>
+        /// a Tag Addition
+        /// </summary>
+        Tag =2,
+        /// <summary>
+        /// a Note Addition
+        /// </summary>
+        Note =3
+    }
+
+    /// <summary>
+    /// represents the Item types
+    /// </summary>
+    public enum ItemType
+    {
+        /// <summary>
+        /// a photo
+        /// </summary>
+        Photo = 0,
+        /// <summary>
+        /// a Photoset
+        /// </summary>
+        Photoset = 1
+    }
+
+    internal static class EventTypeExtensions
+    {
+        public static EventType GetValue(string value)
+        {
+            switch (value)
+            {
+                case "fave":
+                    return EventType.Favorite;
+                case "comment":
+                    return EventType.Comment;
+                case "tag":
+                    return EventType.Tag;
+                case "note":
+                    return EventType.Note;
+                default:
+                    throw new ArgumentException("value");
+            }
+        }
+    }
+
+    internal static class ItemTypeExtensions
+    {
+        public static ItemType GetValue(string value)
+        {
+            switch (value)
+            {
+                case "photo":
+                    return ItemType.Photo;
+                case "photoset":
+                    return ItemType.Photoset;
+                default:
+                    throw new ArgumentException("value");
+            }
+        }
     }
 }

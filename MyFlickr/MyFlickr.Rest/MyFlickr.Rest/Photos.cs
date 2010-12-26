@@ -90,7 +90,7 @@ namespace MyFlickr.Rest
             this.IsFamily = element.Attribute("isfamily") != null ? new Nullable<bool>(element.Attribute("isfamily").Value.ToBoolean()) : null;
             this.IsPublic = element.Attribute("ispublic") != null ? new Nullable<bool>(element.Attribute("ispublic").Value.ToBoolean()) : null;
             this.ID = element.Attribute("id").Value;
-            this.Title = element.Attribute("title").Value;
+            this.Title = element.Attribute("title") != null ? element.Attribute("title").Value : element.Element("title").Value;
             this.OwnerID = element.Attribute("owner").Value;
             this.Secret = element.Attribute("secret").Value;
             this.Server = int.Parse(element.Attribute("server").Value);
@@ -159,7 +159,7 @@ namespace MyFlickr.Rest
         public string OwnerID { get; private set; }
 
         /// <summary>
-        /// this string is used to in the building of photo URL
+        /// this string is used in the building of photo URL
         /// </summary>
         public string Secret { get; private set; }
 
