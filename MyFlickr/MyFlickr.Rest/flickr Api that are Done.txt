@@ -171,4 +171,9 @@ panda 2/2
 commons 1/1
     * flickr.commons.getInstitutions
 
+activity 2/2
+    * flickr.activity.userComments
+    * flickr.activity.userPhotos
+
+
 

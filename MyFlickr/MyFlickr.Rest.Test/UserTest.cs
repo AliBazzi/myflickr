@@ -390,5 +390,33 @@ namespace MyFlickr.Rest.Tests
             var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance().GetGroups();
             foreach (var group in res.Groups) { }
         }
+
+        [TestMethod]
+        public void GetPhotosActivitiesTest()
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var items = user.GetPhotosActivities("24h");
+            foreach (var item in items)
+            {
+                foreach (var Event in item)
+                {
+
+                }
+            }
+         }
+
+        [TestMethod]
+        public void GetCommentsActivitesTest()
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var items = user.GetCommentsActivities();
+            foreach (var item in items)
+            {
+                foreach (var Event in item)
+                {
+
+                }
+            }
+        }
     }
 }

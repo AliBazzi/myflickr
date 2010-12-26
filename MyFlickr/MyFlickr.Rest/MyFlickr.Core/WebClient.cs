@@ -8,8 +8,7 @@ namespace MyFlickr.Core
 
         private WebClient()
         {
-            this.wc = new System.Net.WebClient();
-            this.wc.Encoding = System.Text.UnicodeEncoding.UTF8;
+            this.wc = new System.Net.WebClient() { Encoding = System.Text.UnicodeEncoding.UTF8 };
         }
 
         public WebClient(Action<System.Net.DownloadStringCompletedEventArgs> callBack)

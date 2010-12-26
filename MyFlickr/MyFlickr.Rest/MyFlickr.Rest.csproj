@@ -68,7 +68,7 @@
     <Compile Include="MyFlickr.Rest\AuthenticationTokens.cs" />
     <Compile Include="MyFlickr.Rest\EventArgs.cs" />
     <Compile Include="MyFlickr.Core\FlickrExcpetion.cs" />
-    <Compile Include="MyFlickr.Core\FlickrRequest.cs" />
+    <Compile Include="MyFlickr.Core\FlickrCore.cs" />
     <Compile Include="MD5Helper.cs" />
     <Compile Include="MyFlickr.Core\Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
