@@ -3,6 +3,9 @@ using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
+    /// <summary>
+    /// Extension Methods for MachineTags
+    /// </summary>
     public static class SynchronousMachineTags
     {
         /// <summary>

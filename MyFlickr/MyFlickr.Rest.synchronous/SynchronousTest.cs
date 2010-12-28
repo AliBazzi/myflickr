@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using MyFlickr.Core;
-using MyFlickr.Rest;
 
 namespace MyFlickr.Rest
 {
+    /// <summary>
+    /// Extension Methods for Test
+    /// </summary>
     public static class SynchronousTest
     {
         /// <summary>

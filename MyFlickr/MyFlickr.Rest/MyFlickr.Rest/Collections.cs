@@ -41,12 +41,20 @@ namespace MyFlickr.Rest
             }
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Collection> GetEnumerator()
         {
             foreach (var item in this.Collections)
                 yield return item;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -138,7 +146,57 @@ namespace MyFlickr.Rest
                 this.GetInfoCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetInfoAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<CollectionInfo>> GetInfoCompleted;
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Collection Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(Collection left, Collection right)
+        {
+            if (left is Collection)
+                return left.Equals(right);
+            else if (right is Collection)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of Collection Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(Collection left, Collection right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Collection && this.ID == ((Collection)obj).ID;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -209,5 +267,52 @@ namespace MyFlickr.Rest
         /// Enumerable of Photos that Represents the Icon Photos of the Collection , Could Be Null
         /// </summary>
         public IEnumerable<Photo> IconPhotos { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of CollectionInfo Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(CollectionInfo left, CollectionInfo right)
+        {
+            if (left is CollectionInfo)
+                return left.Equals(right);
+            else if (right is CollectionInfo)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of CollectionInfo Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(CollectionInfo left, CollectionInfo right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is CollectionInfo && this.ID == ((CollectionInfo)obj).ID;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 }

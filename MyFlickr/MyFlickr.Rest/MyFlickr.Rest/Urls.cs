@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using MyFlickr.Core;
 
 namespace MyFlickr.Rest
@@ -157,6 +154,9 @@ namespace MyFlickr.Rest
                 this.LookupUserCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when LookupUserAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<Tuple<string,string>>> LookupUserCompleted;
         private void InvokeLookupGroupCompletedEvent(EventArgs<Tuple<string,string>> args)
         {
@@ -165,6 +165,9 @@ namespace MyFlickr.Rest
                 this.LookupGroupCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when LookupGroupAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<Tuple<string,string>>> LookupGroupCompleted;
         private void InvokeLookupGalleryCompletedEvent(EventArgs<Gallery> args)
         {
@@ -173,6 +176,9 @@ namespace MyFlickr.Rest
                 this.LookupGalleryCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when LookupGalleryAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<Gallery>> LookupGalleryCompleted;
         private void InvokeGetUserProfileCompletedEvent(EventArgs<Uri> args)
         {
@@ -181,6 +187,9 @@ namespace MyFlickr.Rest
                 this.GetUserProfileCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetUserProfileAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<Uri>> GetUserProfileCompleted;
         private void InvokeGetUserPhotosCompletedEvent(EventArgs<Uri> args)
         {
@@ -189,6 +198,9 @@ namespace MyFlickr.Rest
                 this.GetUserPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetUserPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<Uri>> GetUserPhotosCompleted;
         private void InvokeGetGroupCompletedEvent(EventArgs<Uri> args)
         {
@@ -197,6 +209,9 @@ namespace MyFlickr.Rest
                 this.GetGroupCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetGroupAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<Uri>> GetGroupCompleted;
         #endregion
     }

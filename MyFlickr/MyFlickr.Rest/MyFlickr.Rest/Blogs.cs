@@ -49,6 +49,9 @@ namespace MyFlickr.Rest
                 this.GetServicesCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetServicesAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<BloggingService>>> GetServicesCompleted;
     }
 
@@ -81,12 +84,20 @@ namespace MyFlickr.Rest
             }
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Blog> GetEnumerator()
         {
             foreach (var blog in this.Blogs)
                 yield return blog;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -125,6 +136,53 @@ namespace MyFlickr.Rest
         /// the name of the Blog Service
         /// </summary>
         public string Name { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Blog Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(Blog left, Blog right)
+        {
+            if (left is Blog)
+                return left.Equals(right);
+            else if (right is Blog)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of Blog Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(Blog left, Blog right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Blog && this.ID == ((Blog)obj).ID;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -147,5 +205,52 @@ namespace MyFlickr.Rest
         /// the Name of the Service
         /// </summary>
         public string Name { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of BloggingService Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(BloggingService left, BloggingService right)
+        {
+            if (left is BloggingService)
+                return left.Equals(right);
+            else if (right is BloggingService)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of BloggingService Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(BloggingService left, BloggingService right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is BloggingService && this.ID == ((BloggingService)obj).ID;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 }

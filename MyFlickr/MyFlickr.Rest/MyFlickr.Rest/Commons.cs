@@ -49,6 +49,9 @@ namespace MyFlickr.Rest
                 this.GetInstitutionsCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetInstitutionsAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<Institution>>> GetInstitutionsCompleted;
     }
 
@@ -84,5 +87,52 @@ namespace MyFlickr.Rest
         /// Urls of Institution
         /// </summary>
         public IEnumerable<URL> Urls { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Institution Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(Institution left, Institution right)
+        {
+            if (left is Institution)
+                return left.Equals(right);
+            else if (right is Institution)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of Institution Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(Institution left, Institution right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Institution && this.ID == ((Institution)obj).ID;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 }

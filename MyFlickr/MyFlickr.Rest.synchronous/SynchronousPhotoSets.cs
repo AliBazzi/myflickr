@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
+    /// <summary>
+    /// Extension Methods for PhotoSet
+    /// </summary>
     public static class SynchronousPhotoSets
     {
         /// <summary>
@@ -277,7 +278,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="photoset"></param>
-        /// <param name="photosIDs">/// <param name="photosIDs">Ordered, comma-delimited list of photo ids. Photos that are not in the list will keep their original order.</param>
+        /// <param name="photosIDs">Ordered, comma-delimited list of photo ids. Photos that are not in the list will keep their original order.</param>
         /// <returns>NoReply Represents Void</returns>
         public static NoReply ReorderPhotos(this PhotoSetBasic photoset, params string[] photosIDs)
         {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MyFlickr.Core;
 using System.Xml.Linq;
 
@@ -14,6 +13,10 @@ namespace MyFlickr.Rest
     {
         private readonly string apiKey;
 
+        /// <summary>
+        /// Create Instance of Reflection 
+        /// </summary>
+        /// <param name="apiKey">The API Key of your Application</param>
         public Reflection(string apiKey)
         {
             if (string.IsNullOrEmpty(apiKey))
@@ -67,6 +70,9 @@ namespace MyFlickr.Rest
                 this.GetMethodInfoCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetMethodInfoAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<MethodInfo>> GetMethodInfoCompleted;
         private void InvokeGetMethodsCompletedEvent(EventArgs<IEnumerable<Method>> args)
         {
@@ -75,6 +81,9 @@ namespace MyFlickr.Rest
                 this.GetMethodsCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetMethodsAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<Method>>> GetMethodsCompleted;
         #endregion
     }
@@ -93,6 +102,53 @@ namespace MyFlickr.Rest
         {
             this.Name = name;
         }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Method Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(Method left, Method right)
+        {
+            if (left is Method)
+                return left.Equals(right);
+            else if (right is Method)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of Method Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(Method left, Method right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Method && this.Name == ((Method)obj).Name;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -158,6 +214,53 @@ namespace MyFlickr.Rest
         /// Enumerable of possible Errors that could Occur while Calling the Method
         /// </summary>
         public IEnumerable<Error> Errors { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of MethodInfo Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(MethodInfo left, MethodInfo right)
+        {
+            if (left is MethodInfo)
+                return left.Equals(right);
+            else if (right is MethodInfo)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of MethodInfo Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(MethodInfo left, MethodInfo right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is MethodInfo && this.Name == ((MethodInfo)obj).Name;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -186,6 +289,53 @@ namespace MyFlickr.Rest
         /// a Description for the Argument
         /// </summary>
         public string Description { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Argument Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(Argument left, Argument right)
+        {
+            if (left is Argument)
+                return left.Equals(right);
+            else if (right is Argument)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of Argument Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(Argument left, Argument right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Argument && this.Name == ((Argument)obj).Name;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -214,5 +364,52 @@ namespace MyFlickr.Rest
         /// the Description of the Error
         /// </summary>
         public string Description { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Error Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(Error left, Error right)
+        {
+            if (left is Error)
+                return left.Equals(right);
+            else if (right is Error)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of Error Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(Error left, Error right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Error && this.Code == ((Error)obj).Code;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 }

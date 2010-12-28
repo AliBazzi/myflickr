@@ -144,6 +144,9 @@ namespace MyFlickr.Rest
                 this.GetNamespacesCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetNamespacesAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NamespacesCollection>> GetNamespacesCompleted;
         private void InvokeGetPairsCompletedEvent(EventArgs<PairsCollection> args)
         {
@@ -152,6 +155,9 @@ namespace MyFlickr.Rest
                 this.GetPairsCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPairsAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PairsCollection>> GetPairsCompleted;
         private void InvokeGetValuesCompletedEvent(EventArgs<ValuesCollection> args)
         {
@@ -160,6 +166,9 @@ namespace MyFlickr.Rest
                 this.GetValuesCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetValuesAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<ValuesCollection>> GetValuesCompleted;
         private void InvokeGetRecentValuesCompletedEvent(EventArgs<ValuesCollection> args)
         {
@@ -168,6 +177,9 @@ namespace MyFlickr.Rest
                 this.GetRecentValuesCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetRecentValuesAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<ValuesCollection>> GetRecentValuesCompleted;
         private void InvokeGetPredicatesCompletedEvent(EventArgs<PredicatesCollection> args)
         {
@@ -176,6 +188,9 @@ namespace MyFlickr.Rest
                 this.GetPredicatesCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPredicatesAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PredicatesCollection>> GetPredicatesCompleted;
         #endregion
     }
@@ -187,7 +202,7 @@ namespace MyFlickr.Rest
     {
         private XElement data;
 
-        public PredicatesCollection(XElement element)
+        internal PredicatesCollection(XElement element)
         {
             this.data = element;
             this.Page = int.Parse(element.Attribute("page").Value);
@@ -221,12 +236,20 @@ namespace MyFlickr.Rest
         /// </summary>
         public IEnumerable<Predicate> Predicates { get { return this.data.Elements("predicate").Select(pred => new Predicate(pred)); } }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Predicate> GetEnumerator()
         {
             foreach (var pred in this.Predicates)
                 yield return pred;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -259,6 +282,53 @@ namespace MyFlickr.Rest
         /// the Content of the Predicate
         /// </summary>
         public string Value { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Predicate Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(Predicate left, Predicate right)
+        {
+            if (left is Predicate)
+                return left.Equals(right);
+            else if (right is Predicate)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of Predicate Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(Predicate left, Predicate right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Predicate && this.Value == ((Predicate)obj).Value;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -314,12 +384,20 @@ namespace MyFlickr.Rest
         /// </summary>
         public IEnumerable<Value> Values { get { return this.data.Elements("value").Select(val => new Value(val)); } }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Value> GetEnumerator()
         {
             foreach (var val in this.Values)
                 yield return val;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -370,6 +448,53 @@ namespace MyFlickr.Rest
         /// the Content of the Value
         /// </summary>
         public string Content { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Value Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(Value left, Value right)
+        {
+            if (left is Value)
+                return left.Equals(right);
+            else if (right is Value)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of Value Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(Value left, Value right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Value && this.Content == ((Value)obj).Content;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -413,12 +538,20 @@ namespace MyFlickr.Rest
         /// </summary>
         public IEnumerable<Pair> Pairs { get { return this.data.Elements("pair").Select(pair => new Pair(pair)); } }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Pair> GetEnumerator()
         {
             foreach (var pair in this.Pairs)
                 yield return pair;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -456,6 +589,53 @@ namespace MyFlickr.Rest
         /// the Value
         /// </summary>
         public string Value { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Pair Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(Pair left, Pair right)
+        {
+            if (left is Pair)
+                return left.Equals(right);
+            else if (right is Pair)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of Pair Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(Pair left, Pair right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Pair && this.Value == ((Pair)obj).Value;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -499,12 +679,20 @@ namespace MyFlickr.Rest
         /// </summary>
         public IEnumerable<Namespace> Namespaces { get { return this.data.Elements("namespace").Select(ns => new Namespace(ns)); } }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Namespace> GetEnumerator()
         {
             foreach (var ns in this.Namespaces)
                 yield return ns;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -537,5 +725,52 @@ namespace MyFlickr.Rest
         /// the Value of Namespace
         /// </summary>
         public string Value { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Namespace Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(Namespace left, Namespace right)
+        {
+            if (left is Namespace)
+                return left.Equals(right);
+            else if (right is Namespace)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of Namespace Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(Namespace left, Namespace right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Namespace && this.Value == ((Namespace)obj).Value;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 }

@@ -4,6 +4,9 @@ using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
+    /// <summary>
+    /// Extension Methods for Commons
+    /// </summary>
     public static class SynchronousCommons
     {
         /// <summary>

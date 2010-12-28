@@ -37,12 +37,20 @@ namespace MyFlickr.Rest
             }
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<PhotoSet> GetEnumerator()
         {
             foreach (var photoset in this.PhotoSets)
                 yield return photoset;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -389,6 +397,9 @@ namespace MyFlickr.Rest
                 this.ReorderPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when ReorderPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> ReorderPhotosCompleted;
         private void InvokeSetPrimaryPhotoCompletedEvent(EventArgs<NoReply> args)
         {
@@ -397,6 +408,9 @@ namespace MyFlickr.Rest
                 this.SetPrimaryPhotoCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when SetPrimaryPhotoAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> SetPrimaryPhotoCompleted;
         private void InvokeSetMetadataCompletedEvent(EventArgs<NoReply> args)
         {
@@ -405,6 +419,9 @@ namespace MyFlickr.Rest
                 this.SetMetadataCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when SetMetadataAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> SetMetadataCompleted;
         private void InvokeEditPhotosCompletedEvent(EventArgs<NoReply> args)
         {
@@ -413,6 +430,9 @@ namespace MyFlickr.Rest
                 this.EditPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when EditPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> EditPhotosCompleted;
         private void InvokeGetPhotosCompletedEvent(EventArgs<PhotosCollection> args)
         {
@@ -421,6 +441,9 @@ namespace MyFlickr.Rest
                 this.GetPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosCollection>> GetPhotosCompleted;
         private void InvokeRemovePhotosCompletedEvent(EventArgs<NoReply> args)
         {
@@ -429,6 +452,9 @@ namespace MyFlickr.Rest
                 this.RemovePhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when RemovePhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> RemovePhotosCompleted;
         private void InvokeRemovePhotoCompletedEvent(EventArgs<NoReply> args)
         {
@@ -437,6 +463,9 @@ namespace MyFlickr.Rest
                 this.RemovePhotoCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when RemovePhotoAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> RemovePhotoCompleted;
         private void InvokeAddPhotoCompletedEvent(EventArgs<NoReply> args)
         {
@@ -445,6 +474,9 @@ namespace MyFlickr.Rest
                 this.AddPhotoCompleted.Invoke(this,args);
             }
         }
+        /// <summary>
+        /// Raised when AddPhotoAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> AddPhotoCompleted;
         private void InvokeDeleteCompletedEvent(EventArgs<NoReply> args)
         {
@@ -453,6 +485,9 @@ namespace MyFlickr.Rest
                 this.DeleteCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when DeleteAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> DeleteCompleted;
         private void InvokeEditCommentCompletedEvent(EventArgs<NoReply> args)
         {
@@ -461,6 +496,9 @@ namespace MyFlickr.Rest
                 this.EditCommentCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when EditCommentAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> EditCommentCompleted;
         private void InvokeDeleteCommentCompletedEvent(EventArgs<NoReply> args)
         {
@@ -469,6 +507,9 @@ namespace MyFlickr.Rest
                 this.DeleteCommentCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when DeleteCommentAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> DeleteCommentCompleted;
         private void InvokeAddCommentCompletedEvent(EventArgs<string> args)
         {
@@ -477,6 +518,9 @@ namespace MyFlickr.Rest
                 this.AddCommentCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when AddCommentAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<string>> AddCommentCompleted;
         private void InvokeGetCommentsListCompletedEvent(EventArgs<IEnumerable<Comment>> args)
         {
@@ -485,10 +529,19 @@ namespace MyFlickr.Rest
                 this.GetCommentsListCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetCommentsListAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<Comment>>> GetCommentsListCompleted;
         #endregion
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of PhotoSetBasic Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(PhotoSetBasic left, PhotoSetBasic right)
         {
             if (left is PhotoSetBasic)
@@ -498,16 +551,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of PhotoSetBasic Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(PhotoSetBasic left, PhotoSetBasic right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is PhotoSetBasic && this.ID == ((PhotoSetBasic)obj).ID;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -611,6 +679,56 @@ namespace MyFlickr.Rest
                 this.CreateInstanceCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when CreateInstanceAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotoSet>> CreateInstanceCompleted;
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of PhotoSetToken Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(PhotoSetToken left, PhotoSetToken right)
+        {
+            if (left is PhotoSetToken)
+                return left.Equals(right);
+            else if (right is PhotoSetToken)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of PhotoSetToken Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(PhotoSetToken left, PhotoSetToken right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is PhotoSetToken && this.ID == ((PhotoSetToken)obj).ID;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 }

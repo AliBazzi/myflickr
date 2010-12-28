@@ -17,18 +17,17 @@ namespace MyFlickr.Core
             if (callBack == null)
                 throw new ArgumentNullException("callBack");
 
-            this.wc.DownloadStringCompleted += new System.Net.DownloadStringCompletedEventHandler((obj, e) => callBack.Invoke(e));
+            this.wc.DownloadStringCompleted += new System.Net.DownloadStringCompletedEventHandler((o,e) => { callBack.Invoke(e); ((System.Net.WebClient)o).Dispose(); });
         }
 
         public WebClient(Action<System.Net.UploadStringCompletedEventArgs> callBack)
-            :this()
+            : this()
         {
             if (callBack == null)
                 throw new ArgumentNullException("callBack");
 
-            this.wc.UploadStringCompleted += new System.Net.UploadStringCompletedEventHandler((obj, e) => callBack.Invoke(e));
+            this.wc.UploadStringCompleted += new System.Net.UploadStringCompletedEventHandler((o, e) => { callBack.Invoke(e); ((System.Net.WebClient)o).Dispose(); });
         }
-
         public Uri InitiateGetRequestAsync(Uri uri)
         {
             if (uri == null)

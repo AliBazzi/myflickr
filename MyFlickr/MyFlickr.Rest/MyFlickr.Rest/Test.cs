@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MyFlickr.Core;
 
 namespace MyFlickr.Rest
@@ -90,6 +89,9 @@ namespace MyFlickr.Rest
                 this.LoginCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when LoginAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<Tuple<string,string>>> LoginCompleted;
         private void InvokeNullCompletedEvent(EventArgs<NoReply> args)
         {
@@ -98,6 +100,9 @@ namespace MyFlickr.Rest
                 this.NullCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when NullAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> NullCompleted;
         private void InvokeEchoCompletedEvent(EventArgs<IEnumerable<Parameter>> args)
         {
@@ -106,6 +111,9 @@ namespace MyFlickr.Rest
                 this.EchoCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when EchoAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<Parameter>>> EchoCompleted;
         #endregion
     }

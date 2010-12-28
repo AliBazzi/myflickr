@@ -20,6 +20,12 @@ namespace MyFlickr.Core
         }
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Token Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(Token left, Token right)
         {
             if (left is Token)
@@ -29,16 +35,31 @@ namespace MyFlickr.Core
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of Token Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(Token left, Token right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is Token && this.Guid == ((Token)obj).Guid;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();

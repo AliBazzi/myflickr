@@ -56,12 +56,20 @@ namespace MyFlickr.Rest
             }
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Gallery> GetEnumerator()
         {
             foreach (var gallery in this.Galleries)
                 yield return gallery;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -291,6 +299,9 @@ namespace MyFlickr.Rest
                 this.EditPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when EditPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> EditPhotosCompleted;
         private void InvokeGetPhotosCompletedEvent(EventArgs<PhotosCollection> args)
         {
@@ -299,6 +310,9 @@ namespace MyFlickr.Rest
                 this.GetPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosCollection>> GetPhotosCompleted;
         private void InvokeEditPhotoCompeltedEvent(EventArgs<NoReply> args)
         {
@@ -307,6 +321,9 @@ namespace MyFlickr.Rest
                 this.EditPhotoCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when EditPhotoAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> EditPhotoCompleted;
         private void InvokeEditMetadataCompletedEvent(EventArgs<NoReply> args)
         {
@@ -315,6 +332,9 @@ namespace MyFlickr.Rest
                 this.EditMetadataCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when EditMetadataAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> EditMetadataCompleted;
         private void InvokeAddPhotoCompletedEvent(EventArgs<NoReply> args)
         {
@@ -323,7 +343,57 @@ namespace MyFlickr.Rest
                 this.AddPhotoCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when AddPhotoAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> AddPhotoCompleted;
+        #endregion
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Gallery Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(Gallery left, Gallery right)
+        {
+            if (left is Gallery)
+                return left.Equals(right);
+            else if (right is Gallery)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of Gallery Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(Gallery left, Gallery right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Gallery && this.ID == ((Gallery)obj).ID;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
         #endregion
     }
 
@@ -375,6 +445,56 @@ namespace MyFlickr.Rest
                 this.CreateInstanceCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when CreateInstanceAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<Gallery>> CreateInstanceCompleted;
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of GalleryToken Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(GalleryToken left, GalleryToken right)
+        {
+            if (left is GalleryToken)
+                return left.Equals(right);
+            else if (right is GalleryToken)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of GalleryToken Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(GalleryToken left, GalleryToken right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is GalleryToken && this.ID == ((GalleryToken)obj).ID;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 }
