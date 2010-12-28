@@ -4,6 +4,9 @@ using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
+    /// <summary>
+    /// Extension Methods for Blogs
+    /// </summary>
     public static class SynchronousBlogs
     {
         /// <summary>

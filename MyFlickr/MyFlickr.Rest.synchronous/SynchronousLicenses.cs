@@ -4,6 +4,9 @@ using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
+    /// <summary>
+    /// Extension Methods for Licenses
+    /// </summary>
     public static class SynchronousLicenses
     {
         /// <summary>

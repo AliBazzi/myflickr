@@ -153,8 +153,10 @@ namespace MyFlickr.Rest
                 GetFullTokenCompleted.Invoke(null, args);
             }
         }
+        /// <summary>
+        /// Raised when GetFullTokenAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<AuthenticationTokens>> GetFullTokenCompleted;
-
         private void InvokeCheckTokenCompleted(EventArgs<AuthenticationTokens> args)
         {
             if (CheckTokenCompleted != null)
@@ -162,8 +164,10 @@ namespace MyFlickr.Rest
                 CheckTokenCompleted.Invoke(null,args);
             }
         }
+        /// <summary>
+        /// Raised when CheckTokenAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<AuthenticationTokens>> CheckTokenCompleted;
-
         private void InvokeGetTokenCompleted(EventArgs<AuthenticationTokens> args)
         {
             if (GetTokenCompleted !=null)
@@ -171,8 +175,10 @@ namespace MyFlickr.Rest
                 GetTokenCompleted.Invoke(null, args);
             }
         }
+        /// <summary>
+        /// Raised when GetTokenAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<AuthenticationTokens>> GetTokenCompleted;
-
         private void InvokeGetFrobCompleted(EventArgs<Frob> args)
         {
             if (GetFrobCompleted !=null)
@@ -180,6 +186,9 @@ namespace MyFlickr.Rest
                 GetFrobCompleted.Invoke(null,args);
             }
         }
+        /// <summary>
+        /// Raised when GetFrobAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<Frob>> GetFrobCompleted;
         #endregion
     }
@@ -206,6 +215,12 @@ namespace MyFlickr.Rest
         }
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Frob Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(Frob left, Frob right)
         {
             if (left is Frob)
@@ -215,16 +230,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of Frob Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(Frob left, Frob right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is Frob && this.Value == ((Frob)obj).Value;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();

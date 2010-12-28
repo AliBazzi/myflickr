@@ -49,6 +49,9 @@ namespace MyFlickr.Rest
                 this.GetInfoCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetInfoAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<License>>> GetInfoCompleted;
     }
 
@@ -78,5 +81,52 @@ namespace MyFlickr.Rest
         /// the Url of the License descriptor , Could Be Empty
         /// </summary>
         public Uri Url { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of License Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(License left, License right)
+        {
+            if (left is License)
+                return left.Equals(right);
+            else if (right is License)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of License Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(License left, License right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is License && this.ID == ((License)obj).ID;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 }

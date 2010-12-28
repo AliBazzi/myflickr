@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace MyFlickr.Rest
 {
+    /// <summary>
+    /// Extensions Methods for Users
+    /// </summary>
     public static class SynchronousUser
     {
         /// <summary>
@@ -580,7 +583,6 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="user"></param>
-        /// <param name="user">The object that represents a Flickr User.</param>
         /// <param name="count">Number of photos to return. Defaults to 10, maximum 50. This is only used if single_photo is not passed.</param>
         /// <param name="justFriends">set as true to only show photos from friends and family (excluding regular contacts).</param>
         /// <param name="singlePhoto">set as true to Only fetch one photo (the latest) per contact, instead of all photos in chronological order.</param>
@@ -606,7 +608,8 @@ namespace MyFlickr.Rest
         /// This method is still considered experimental. We don't plan for it to change or to go away but so long as this notice is present you should write your code accordingly.
         /// This method requires authentication with 'read' permission.
         /// </summary>
-        /// <param name="date_lastUpload">Limits the resultset to contacts that have uploaded photos since this date. The date should be in the form of a Unix timestamp. The default offset is (1) hour and the maximum (24) hours. </param>
+        /// <param name="user"></param>
+        /// <param name="dateLastUpload">Limits the resultset to contacts that have uploaded photos since this date. The date should be in the form of a Unix timestamp. The default offset is (1) hour and the maximum (24) hours. </param>
         /// <param name="filter">Limit the result set to all contacts or only those who are friends or family. Valid options are:
         ///* ff friends and family
         ///* all all your contacts

@@ -51,6 +51,9 @@ namespace MyFlickr.Rest
                 this.GetListCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetListAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosCollection>> GetListCompleted;
     }
 }

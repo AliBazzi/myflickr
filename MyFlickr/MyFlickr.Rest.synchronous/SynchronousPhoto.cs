@@ -4,6 +4,9 @@ using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
+    /// <summary>
+    /// Extension Methods for Photo
+    /// </summary>
     public static class SynchronousPhoto
     {
         /// <summary>

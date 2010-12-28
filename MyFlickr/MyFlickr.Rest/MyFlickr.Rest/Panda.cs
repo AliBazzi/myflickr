@@ -73,6 +73,9 @@ namespace MyFlickr.Rest
                 this.GetPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PandaPhotosCollection>> GetPhotosCompleted;
         private void InvokeGetListCompletedEvent(EventArgs<IEnumerable<string>> args)
         {
@@ -81,6 +84,9 @@ namespace MyFlickr.Rest
                 this.GetListCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetListAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<string>>> GetListCompleted;
     }
 
@@ -128,12 +134,20 @@ namespace MyFlickr.Rest
         /// </summary>
         public IEnumerable<Photo> Photos { get { return this.data.Elements("photo").Select(ph => new Photo(this.authtkns, ph)); } }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Photo> GetEnumerator()
         {
             foreach (var photo in this.Photos)
                 yield return photo;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();

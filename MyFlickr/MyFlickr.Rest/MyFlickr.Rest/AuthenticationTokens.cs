@@ -55,6 +55,12 @@ namespace MyFlickr.Rest
         }
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of AuthenticationTokens Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(AuthenticationTokens left, AuthenticationTokens right)
         {
             if (left is AuthenticationTokens)
@@ -64,17 +70,34 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of AuthenticationTokens Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(AuthenticationTokens left, AuthenticationTokens right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
-            return obj is AuthenticationTokens && this.ApiKey == ((AuthenticationTokens)obj).ApiKey &&
-                this.SharedSecret == ((AuthenticationTokens)obj).SharedSecret && this.Token == ((AuthenticationTokens)obj).Token;
+            return obj is AuthenticationTokens && this.ApiKey == ((AuthenticationTokens)obj).ApiKey && 
+                this.SharedSecret == ((AuthenticationTokens)obj).SharedSecret &&
+                this.Token == ((AuthenticationTokens)obj).Token &&
+                this.AccessPermission == ((AuthenticationTokens)obj).AccessPermission;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -82,6 +105,9 @@ namespace MyFlickr.Rest
         #endregion
     }
 
+    /// <summary>
+    /// Extension Methods for AuthenticationTokens
+    /// </summary>
     public static class AuthenticationTokensExtensions
     {
         /// <summary>

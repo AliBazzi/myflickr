@@ -59,12 +59,20 @@ namespace MyFlickr.Rest
             }
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Photo> GetEnumerator()
         {
             foreach (var photo in this.Photos)
                 yield return photo;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -1026,6 +1034,9 @@ namespace MyFlickr.Rest
                 this.SetLicenseCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when SetLicenseAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> SetLicenseCompleted;
         private void InvokeGetGalleriesCompletedEvent(EventArgs<GalleriesCollection> args)
         {
@@ -1034,6 +1045,9 @@ namespace MyFlickr.Rest
                 this.GetGalleriesCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetGalleriesAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<GalleriesCollection>> GetGalleriesCompleted;
         private void InvokeGetCommentsListCompletedEvent(EventArgs<IEnumerable<Comment>> args)
         {
@@ -1042,6 +1056,9 @@ namespace MyFlickr.Rest
                 this.GetCommentsListCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetCommentsListAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<Comment>>> GetCommentsListCompleted;
         private void InvokeEditCommentCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1050,6 +1067,9 @@ namespace MyFlickr.Rest
                 this.EditCommentCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when EditCommentAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> EditCommentCompleted;
         private void InvokeDeleteCommentCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1058,6 +1078,9 @@ namespace MyFlickr.Rest
                 this.DeleteCommentCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when DeleteAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> DeleteCommentCompleted;
         private void InvokeAddCommentCompletedEvent(EventArgs<string> args)
         {
@@ -1066,6 +1089,9 @@ namespace MyFlickr.Rest
                 this.AddCommentCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when AddCommentAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<string>> AddCommentCompleted;
         private void InvokeRotateCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1074,6 +1100,9 @@ namespace MyFlickr.Rest
                 this.RotateCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when RotateAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> RotateCompleted;
         private void InvokeGetPersonsListCompletedEvent(EventArgs<IEnumerable<PersonInPhoto>> args)
         {
@@ -1082,6 +1111,9 @@ namespace MyFlickr.Rest
                 this.GetPersonsListCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPersonsListAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<PersonInPhoto>>> GetPersonsListCompleted;
         private void InvokeEditPersonCoordsCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1090,6 +1122,9 @@ namespace MyFlickr.Rest
                 this.EditPersonCoordsCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when EditPersonCoordsAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> EditPersonCoordsCompleted;
         private void InvokeRemovePersonCoordsCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1098,6 +1133,9 @@ namespace MyFlickr.Rest
                 this.RemovePersonCoordsCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when RemovePersonCoordsAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> RemovePersonCoordsCompleted;
         private void InvokeRemovePersonCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1106,6 +1144,9 @@ namespace MyFlickr.Rest
                 this.RemovePersonCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when RemovePersonAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> RemovePersonCompleted;
         private void InvokeAddPersonCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1114,6 +1155,9 @@ namespace MyFlickr.Rest
                 this.AddPersonCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when AddPersonAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> AddPersonCompleted;
         private void InvokeEditNoteCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1122,6 +1166,9 @@ namespace MyFlickr.Rest
                 this.EditNoteCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when EditNoteAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> EditNoteCompleted;
         private void InvokeDeleteNoteCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1130,6 +1177,9 @@ namespace MyFlickr.Rest
                 this.DeleteNoteCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when DeleteNoteAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> DeleteNoteCompleted;
         private void InvokeAddNoteCompletedEvent(EventArgs<string> args)
         {
@@ -1138,6 +1188,9 @@ namespace MyFlickr.Rest
                 this.AddNoteCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when AddNoteAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<string>> AddNoteCompleted;
         private void InvokeGetSizesCompletedEvent(EventArgs<IEnumerable<Size>> args)
         {
@@ -1146,6 +1199,9 @@ namespace MyFlickr.Rest
                 this.GetSizesCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetSizesAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<Size>>> GetSizesCompleted;
         private void InvokeGetAllContextsCompletedEvent(EventArgs<PhotoContexts> args)
         {
@@ -1154,6 +1210,9 @@ namespace MyFlickr.Rest
                 this.GetAllContextsCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetAllContextsAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotoContexts>> GetAllContextsCompleted;
         private void InvokeGetContextCompletedEvent(EventArgs<PhotoContext> args)
         {
@@ -1162,6 +1221,9 @@ namespace MyFlickr.Rest
                 this.GetContextCompleted.Invoke(this, args);
             }    
         }
+        /// <summary>
+        /// Raised when GetContextAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotoContext>> GetContextCompleted;
         private void InvokeDeleteCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1170,6 +1232,9 @@ namespace MyFlickr.Rest
                 this.DeleteCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when DeleteAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> DeleteCompleted;
         private void InvokeSetContentTypeCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1178,6 +1243,9 @@ namespace MyFlickr.Rest
                 this.SetContentTypeCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when SetContentTypeAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> SetContentTypeCompleted;
         private void InvokeSetDatesCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1186,6 +1254,9 @@ namespace MyFlickr.Rest
                 this.SetDatesCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when SetDatesAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> SetDatesCompleted;
         private void InvokeSetSafetyLevelCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1194,6 +1265,9 @@ namespace MyFlickr.Rest
                 this.SetSafetyLevelCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when SetSafetyLevelAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> SetSafetyLevelCompleted;
         private void InvokeSetMetaCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1202,6 +1276,9 @@ namespace MyFlickr.Rest
                 this.SetMetaCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when SetMetaAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> SetMetaCompleted;
         private void InvokeSetPermissionsCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1210,6 +1287,9 @@ namespace MyFlickr.Rest
                 this.SetPermissionsCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when SetPermissionsAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> SetPermissionsCompleted;
         private void InvokeGetPermissionsCompletedEvent(EventArgs<Permissions> args)
         {
@@ -1218,6 +1298,9 @@ namespace MyFlickr.Rest
                 this.GetPermissionsCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPermissionsAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<Permissions>> GetPermissionsCompleted;
         private void InvokeRemoveTagCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1226,6 +1309,9 @@ namespace MyFlickr.Rest
                 this.RemoveTagCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when RemoveTagAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> RemoveTagCompleted;
         private void InvokeAddTagCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1234,6 +1320,9 @@ namespace MyFlickr.Rest
                 this.AddTagCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when AddTagAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> AddTagCompleted;
         private void InvokeGetInfoCompletedEvent(EventArgs<PhotoInfo> args)
         {
@@ -1242,6 +1331,9 @@ namespace MyFlickr.Rest
                 this.GetInfoCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetInfoAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotoInfo>> GetInfoCompleted;
         private void InvokePostPhotoToBlogCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1250,6 +1342,9 @@ namespace MyFlickr.Rest
                 this.PostPhotoToBlogCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when PostToBlogAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> PostPhotoToBlogCompleted;
         private void InvokeGetFavoritesCompletedEvent(EventArgs<IEnumerable<Person>> args)
         {
@@ -1258,6 +1353,9 @@ namespace MyFlickr.Rest
                 this.GetFavoritesCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetFavoritesAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<Person>>> GetFavoritesCompleted;
         private void InvokeGetExifCompletedEvent(EventArgs<IEnumerable<Exif>> args)
         {
@@ -1266,6 +1364,9 @@ namespace MyFlickr.Rest
                 this.GetExifCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetExifAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<Exif>>> GetExifCompleted;
         private void InvokeRemoveFromfavoriteCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1274,6 +1375,9 @@ namespace MyFlickr.Rest
                 this.RemoveFromFavoriteCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when RemoveFromFavoritesAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> RemoveFromFavoriteCompleted;
         private void InvokeAddTofavoriteCompletedEvent(EventArgs<NoReply> args)
         {
@@ -1282,10 +1386,19 @@ namespace MyFlickr.Rest
                 this.AddToFavoriteCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when AddToFavoriteAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> AddToFavoriteCompleted;
         #endregion
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Photo Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(Photo left, Photo right)
         {
             if (left is Photo)
@@ -1295,16 +1408,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of Photo Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(Photo left, Photo right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is Photo && this.ID == ((Photo)obj).ID;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -1368,12 +1496,20 @@ namespace MyFlickr.Rest
             }
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Photo> GetEnumerator()
         {
             foreach (var photo in this.Photos)
                 yield return photo;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -1426,6 +1562,12 @@ namespace MyFlickr.Rest
         public string Clean { get; private set; }
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Exif Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(Exif left, Exif right)
         {
             if (left is Exif)
@@ -1435,16 +1577,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of Exif Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(Exif left, Exif right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
-            return obj is Exif && this.Tag == ((Exif)obj).Tag && this.Raw == ((Exif)obj).Raw;
+            return obj is Exif && this.Raw == ((Exif)obj).Raw;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -1480,6 +1637,12 @@ namespace MyFlickr.Rest
         public DateTime FaveDate { get; private set; }
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Person Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(Person left, Person right)
         {
             if (left is Person)
@@ -1489,16 +1652,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of Person Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(Person left, Person right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is Person && this.ID == ((Person)obj).ID;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -1693,12 +1871,24 @@ namespace MyFlickr.Rest
         /// </summary>
         public Location Location { get { return this.data.Element("location") != null ? new Location(this.data.Element("location")) : null ; } }
 
+        /// <summary>
+        /// Determine Whether the Geo Tags are visible to Public or Not.
+        /// </summary>
         public Nullable<bool> GeoPermissionsIsPublic { get { return this.data.Element("geoperms") != null ? new Nullable<bool>(this.data.Element("geoperms").Attribute("ispublic").Value.ToBoolean()) : null; } }
 
+        /// <summary>
+        /// Determine Whether the Geo Tags are visible to Contacts or Not.
+        /// </summary>
         public Nullable<bool> GeoPermissionsIsContact { get { return this.data.Element("geoperms") != null ? new Nullable<bool>(this.data.Element("geoperms").Attribute("iscontact").Value.ToBoolean()) : null; } }
 
+        /// <summary>
+        /// Determine Whether the Geo Tags are visible to Friends or Not.
+        /// </summary>
         public Nullable<bool> GeoPermissionsIsFriend { get { return this.data.Element("geoperms") != null ? new Nullable<bool>(this.data.Element("geoperms").Attribute("isfriend").Value.ToBoolean()) : null; } }
 
+        /// <summary>
+        /// Determine Whether the Geo Tags are visible to Family or Not.
+        /// </summary>
         public Nullable<bool> GeoPermissionsIsFamily { get { return this.data.Element("geoperms") != null ? new Nullable<bool>(this.data.Element("geoperms").Attribute("isfamily").Value.ToBoolean()) : null; } }
 
         /// <summary>
@@ -1707,6 +1897,12 @@ namespace MyFlickr.Rest
         public IEnumerable<URL> Urls { get { return this.data.Element("urls").Elements("url").Select(url => new URL(url)); } }
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of PhotoInfo Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(PhotoInfo left, PhotoInfo right)
         {
             if (left is PhotoInfo)
@@ -1716,16 +1912,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of PhotoInfo Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(PhotoInfo left, PhotoInfo right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
-            return obj is PhotoInfo && this.ID ==((PhotoInfo)obj).ID;
+            return obj is PhotoInfo && this.ID == ((PhotoInfo)obj).ID;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -1765,6 +1976,12 @@ namespace MyFlickr.Rest
         public string Location { get { return this.data.Attribute("location").Value; } }
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Owner Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(Owner left, Owner right)
         {
             if (left is Owner)
@@ -1774,16 +1991,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of Owner Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(Owner left, Owner right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is Owner && this.ID == ((Owner)obj).ID;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -1849,6 +2081,12 @@ namespace MyFlickr.Rest
         public string Content { get; private set; }
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Note Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(Note left, Note right)
         {
             if (left is Note)
@@ -1858,16 +2096,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of Note Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(Note left, Note right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is Note && this.ID == ((Note)obj).ID;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -1915,6 +2168,12 @@ namespace MyFlickr.Rest
         public int MachineTag { get; private set; }
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Tag Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(Tag left, Tag right)
         {
             if (left is Tag)
@@ -1924,16 +2183,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of Tag Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(Tag left, Tag right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
-            return obj is Tag && this.ID ==((Tag)obj).ID;
+            return obj is Tag && this.ID == ((Tag)obj).ID;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -2040,12 +2314,22 @@ namespace MyFlickr.Rest
         /// </summary>
         public string Value { get; private set; }
 
+        /// <summary>
+        /// Return String Representation of the Instance.
+        /// </summary>
+        /// <returns>a String</returns>
         public override string ToString()
         {
             return this.Value;
         }
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of URL Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(URL left, URL right)
         {
             if (left is URL)
@@ -2055,16 +2339,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of URL Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(URL left, URL right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is URL && this.Value == ((URL)obj).Value;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -2101,8 +2400,14 @@ namespace MyFlickr.Rest
         /// </summary>
         public bool IsFamily { get; private set; }
 
+        /// <summary>
+        /// Determine whether you can Add Comment
+        /// </summary>
         public CommentPermission CommentPermission { get; private set; }
 
+        /// <summary>
+        /// Determine whether you can Add Metadata Info
+        /// </summary>
         public AddMetadataPermission AddMetadataPermission { get; private set; }
     }
 
@@ -2275,6 +2580,12 @@ namespace MyFlickr.Rest
         public string URL { get; private set; }
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of NeighborPhoto Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(NeighborPhoto left, NeighborPhoto right)
         {
             if (left is NeighborPhoto)
@@ -2284,16 +2595,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of NeighborPhoto Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(NeighborPhoto left, NeighborPhoto right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is NeighborPhoto && this.ID == ((NeighborPhoto)obj).ID;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -2367,32 +2693,6 @@ namespace MyFlickr.Rest
         /// the URL of the Photo Size Page
         /// </summary>
         public Uri Url { get; private set; }
-
-        #region Equality
-        public static bool operator ==(Size left, Size right)
-        {
-            if (left is Size)
-                return left.Equals(right);
-            else if (right is Size)
-                return right.Equals(left);
-            return true;
-        }
-
-        public static bool operator !=(Size left, Size right)
-        {
-            return !(left == right);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Size && this.Label == ((Size)obj).Label;
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-        #endregion
     }
     
     /// <summary>
@@ -2471,6 +2771,12 @@ namespace MyFlickr.Rest
         public Nullable<int> Width { get; private set; }
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of PersonInPhoto Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(PersonInPhoto left, PersonInPhoto right)
         {
             if (left is PersonInPhoto)
@@ -2480,16 +2786,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of PersonInPhoto Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(PersonInPhoto left, PersonInPhoto right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is PersonInPhoto && this.ID == ((PersonInPhoto)obj).ID;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -2560,7 +2881,13 @@ namespace MyFlickr.Rest
         /// </summary>
         public string Text { get; private set; }
 
-        #region Equlaity
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Comment Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(Comment left, Comment right)
         {
             if (left is Comment)
@@ -2570,16 +2897,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of Comment Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(Comment left, Comment right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is Comment && this.ID == ((Comment)obj).ID;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();

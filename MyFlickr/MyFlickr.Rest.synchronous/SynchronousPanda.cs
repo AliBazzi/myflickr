@@ -4,6 +4,9 @@ using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
+    /// <summary>
+    /// Extension Methods for Panda
+    /// </summary>
     public static class SynchronousPanda
     {
         /// <summary>

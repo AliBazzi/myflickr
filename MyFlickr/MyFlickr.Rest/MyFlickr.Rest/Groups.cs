@@ -52,6 +52,9 @@ namespace MyFlickr.Rest
                 this.SearchCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when SearchAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<GroupCollection>> SearchCompleted;
     }
 
@@ -105,12 +108,20 @@ namespace MyFlickr.Rest
             }
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Group> GetEnumerator()
         {
             foreach (var group in this.Groups)
                 yield return group;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -265,6 +276,9 @@ namespace MyFlickr.Rest
                 this.GetMembersListCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetMembersListAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<MembersList>> GetMembersListCompleted;
         private void InvokeGetPhotosCompletedEvent(EventArgs<PhotosCollection> args)
         {
@@ -273,6 +287,9 @@ namespace MyFlickr.Rest
                 this.GetPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosCollection>> GetPhotosCompleted;
         private void InvokeRemoveCompletedEvent(EventArgs<NoReply> args)
         {
@@ -281,6 +298,9 @@ namespace MyFlickr.Rest
                 this.RemoveCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when RemoveAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> RemoveCompleted;
         private void InvokeAddCompletedEvent(EventArgs<NoReply> args)
         {
@@ -289,6 +309,9 @@ namespace MyFlickr.Rest
                 this.AddCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised whenAddAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> AddCompleted;
         private void InvokeGetInfoCompletedEvent(EventArgs<GroupInfo> args)
         {
@@ -297,10 +320,19 @@ namespace MyFlickr.Rest
                 this.GetInfoCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetInfoAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<GroupInfo>> GetInfoCompleted;
         #endregion
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Pool Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(Pool left, Pool right)
         {
             if (left is Pool)
@@ -310,16 +342,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of Pool Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(Pool left, Pool right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is Pool && this.ID == ((Pool)obj).ID;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -411,6 +458,9 @@ namespace MyFlickr.Rest
         /// </summary>
         public int MembersCount { get; private set; }
 
+        /// <summary>
+        /// Determine whether the Group is Public , Secretive ...
+        /// </summary>
         public int Privacy { get; private set; }
 
         /// <summary>
@@ -427,6 +477,53 @@ namespace MyFlickr.Rest
         /// the Restrictions of this group
         /// </summary>
         public Restrictions Restrictions { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of GroupInfo Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(GroupInfo left, GroupInfo right)
+        {
+            if (left is GroupInfo)
+                return left.Equals(right);
+            else if (right is GroupInfo)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of GroupInfo Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(GroupInfo left, GroupInfo right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is GroupInfo && this.ID == ((GroupInfo)obj).ID;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -487,6 +584,9 @@ namespace MyFlickr.Rest
         /// </summary>
         public bool AcceptRestricted { get; private set; }
         
+        /// <summary>
+        /// Determine whether Items Must Hold with Geo Tags or Not.
+        /// </summary>
         public bool HasGeo { get; private set; }
     }
 
@@ -642,12 +742,20 @@ namespace MyFlickr.Rest
         /// </summary>
         public IEnumerable<Member> Members { get { return this.data.Elements("member").Select(elm => new Member(elm)); } }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Member> GetEnumerator()
         {
             foreach (var member in this.Members)
                 yield return member;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -692,6 +800,53 @@ namespace MyFlickr.Rest
         /// the type of the member
         /// </summary>
         public MemberType MemberType { get; private set; }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Member Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(Member left, Member right)
+        {
+            if (left is Member)
+                return left.Equals(right);
+            else if (right is Member)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of Member Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(Member left, Member right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Member && this.ID == ((Member)obj).ID;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>

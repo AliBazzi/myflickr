@@ -3,6 +3,9 @@ using MyFlickr.Core;
 
 namespace MyFlickr.Rest
 {
+    /// <summary>
+    /// Extension Methods for Authenticator
+    /// </summary>
     public static class SynchronousAuthenticator
     {
         /// <summary>

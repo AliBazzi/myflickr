@@ -126,7 +126,6 @@ namespace MyFlickr.Rest
         /// to return public photos for a user, use User.getPublicPhotos.
         /// This method requires authentication with 'read' permission.
         /// </summary>
-        /// <param name="userID">The NSID of the user who's photos to return. A value of "me" will return the calling user's photos.</param>
         /// <param name="safeSearch">Safe search setting</param>
         /// <param name="minUploadDate">Minimum upload date. Photos with an upload date greater than or equal to this value will be returned. The date should be in the form of a unix timestamp. more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="maxUploadDate">Maximum upload date. Photos with an upload date less than or equal to this value will be returned. The date should be in the form of a unix timestamp. more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
@@ -854,6 +853,9 @@ namespace MyFlickr.Rest
                 this.GetCommentsActivitiesCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetCommentsActivitiesAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<ItemsCollection>> GetCommentsActivitiesCompleted;
         private void InvokeGetPhotosActivitiesCompletedEvent(EventArgs<ItemsCollection> args)
         {
@@ -862,6 +864,9 @@ namespace MyFlickr.Rest
                 this.GetPhotosActivitiesCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPhotosActivitiesAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<ItemsCollection>> GetPhotosActivitiesCompleted;
         private void InvokeGetGroupsCompletedEvent(EventArgs<GroupCollection> args)
         {
@@ -870,6 +875,9 @@ namespace MyFlickr.Rest
                 this.GetGroupsCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetGroupsAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<GroupCollection>> GetGroupsCompleted;
         private void InvokeCreateGalleryCompletedEvent(EventArgs<GalleryToken> args)
         {
@@ -878,6 +886,9 @@ namespace MyFlickr.Rest
                 this.CreateGalleryCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when CreateGalleryAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<GalleryToken>> CreateGalleryCompleted;
         private void InvokeOrderSetsCompeltedEvent(EventArgs<NoReply> args)
         {
@@ -886,6 +897,9 @@ namespace MyFlickr.Rest
                 this.OrderSetsCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when OrderSetsAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<NoReply>> OrderSetsCompleted;
         private void InvokeCreatePhotoSetCompletedEvent(EventArgs<PhotoSetToken> args)
         {
@@ -894,6 +908,9 @@ namespace MyFlickr.Rest
                 this.CreatePhotoSetCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when CreatePhotoSetAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotoSetToken>> CreatePhotoSetCompleted;
         private void InvokeGetListRecentlyUploadedCompletedEvent(EventArgs<IEnumerable<Contact>> args)
         {
@@ -902,6 +919,9 @@ namespace MyFlickr.Rest
                 this.GetListRecentlyUploadedCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetListRecentlyUploadedAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<Contact>>> GetListRecentlyUploadedCompleted;
         private void InvokeGetContactsPublicPhotosCompletedEvent(EventArgs<IEnumerable<Photo>> args)
         {
@@ -910,6 +930,9 @@ namespace MyFlickr.Rest
                 this.GetContactsPublicPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetContactsPublicPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<Photo>>> GetContactsPublicPhotosCompleted;
         private void InvokeGetContactsPhotosCompletedEvent(EventArgs<IEnumerable<Photo>> args)
         {
@@ -918,6 +941,9 @@ namespace MyFlickr.Rest
                 this.GetContactsPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetContactsPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<Photo>>> GetContactsPhotosCompleted;
         private void InvokeGetRecentlyUpdatedPhotosCompletedEvent(EventArgs<PhotosCollection> args)
         {
@@ -926,6 +952,9 @@ namespace MyFlickr.Rest
                 this.GetRecentlyUpdatedPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetRecentlyUpdatedPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosCollection>> GetRecentlyUpdatedPhotosCompleted;
         private void InvokeGetPhotosCountsCompletedEvent(EventArgs<IEnumerable<PhotosCount>> args)
         {
@@ -934,6 +963,9 @@ namespace MyFlickr.Rest
                 this.GetPhotosCountsCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPhotosCountsAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<IEnumerable<PhotosCount>>> GetPhotosCountsCompleted;
         private void InvokeGetUnGeotaggedPhotosCompletedEvent(EventArgs<PhotosCollection> args)
         {
@@ -942,6 +974,9 @@ namespace MyFlickr.Rest
                 this.GetUnGeotaggedPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetUnGeotaggedPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosCollection>> GetUnGeotaggedPhotosCompleted;
         private void InvokeGetGeotaggedPhotosCompletedEvent(EventArgs<PhotosCollection> args)
         {
@@ -950,6 +985,9 @@ namespace MyFlickr.Rest
                 this.GetGeotaggedPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetGeotaggedPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosCollection>> GetGeotaggedPhotosCompleted;
         private void InvokeGetUntaggedPhotosCompletedEvent(EventArgs<PhotosCollection> args)
         {
@@ -958,6 +996,9 @@ namespace MyFlickr.Rest
                 this.GetUntaggedPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetUntaggedPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosCollection>> GetUntaggedPhotosCompleted;
         private void InvokeGetPhotosNotInListCompletedEvent(EventArgs<PhotosCollection> args)
         {
@@ -966,6 +1007,9 @@ namespace MyFlickr.Rest
                 this.GetPhotosNotInSetCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPhotosNotInSetAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosCollection>> GetPhotosNotInSetCompleted;
         private void InvokeGetFavoritesListCompletedEvent(EventArgs<PhotosCollection> args)
         {
@@ -974,6 +1018,9 @@ namespace MyFlickr.Rest
                 this.GetFavoritesListCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetFavoritesListAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosCollection>> GetFavoritesListCompleted;
         private void InvokeGetPublicFavoritesListCompletedEvent(EventArgs<PhotosCollection> args)
         {
@@ -982,6 +1029,9 @@ namespace MyFlickr.Rest
                 this.GetPublicFavoritesListCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPublicFavoritesListAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosCollection>> GetPublicFavoritesListCompleted;
         private void InvokeGetCollectionsTreeEvent(EventArgs<CollectionsList> args)
         {
@@ -990,6 +1040,9 @@ namespace MyFlickr.Rest
                 this.GetCollectionsTreeCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetCollectionsTreeAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<CollectionsList>> GetCollectionsTreeCompleted;
         private void InvokeGetBlogsListEvent(EventArgs<BlogsCollection> args)
         {
@@ -998,6 +1051,9 @@ namespace MyFlickr.Rest
                 this.GetBlogsListCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetBlogsListAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<BlogsCollection>> GetBlogsListCompleted;
         private void InvokeGetPublicGroupsEvent(EventArgs<GroupCollection> args)
         {
@@ -1006,6 +1062,9 @@ namespace MyFlickr.Rest
                 this.GetPublicGroupsCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPublicGroupsAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<GroupCollection>> GetPublicGroupsCompleted;
         private void InvokeGetGalleriesListCompletedEvent(EventArgs<GalleriesCollection> args)
         {
@@ -1014,6 +1073,9 @@ namespace MyFlickr.Rest
                 this.GetGalleriesListCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetGalleriesListAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<GalleriesCollection>> GetGalleriesListCompleted;
         private void InvokeGetPhotoSetsListCompletedEvent(EventArgs<PhotoSetsCollection> args)
         {
@@ -1022,6 +1084,9 @@ namespace MyFlickr.Rest
                 this.GetPhotoSetsListCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPhotoSetsListAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotoSetsCollection>> GetPhotoSetsListCompleted;
         private void InvokeGetInfoCompletedEvent(EventArgs<UserInfo> args)
         {
@@ -1030,6 +1095,9 @@ namespace MyFlickr.Rest
                 this.GetInfoCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetInfoAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<UserInfo>> GetInfoCompleted;
         private void InvokeGetUserPhotosCompletedEvent(EventArgs<PhotosOfUserCollection> args)
         {
@@ -1038,6 +1106,9 @@ namespace MyFlickr.Rest
                 this.GetUserPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetUserPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosOfUserCollection>> GetUserPhotosCompleted;
         private void InvokeGetPublicPhotosCompletedEvent(EventArgs<PhotosCollection> args)
         {
@@ -1046,6 +1117,9 @@ namespace MyFlickr.Rest
                 this.GetPublicPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPublicPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosCollection>> GetPublicPhotosCompleted;
         private void InvokeGetPhotosCompletedEvent(EventArgs<PhotosCollection> args)
         {
@@ -1054,6 +1128,9 @@ namespace MyFlickr.Rest
                 this.GetPhotosCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPhotosAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<PhotosCollection>> GetPhotosCompleted;
         private void InvokeGetPublicContactsListCompletedEvent(EventArgs<ContactsList> args)
         {
@@ -1062,6 +1139,9 @@ namespace MyFlickr.Rest
                 this.GetPublicContactsListCompleted(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetPublicContactsListAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<ContactsList>> GetPublicContactsListCompleted;
         private void InvokeGetContactsListCompletedEvent(EventArgs<ContactsList> args)
         {
@@ -1070,10 +1150,19 @@ namespace MyFlickr.Rest
                 this.GetContactsListCompleted.Invoke(this, args);
             }
         }
+        /// <summary>
+        /// Raised when GetGetContsctsListAsync call is Finished.
+        /// </summary>
         public event EventHandler<EventArgs<ContactsList>> GetContactsListCompleted;
         #endregion
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of User Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(User left, User right)
         {
             if (left is User)
@@ -1083,16 +1172,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of User Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(User left, User right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is User && this.UserID == ((User)obj).UserID;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -1153,7 +1257,7 @@ namespace MyFlickr.Rest
         /// </summary>
         VisibleToFamilyOnly = 3,
         /// <summary>
-        /// private photos visible to friends & family
+        /// private photos visible to friends and family
         /// </summary>
         VisibleToFriendsandFamilyOnly = 4,
         /// <summary>
@@ -1369,6 +1473,12 @@ namespace MyFlickr.Rest
         public Nullable<bool> IsConsideringYouAsFamily { get { return data.Attribute("revfamily") != null ? new Nullable<bool>(data.Attribute("revfamily").Value.ToBoolean()) : null; } }
 
         #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of UserInfo Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator ==(UserInfo left, UserInfo right)
         {
             if (left is UserInfo)
@@ -1378,16 +1488,31 @@ namespace MyFlickr.Rest
             return true;
         }
 
+        /// <summary>
+        /// Determine whether Two Instances of UserInfo Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
         public static bool operator !=(UserInfo left, UserInfo right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
         public override bool Equals(object obj)
         {
             return obj is UserInfo && this.UserID == ((UserInfo)obj).UserID;
         }
 
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -1421,32 +1546,6 @@ namespace MyFlickr.Rest
         /// end time of counting
         /// </summary>
         public DateTime ToDate { get; private set; }
-
-        #region Equality
-        public static bool operator ==(PhotosCount left, PhotosCount right)
-        {
-            if (left is PhotosCount)
-                return left.Equals(right);
-            else if (right is PhotosCount)
-                return right.Equals(left);
-            return true;
-        }
-
-        public static bool operator !=(PhotosCount left, PhotosCount right)
-        {
-            return !(left == right);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is PhotosCount && this.Count == ((PhotosCount)obj).Count && this.FromDate == ((PhotosCount)obj).FromDate && this.ToDate == ((PhotosCount)obj).ToDate;
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-        #endregion
     }
 
     /// <summary>
@@ -1542,12 +1641,20 @@ namespace MyFlickr.Rest
         /// </summary>
         public IEnumerable<Item> Items { get { return this.data.Elements("item").Select(item => new Item(this.authtkns,item)); } }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Item> GetEnumerator()
         {
             foreach (var item in this.Items)
                 yield return item;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -1652,16 +1759,71 @@ namespace MyFlickr.Rest
         /// </summary>
         public IEnumerable<Event> Activities { get { return this.data.Element("activity").Elements("event").Select(evnt => new Event(this.authtkns,evnt)); } }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         public IEnumerator<Event> GetEnumerator()
         {
             foreach (var evnt in this.Activities)
                 yield return evnt;
         }
 
+        /// <summary>
+        /// Returns Enumerator for the Current Instance.
+        /// </summary>
+        /// <returns>an Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
         }
+
+        #region Equality
+        /// <summary>
+        /// Determine whether Two Instances of Item Are Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator ==(Item left, Item right)
+        {
+            if (left is Item)
+                return left.Equals(right);
+            else if (right is Item)
+                return right.Equals(left);
+            return true;
+        }
+
+        /// <summary>
+        /// Determine whether Two Instances of Item Are Not Equal or Not.
+        /// </summary>
+        /// <param name="left">instance</param>
+        /// <param name="right">instance</param>
+        /// <returns>True or False</returns>
+        public static bool operator !=(Item left, Item right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Determine whether a Given Object Equals this Object.
+        /// </summary>
+        /// <param name="obj">Instance</param>
+        /// <returns>True or False</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is Item && this.ID == ((Item)obj).ID;
+        }
+
+        /// <summary>
+        /// Serve as Hash Function for a Particular Type.
+        /// </summary>
+        /// <returns>Hashed Value</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
     }
 
     /// <summary>
