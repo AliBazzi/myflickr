@@ -7,16 +7,16 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents the Methods that exist in flickr.commons namespace
+    /// represents the Methods that exist in flickr.commons namespace.
     /// </summary>
     public class Commons
     {
         private readonly string apiKey;
 
         /// <summary>
-        /// Create Commons Object
+        /// Create Commons Object.
         /// </summary>
-        /// <param name="apiKey">the API Key of your Application</param>
+        /// <param name="apiKey">the API Key of your Application.</param>
         public Commons(string apiKey)
         {
             if (string.IsNullOrEmpty(apiKey))
@@ -28,12 +28,12 @@ namespace MyFlickr.Rest
         /// Retrieves a list of the current Commons institutions.
         /// This method does not require authentication.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetInstitutionsAsync()
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetInstitutionsCompletedEvent(new EventArgs<IEnumerable<Institution>>(token, 
                     elm.Element("institutions").Elements("institution").Select(inst => new Institution(inst)))),
                     e => this.InvokeGetInstitutionsCompletedEvent(new EventArgs<IEnumerable<Institution>>(token, e)), null,
@@ -69,22 +69,22 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of the Institution
+        /// the ID of the Institution.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the Date of Lunching the Institution
+        /// the Date of Lunching the Institution.
         /// </summary>
         public DateTime DateLaunched { get; private set; }
 
         /// <summary>
-        /// the Name of the Institution
+        /// the Name of the Institution.
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// Urls of Institution
+        /// Urls of Institution.
         /// </summary>
         public IEnumerable<URL> Urls { get; private set; }
 

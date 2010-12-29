@@ -4,16 +4,16 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents the Methods that exist in flickr.urls namespace
+    /// represents the Methods that exist in flickr.urls namespace.
     /// </summary>
     public class Urls
     {
         private readonly AuthenticationTokens authtkns;
 
         /// <summary>
-        /// Create Urls object
+        /// Create Urls object.
         /// </summary>
-        /// <param name="authenticationTokens">authentication Tokens object</param>
+        /// <param name="authenticationTokens">authentication Tokens object.</param>
         public Urls(AuthenticationTokens authenticationTokens)
         {
             if (authenticationTokens == null )
@@ -26,12 +26,12 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="groupID">The NSID of the group to fetch the url for.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetGroupAsync(string groupID)
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetGroupCompletedEvent(new EventArgs<Uri>(token,new Uri(elm.Element("group").Attribute("url").Value))), 
                 e => this.InvokeGetGroupCompletedEvent(new EventArgs<Uri>(token,e)), this.authtkns.SharedSecret,
                 new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token), 
@@ -45,12 +45,12 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="userID">The NSID of the user to fetch the url for. If omitted, the calling user is assumed.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetUserPhotosAsync(string userID = null)
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetUserPhotosCompletedEvent(new EventArgs<Uri>(token, new Uri(elm.Element("user").Attribute("url").Value))),
                 e => this.InvokeGetUserPhotosCompletedEvent(new EventArgs<Uri>(token, e)), this.authtkns.SharedSecret,
                 new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token),
@@ -64,12 +64,12 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="userID">The NSID of the user to fetch the url for. If omitted, the calling user is assumed.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetUserProfileAsync(string userID = null)
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetUserProfileCompletedEvent(new EventArgs<Uri>(token, new Uri(elm.Element("user").Attribute("url").Value))),
                 e => this.InvokeGetUserProfileCompletedEvent(new EventArgs<Uri>(token, e)), this.authtkns.SharedSecret,
                 new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token),
@@ -83,7 +83,7 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="url">The gallery's URL.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token LookupGalleryAsync(string url)
         {
             if (string.IsNullOrEmpty(url))
@@ -91,7 +91,7 @@ namespace MyFlickr.Rest
 
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeLookupGalleryCompletedEvent(new EventArgs<Gallery>(token, new Gallery(this.authtkns,elm.Element("gallery")))),
                 e => this.InvokeLookupGalleryCompletedEvent(new EventArgs<Gallery>(token, e)), this.authtkns.SharedSecret,
                 new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token),
@@ -105,7 +105,7 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="url">The url to the group's page or photo pool.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token LookupGroupAsync(string url)
         {
             if (string.IsNullOrEmpty(url))
@@ -113,7 +113,7 @@ namespace MyFlickr.Rest
 
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeLookupGroupCompletedEvent(new EventArgs<Tuple<string, string>>
                     (token, new Tuple<string, string>(elm.Element("group").Attribute("id").Value,elm.Element("group").Element("groupname").Value))),
                 e => this.InvokeLookupGroupCompletedEvent(new EventArgs<Tuple<string,string>>(token, e)), this.authtkns.SharedSecret,
@@ -128,7 +128,7 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="url">The url to the user's profile or photos page.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token LookupUserAsync(string url)
         {
             if (string.IsNullOrEmpty(url))
@@ -136,7 +136,7 @@ namespace MyFlickr.Rest
 
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeLookupUserCompletedEvent(new EventArgs<Tuple<string, string>>
                     (token, new Tuple<string, string>(elm.Element("user").Attribute("id").Value, elm.Element("user").Element("username").Value))),
                 e => this.InvokeLookupUserCompletedEvent(new EventArgs<Tuple<string, string>>(token, e)), this.authtkns.SharedSecret,

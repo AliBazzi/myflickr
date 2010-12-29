@@ -7,26 +7,26 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents a Flickr User
+    /// represents a Flickr User.
     /// </summary>
     public class User
     {
         private readonly AuthenticationTokens authTkns;
 
         /// <summary>
-        /// the authentication tokens that are used by this user instance
+        /// the authentication tokens that are used by this user instance.
         /// </summary>
         public AuthenticationTokens AuthenticationTokens { get { return this.authTkns; } }
 
         /// <summary>
-        /// The User ID
+        /// The User ID.
         /// </summary>
         public string UserID { get; private set; }
 
         /// <summary>
-        /// Creates an object that represents a Flickr User
+        /// Creates an object that represents a Flickr User.
         /// </summary>
-        /// <param name="tokens">the authentication tokens to be used</param>
+        /// <param name="tokens">the authentication tokens to be used.</param>
         public User(AuthenticationTokens tokens)
             : this(tokens, tokens.UserID) 
         {
@@ -35,10 +35,10 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// Creates an object that represents a Flickr User
+        /// Creates an object that represents a Flickr User.
         /// </summary>
-        /// <param name="tokens">the authentication tokens to be used</param>
-        /// <param name="userID">the user id that you want to create instance for</param>
+        /// <param name="tokens">the authentication tokens to be used.</param>
+        /// <param name="userID">the user id that you want to create instance for.</param>
         public User(AuthenticationTokens tokens, string userID)
         {
             if (tokens == null)
@@ -51,10 +51,10 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// Creates an object that represents a Flickr User
+        /// Creates an object that represents a Flickr User.
         /// </summary>
-        /// <param name="apiKey">Flickr API application key</param>
-        /// <param name="userID">The User ID</param>
+        /// <param name="apiKey">Flickr API application key.</param>
+        /// <param name="userID">The User ID.</param>
         public User(string apiKey, string userID)
             :this(new AuthenticationTokens(apiKey, null, null, Rest.AccessPermission.None, null, null, null),userID)
         {
@@ -69,13 +69,13 @@ namespace MyFlickr.Rest
         /// <param name="contactFilter">An optional filter of the results. The following values are valid:friends,family,both,neither</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 1000. The maximum allowed value is 1000.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetContactsListAsync(Nullable<ContactFilter> contactFilter = null, Nullable<int> page = null , Nullable<int> perPage = null)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
               element => this.InvokeGetContactsListCompletedEvent(new EventArgs<ContactsList>(token,new ContactsList(element.Element("contacts")))) 
             , e => this.InvokeGetContactsListCompletedEvent(new EventArgs<ContactsList>(token, e))
             , this.authTkns.SharedSecret,
@@ -92,7 +92,7 @@ namespace MyFlickr.Rest
         /// <param name="user">User Object that represents a Flickr User.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 1000. The maximum allowed value is 1000.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPublicContactsListAsync(User user, Nullable<int> page = null, Nullable<int> perPage = null)
         {
             if (user == null)
@@ -100,7 +100,7 @@ namespace MyFlickr.Rest
 
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
               element => this.InvokeGetPublicContactsListCompletedEvent(new EventArgs<ContactsList>(token, new ContactsList(element.Element("contacts"))))
             , e => this.InvokeGetPublicContactsListCompletedEvent(new EventArgs<ContactsList>(token, e))
             , this.authTkns.SharedSecret, new Parameter("method", "flickr.contacts.getPublicList"), new Parameter("user_id", user.UserID),
@@ -115,7 +115,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 1000. The maximum allowed value is 1000.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPublicContactsListAsync(Nullable<int> page = null, Nullable<int> perPage = null)
         {
             return this.GetPublicContactsListAsync(this, page, perPage);
@@ -131,12 +131,12 @@ namespace MyFlickr.Rest
         /// <param name="maxUploadDate">Maximum upload date. Photos with an upload date less than or equal to this value will be returned. The date should be in the form of a unix timestamp. more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="minTakenDate">Minimum taken date. Photos with an taken date greater than or equal to this value will be returned. The date should be in the form of a mysql datetime. more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="maxTakenDate">Maximum taken date. Photos with an taken date less than or equal to this value will be returned. The date should be in the form of a mysql datetime. more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
-        /// <param name="contentType">Content Type setting</param>
+        /// <param name="contentType">Content Type setting.</param>
         /// <param name="privacyFilter">Return photos only matching a certain privacy level. This only applies when making an authenticated call to view photos you own.</param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPhotosAsync(Nullable<SafetyLevel> safeSearch = null, string minUploadDate = null, string maxUploadDate = null
             , string minTakenDate = null , string maxTakenDate = null, Nullable<ContentType> contentType = null, Nullable<PrivacyFilter> privacyFilter = null
             , string extras = null , Nullable<int> perPage = null, Nullable<int> page = null)
@@ -149,18 +149,18 @@ namespace MyFlickr.Rest
         /// to return public photos for a user, use User.getPublicPhotos.
         /// This method requires authentication with 'read' permission.
         /// </summary>
-        /// <param name="user">User Object that represents a Flickr User</param>
-        /// <param name="safeSearch">Safe search setting</param>
+        /// <param name="user">User Object that represents a Flickr User.</param>
+        /// <param name="safeSearch">Safe search setting.</param>
         /// <param name="minUploadDate">Minimum upload date. Photos with an upload date greater than or equal to this value will be returned. The date should be in the form of a unix timestamp. more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="maxUploadDate">Maximum upload date. Photos with an upload date less than or equal to this value will be returned. The date should be in the form of a unix timestamp. more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="minTakenDate">Minimum taken date. Photos with an taken date greater than or equal to this value will be returned. The date should be in the form of a mysql datetime. more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="maxTakenDate">Maximum taken date. Photos with an taken date less than or equal to this value will be returned. The date should be in the form of a mysql datetime. more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
-        /// <param name="contentType">Content Type setting</param>
+        /// <param name="contentType">Content Type setting.</param>
         /// <param name="privacyFilter">Return photos only matching a certain privacy level. This only applies when making an authenticated call to view photos you own.</param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPhotosAsync(User user, Nullable<SafetyLevel> safeSearch = null, string minUploadDate = null, string maxUploadDate = null
             , string minTakenDate = null, string maxTakenDate = null, Nullable<ContentType> contentType = null, Nullable<PrivacyFilter> privacyFilter = null
             , string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
@@ -168,7 +168,7 @@ namespace MyFlickr.Rest
             this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                   elm => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns,elm.Element("photos")))),
                   e => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authTkns.SharedSecret,
                   new Parameter("method", "flickr.people.getPhotos"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token)
@@ -187,16 +187,16 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="user">User Object that represents a Flickr User.</param>
-        /// <param name="safeSearch">Safe search setting</param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="safeSearch">Safe search setting.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPublicPhotosAsync(User user, Nullable<SafetyLevel> safeSearch = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                   elm => this.InvokeGetPublicPhotosCompletedEvent(new EventArgs<PhotosCollection>(token,new PhotosCollection(this.authTkns,elm.Element("photos"))))
                 , e => this.InvokeGetPublicPhotosCompletedEvent(new EventArgs<PhotosCollection>(token,e)), null
                 , new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.people.getPublicPhotos"), new Parameter("user_id", user.UserID)
@@ -211,10 +211,10 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="safeSearch">Safe search setting</param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPublicPhotosAsync(Nullable<SafetyLevel> safeSearch = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             return this.GetPublicPhotosAsync(this, safeSearch, extras, perPage, page);
@@ -222,16 +222,16 @@ namespace MyFlickr.Rest
 
         /// <summary>
         /// Returns a list of photos containing a particular Flickr member.
-        /// This method does not require authentication. but when called when having at least read permission ,  you will get private photos
+        /// This method does not require authentication. but when called when having at least read permission ,  you will get private photos.
         /// </summary>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPhotosOfUserAsync(string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             Token token = Core.Token.GenerateToken();
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetUserPhotosCompletedEvent(new EventArgs<PhotosOfUserCollection>(token, new PhotosOfUserCollection(this.authTkns,elm.Element("photos"))))
                 , e => this.InvokeGetUserPhotosCompletedEvent(new EventArgs<PhotosOfUserCollection>(token, e)), this.authTkns.SharedSecret
                 , new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.people.getPhotosOf"), new Parameter("user_id", this.UserID)
@@ -243,11 +243,11 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Get information about the user.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetInfoAsync()
         {
             Token token = Core.Token.GenerateToken();
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token,new UserInfo(elm.Element("person"))))
                 , e => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, e)), this.authTkns.SharedSecret
                 , new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token)
@@ -261,7 +261,7 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="user">User Object that represents a Flickr User.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetInfoAsync(User user)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
@@ -270,7 +270,7 @@ namespace MyFlickr.Rest
 
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                     elm => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, new UserInfo(elm.Element("person"))))
                     , e => this.InvokeGetInfoCompletedEvent(new EventArgs<UserInfo>(token, e)), this.authTkns.SharedSecret
                     , new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token)
@@ -283,12 +283,12 @@ namespace MyFlickr.Rest
         /// Returns the photosets belonging to the specified user.
         /// This method does not require authentication.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPhotoSetsListAsync()
         {
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                   elm => this.InvokeGetPhotoSetsListCompletedEvent(new EventArgs<PhotoSetsCollection>(token,new PhotoSetsCollection(this.authTkns,elm.Element("photosets"))))
                 , e => this.InvokeGetPhotoSetsListCompletedEvent(new EventArgs<PhotoSetsCollection>(token,e))
                 , null, new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.photosets.getList"), new Parameter("user_id", this.UserID));
@@ -302,12 +302,12 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="perPage">Number of galleries to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetGalleriesListAsync(Nullable<int> perPage = null, Nullable<int> page = null)
         {
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
               elm => this.InvokeGetGalleriesListCompletedEvent(new EventArgs<GalleriesCollection>(token,new GalleriesCollection(this.authTkns,elm.Element("galleries")))),
               e => this.InvokeGetGalleriesListCompletedEvent(new EventArgs<GalleriesCollection>(token,e)), null,
               new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.galleries.getList"),
@@ -320,12 +320,12 @@ namespace MyFlickr.Rest
         /// Returns the list of public groups a user is a member of.
         /// This method does not require authentication.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPublicGroupsAsync()
         {
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetPublicGroupsEvent(new EventArgs<GroupCollection>(token,new GroupCollection(this.authTkns,elm.Element("groups")))), 
                 e => this.InvokeGetPublicGroupsEvent(new EventArgs<GroupCollection>(token,e)), null,
                 new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.people.getPublicGroups"), new Parameter("user_id", this.UserID));
@@ -338,14 +338,14 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'read' permission.
         /// </summary>
         /// <param name="serviceID">Optionally only return blogs for a given service id.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetBlogsListAsync(Nullable<int> serviceID = null)
         {
             this.authTkns.ValidateGrantedPermission(Rest.AccessPermission.Read);
 
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                  elm => this.InvokeGetBlogsListEvent(new EventArgs<BlogsCollection>(token,new BlogsCollection(elm.Element("blogs"))))
                , e => this.InvokeGetBlogsListEvent(new EventArgs<BlogsCollection>(token, e)), this.authTkns.SharedSecret
                , new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.blogs.getList")
@@ -359,12 +359,12 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="collection">The ID of the collection to fetch a tree for, or Null to fetch the root collection.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetCollectionsTreeAsync(Collection collection = null)
         {
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetCollectionsTreeEvent(new EventArgs<CollectionsList>(token , new CollectionsList(this.authTkns,elm.Element("collections")))),
                 e => this.InvokeGetCollectionsTreeEvent(new EventArgs<CollectionsList>(token,e)), null,
                 new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.collections.getTree"), 
@@ -379,15 +379,15 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp. more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPublicFavoritesListAsync(string minFaveDate = null , string maxFaveDate = null ,string extras = null , Nullable<int> perPage = null , Nullable<int> page = null)
         {
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetPublicFavoritesListCompletedEvent(new EventArgs<PhotosCollection>(token,new PhotosCollection(this.authTkns,elm.Element("photos")))), 
                 e => this.InvokeGetPublicFavoritesListCompletedEvent(new EventArgs<PhotosCollection>(token,e)), null,
                 new Parameter("method", "flickr.favorites.getPublicList"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("min_fave_date", minFaveDate),
@@ -403,17 +403,17 @@ namespace MyFlickr.Rest
         /// <param name="user">The object that represents a Flickr User.</param>
         /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetFavoritesListAsync(User user, string minFaveDate = null, string maxFaveDate = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
 
             Token token = Core.Token.GenerateToken();
 
-            var uri = FlickrCore.IntiateGetRequest(
+            var uri = FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetFavoritesListCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns,elm.Element("photos")))),
                 e => this.InvokeGetFavoritesListCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.favorites.getList"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("user_id", this.UserID),
@@ -429,10 +429,10 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="minFaveDate">Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="maxFaveDate">Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetFavoritesListAsync(string minFaveDate = null, string maxFaveDate = null, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             return this.GetFavoritesListAsync(this, minFaveDate, maxFaveDate, extras, perPage, page);
@@ -448,10 +448,10 @@ namespace MyFlickr.Rest
         /// <param name="maxTakenDate">Maximum taken date. Photos with an taken date less than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="privacyFilter">Return photos only matching a certain privacy level.</param>
         /// <param name="mediaType">Filter results by media type.</param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPhotosNotInSetAsync(string maxUploadDate = null, string minUploadDate = null, string minTakenDate = null, string maxTakenDate = null,
             Nullable<PrivacyFilter> privacyFilter = null, Nullable<MediaType> mediaType = null, string extras = null, Nullable<int> perPage = null,
             Nullable<int> page = null)
@@ -460,7 +460,7 @@ namespace MyFlickr.Rest
 
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetPhotosNotInListCompletedEvent(new EventArgs<PhotosCollection>(token,new PhotosCollection(this.authTkns,elm.Element("photos")))) ,
                 e => this.InvokeGetPhotosNotInListCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photos.getNotInSet"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
@@ -481,10 +481,10 @@ namespace MyFlickr.Rest
         /// <param name="maxTakenDate">Maximum taken date. Photos with an taken date less than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp.  more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="privacyFilter">Return photos only matching a certain privacy level.</param>
         /// <param name="mediaType">Filter results by media type.</param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetUntaggedPhotosAsync(string maxUploadDate = null, string minUploadDate = null, string minTakenDate = null, string maxTakenDate = null,
             Nullable<PrivacyFilter> privacyFilter = null, Nullable<MediaType> mediaType = null, string extras = null, Nullable<int> perPage = null,
             Nullable<int> page = null)
@@ -493,7 +493,7 @@ namespace MyFlickr.Rest
 
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetUntaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns, elm.Element("photos")))),
                 e => this.InvokeGetUntaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photos.getUntagged"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
@@ -515,10 +515,10 @@ namespace MyFlickr.Rest
         /// <param name="privacyFilter">Return photos only matching a certain privacy level.</param>
         /// <param name="sortType">The order in which to sort returned photos. Defaults to datePostedDescending.</param>
         /// <param name="mediaType">Filter results by media type.</param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetGeotaggedPhotosAsync(string maxUploadDate = null, string minUploadDate = null, string minTakenDate = null, string maxTakenDate = null,
             Nullable<PrivacyFilter> privacyFilter = null,Nullable<SortType> sortType = null , Nullable<MediaType> mediaType = null, string extras = null,
             Nullable<int> perPage = null, Nullable<int> page = null)
@@ -527,7 +527,7 @@ namespace MyFlickr.Rest
 
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns, elm.Element("photos")))),
                 e => this.InvokeGetGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photos.getWithGeoData"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
@@ -550,10 +550,10 @@ namespace MyFlickr.Rest
         /// <param name="privacyFilter">Return photos only matching a certain privacy level.</param>
         /// <param name="sortType">The order in which to sort returned photos. Defaults to datePostedDescending.</param>
         /// <param name="mediaType">Filter results by media type.</param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetUnGeotaggedPhotosAsync(string maxUploadDate = null, string minUploadDate = null, string minTakenDate = null, string maxTakenDate = null,
             Nullable<PrivacyFilter> privacyFilter = null, Nullable<SortType> sortType = null, Nullable<MediaType> mediaType = null, string extras = null,
             Nullable<int> perPage = null, Nullable<int> page = null)
@@ -562,7 +562,7 @@ namespace MyFlickr.Rest
 
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetUnGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns, elm.Element("photos")))),
                 e => this.InvokeGetUnGeotaggedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photos.getWithoutGeoData"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
@@ -579,7 +579,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'read' permission.
         /// </summary>
         /// <param name="dates">list of dates, denoting the periods to return counts for. They should be specified smallest first.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPhotosCountsAsync(params DateTime[] dates)
         {
             if (dates == null)
@@ -589,7 +589,7 @@ namespace MyFlickr.Rest
 
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetPhotosCountsCompletedEvent(new EventArgs<IEnumerable<PhotosCount>>(token,elm.Element("photocounts").Elements("photocount").Select(pc=>new PhotosCount(pc)))),
                 e => this.InvokeGetPhotosCountsCompletedEvent(new EventArgs<IEnumerable<PhotosCount>>(token,e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photos.getCounts"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
@@ -604,17 +604,17 @@ namespace MyFlickr.Rest
         ///This method requires authentication with 'read' permission.
         /// </summary>
         /// <param name="minDate">a timestamp indicating the date from which modifications should be compared.</param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetRecentlyUpdatedPhotosAsync(DateTime minDate,string extras = null , Nullable<int> perPage = null, Nullable<int> page = null)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
 
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetRecentlyUpdatedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token,new PhotosCollection(this.authTkns,elm.Element("photos")))),
                 e => this.InvokeGetRecentlyUpdatedPhotosCompletedEvent(new EventArgs<PhotosCollection>(token,e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photos.recentlyUpdated"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
@@ -632,7 +632,7 @@ namespace MyFlickr.Rest
         /// <param name="singlePhoto">set as true to Only fetch one photo (the latest) per contact, instead of all photos in chronological order.</param>
         /// <param name="includeSelf">Set to true to include photos from the calling user.</param>
         /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields include: license, date_upload, date_taken, owner_name, icon_server, original_format, last_update.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetContactsPhotosAsync(Nullable<int> count = null, Nullable<bool> justFriends = null, Nullable<bool> singlePhoto = null,
             Nullable<bool> includeSelf = null, string extras = null)
         {
@@ -640,7 +640,7 @@ namespace MyFlickr.Rest
 
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetContactsPhotosCompletedEvent
                     (new EventArgs<IEnumerable<Photo>>(token,elm.Element("photos").Elements("photo").Select(photo=>new Photo(this.authTkns,photo)))),
                 e => this.InvokeGetContactsPhotosCompletedEvent(new EventArgs<IEnumerable<Photo>>(token,e)), this.authTkns.SharedSecret,
@@ -660,13 +660,13 @@ namespace MyFlickr.Rest
         /// <param name="singlePhoto">set as true to Only fetch one photo (the latest) per contact, instead of all photos in chronological order.</param>
         /// <param name="includeSelf">Set to true to include photos from the user specified by user object.</param>
         /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields include: license, date_upload, date_taken, owner_name, icon_server, original_format, last_update.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetContactsPublicPhotosAsync(Nullable<int> count = null, Nullable<bool> justFriends = null, Nullable<bool> singlePhoto = null,
             Nullable<bool> includeSelf = null, string extras = null)
         {
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetContactsPublicPhotosCompletedEvent
                     (new EventArgs<IEnumerable<Photo>>(token, elm.Element("photos").Elements("photo").Select(photo => new Photo(this.authTkns, photo)))),
                 e => this.InvokeGetContactsPublicPhotosCompletedEvent(new EventArgs<IEnumerable<Photo>>(token, e)), null,
@@ -687,12 +687,12 @@ namespace MyFlickr.Rest
         ///* ff friends and family
         ///* all all your contacts
         ///Default value is "all".</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetListRecentlyUploadedAsync(string dateLastUpload = null, string filter = null)
         {
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetListRecentlyUploadedCompletedEvent(new EventArgs<IEnumerable<Contact>>(token,elm.Element("contacts").Elements("contact").Select(cont=>new Contact(cont)))),
                 e => this.InvokeGetListRecentlyUploadedCompletedEvent(new EventArgs<IEnumerable<Contact>>(token,e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.contacts.getListRecentlyUploaded"), new Parameter("api_key", this.authTkns.ApiKey),
@@ -708,7 +708,7 @@ namespace MyFlickr.Rest
         /// <param name="title">A title for the photoset.</param>
         /// <param name="primaryPhotoID">The id of the photo to represent this set. The photo must belong to the calling user.</param>
         /// <param name="description">A description of the photoset. May contain limited html.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token CreatePhotoSetAsync(string title, string primaryPhotoID, string description = null)
         {
             if (string.IsNullOrEmpty(title))
@@ -734,7 +734,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="photosetsIDs">A comma delimited list of photoset IDs, ordered with the set to show first, first in the list. Any set IDs not given in the list will be set to appear at the end of the list, ordered by their IDs.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token OrderSetsAsync(params string[] photosetsIDs)
         {
             if (photosetsIDs == null)
@@ -757,9 +757,9 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="title">The name of the gallery</param>
-        /// <param name="description">A short description for the gallery</param>
-        /// <param name="primaryPhotoID">The first photo to add to your gallery</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <param name="description">A short description for the gallery.</param>
+        /// <param name="primaryPhotoID">The first photo to add to your gallery.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token CreateGalleryAsync(string title, string description, string primaryPhotoID = null)
         {
             if (string.IsNullOrEmpty(title))
@@ -786,7 +786,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <param name="perPage">Number of groups to return per page. If this argument is omitted, it defaults to 400. The maximum allowed value is 400.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetGroupsAsync(Nullable<int> page = null, Nullable<int> perPage = null)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
@@ -808,13 +808,13 @@ namespace MyFlickr.Rest
         /// <param name="timeFrame">The timeframe in which to return updates for. This can be specified in days ('2d') or hours ('4h'). The default behavoir is to return changes since the beginning of the previous user session.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <param name="perPage">Number of items to return per page. If this argument is omitted, it defaults to 10. The maximum allowed value is 50.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPhotosActivitesAsync(string timeFrame = null, Nullable<int> page = null, Nullable<int> perPage = null)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetPhotosActivitiesCompletedEvent(new EventArgs<ItemsCollection>(token, new ItemsCollection(this.authTkns, elm.Element("items")))),
                 e => this.InvokeGetPhotosActivitiesCompletedEvent(new EventArgs<ItemsCollection>(token, e)), this.authTkns.SharedSecret,
                 new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
@@ -830,13 +830,13 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <param name="perPage">Number of items to return per page. If this argument is omitted, it defaults to 10. The maximum allowed value is 50.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetCommentsActivitiesAsync(Nullable<int> page = null, Nullable<int> perPage = null)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetCommentsActivitiesCompletedEvent(new EventArgs<ItemsCollection>(token, new ItemsCollection(this.authTkns, elm.Element("items")))),
                 e => this.InvokeGetCommentsActivitiesCompletedEvent(new EventArgs<ItemsCollection>(token, e)), this.authTkns.SharedSecret,
                 new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
@@ -1205,7 +1205,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// Content Type setting
+    /// Content Type setting.
     /// </summary>
     public enum ContentType
     {
@@ -1240,47 +1240,47 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// Privacy Filter Setting
+    /// Privacy Filter Setting.
     /// </summary>
     public enum PrivacyFilter
     {
         /// <summary>
-        /// public photos
+        /// public photos.
         /// </summary>
         PublicPhotos =1 ,
         /// <summary>
-        /// private photos visible to friends
+        /// private photos visible to friends.
         /// </summary>
         VisibleToFriendsOnly = 2,
         /// <summary>
-        /// private photos visible to family
+        /// private photos visible to family.
         /// </summary>
         VisibleToFamilyOnly = 3,
         /// <summary>
-        /// private photos visible to friends and family
+        /// private photos visible to friends and family.
         /// </summary>
         VisibleToFriendsandFamilyOnly = 4,
         /// <summary>
-        /// completely private photos
+        /// completely private photos.
         /// </summary>
         PrivatePhotos = 5
     }
 
     /// <summary>
-    /// Media Type Setting
+    /// Media Type Setting.
     /// </summary>
     public enum MediaType
     {
         /// <summary>
-        /// Photos and Videos
+        /// Photos and Videos.
         /// </summary>
         All=0 ,
         /// <summary>
-        /// Photos only
+        /// Photos only.
         /// </summary>
         Photos=1 ,
         /// <summary>
-        /// Videos only
+        /// Videos only.
         /// </summary>
         Videos =2
     }
@@ -1291,27 +1291,27 @@ namespace MyFlickr.Rest
     public enum SortType
     {
         /// <summary>
-        /// Date Posted Descending
+        /// Date Posted Descending.
         /// </summary>
         DatePostedDescending,
         /// <summary>
-        /// Date Posted Ascending
+        /// Date Posted Ascending.
         /// </summary>
         DatePostedAscending,
         /// <summary>
-        /// Date Taken Ascending
+        /// Date Taken Ascending.
         /// </summary>
         DateTakenAscending,
         /// <summary>
-        /// Date Taken Descending
+        /// Date Taken Descending.
         /// </summary>
         DateTakenDescending,
         /// <summary>
-        /// Interestingness Descending
+        /// Interestingness Descending.
         /// </summary>
         InterestingnessDescending,
         /// <summary>
-        /// Interestingness Ascending
+        /// Interestingness Ascending.
         /// </summary>
         InterestingnessAscending        
     }
@@ -1341,7 +1341,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents the information of Flickr User
+    /// represents the information of Flickr User.
     /// </summary>
     public class UserInfo
     {
@@ -1353,62 +1353,62 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the user name
+        /// the user name.
         /// </summary>
         public string UserName { get { return data.Attribute("username").Value; } }
 
         /// <summary>
-        /// the Real user name
+        /// the Real user name.
         /// </summary>
         public string RealName { get { return data.Element("realname").Value;} }
 
         /// <summary>
-        /// the User ID
+        /// the User ID.
         /// </summary>
         public string UserID { get { return data.Attribute("id").Value; } }
 
         /// <summary>
-        /// determine if the user has Pro Account
+        /// determine if the user has Pro Account.
         /// </summary>
         public bool IsProUser { get { return data.Attribute("ispro").Value.ToBoolean(); } }
 
         /// <summary>
-        /// the number of the server the icon resides on
+        /// the number of the server the icon resides on.
         /// </summary>
         public int IconServer { get { return int.Parse(data.Attribute("iconserver").Value); } }
 
         /// <summary>
-        /// the number of server farm  the icon resides on
+        /// the number of server farm  the icon resides on.
         /// </summary>
         public int IconFarm { get { return int.Parse(data.Attribute("iconfarm").Value); } }
 
         /// <summary>
-        /// the Path Alias (used when Generating Urls ) , Could be Empty when not set by the user
+        /// the Path Alias (used when Generating Urls ) , Could be Empty when not set by the user.
         /// </summary>
         public string PathAlias { get { return data.Attribute("path_alias").Value; } }
         
         /// <summary>
-        /// http://markmail.org/message/2poskzlsgdjjt7ow , could be Null
+        /// http://markmail.org/message/2poskzlsgdjjt7ow , could be Null.
         /// </summary>
         public string mbox_sha1sum { get { return data.Element("mbox_sha1sum") != null ? data.Element("mbox_sha1sum").Value : null; } }
 
         /// <summary>
-        /// The Location of the User , Could be Null
+        /// The Location of the User , Could be Null.
         /// </summary>
         public string Location { get { return data.Element("location").Value; } }
 
         /// <summary>
-        /// the url that leads to Photostream of the user
+        /// the url that leads to Photostream of the user.
         /// </summary>
         public Uri PhotosUrl { get { return new Uri(data.Element("photosurl").Value); } }
 
         /// <summary>
-        /// the url that leads to the user profile
+        /// the url that leads to the user profile.
         /// </summary>
         public Uri ProfileUrl { get { return new Uri(data.Element("profileurl").Value); } }
 
         /// <summary>
-        /// the url that leads to the Photostream page of the user that ready to be displayed on mobile device 
+        /// the url that leads to the Photostream page of the user that ready to be displayed on mobile device .
         /// </summary>
         public Uri MobileUrl { get { return new Uri(data.Element("mobileurl").Value); } }
 
@@ -1423,52 +1423,52 @@ namespace MyFlickr.Rest
         public DateTime FirstDate { get { return new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(double.Parse(data.Element("photos").Element("firstdate").Value)); } }
 
         /// <summary>
-        /// the number of photos the user has Uploaded
+        /// the number of photos the user has Uploaded.
         /// </summary>
         public int PhotosCount { get { return int.Parse(data.Element("photos").Element("count").Value); } }
 
         /// <summary>
-        /// the number of views by Flickr users for the Photostream page of the User, could be Null
+        /// the number of views by Flickr users for the Photostream page of the User, could be Null.
         /// </summary>
         public Nullable<int> PhotoStreamViews { get { return data.Element("photos").Element("views") != null ? new Nullable<int>(int.Parse(data.Element("photos").Element("views").Value)) : null; } }
 
         /// <summary>
-        /// the Gender of User , could be Null
+        /// the Gender of User , could be Null.
         /// </summary>
         public string Geneder { get { return data.Attribute("geneder") != null ? data.Element("gender").Value : null; } }
 
         /// <summary>
-        /// determine if the user is ignored by you
+        /// determine if the user is ignored by you.
         /// </summary>
         public Nullable<bool> IsIgnored { get { return data.Attribute("igonred") != null ? new Nullable<bool>(data.Attribute("ignored").Value.ToBoolean()) : null; } }
 
         /// <summary>
-        /// determine whether the user is a contact in your contact list or Not
+        /// determine whether the user is a contact in your contact list or Not.
         /// </summary>
         public Nullable<bool> IsContact { get { return data.Attribute("contact") != null ? new Nullable<bool>(data.Attribute("contact").Value.ToBoolean()) : null; } }
 
         /// <summary>
-        /// determine whether you are marking the user as a family in you contact list or Not
+        /// determine whether you are marking the user as a family in you contact list or Not.
         /// </summary>
         public Nullable<bool> IsFamily { get { return data.Attribute("family") != null ? new Nullable<bool>(data.Attribute("family").Value.ToBoolean()) : null; } }
 
         /// <summary>
-        /// determine whether you are marking the user as a friend  in you contact list or Not
+        /// determine whether you are marking the user as a friend  in you contact list or Not.
         /// </summary>
         public Nullable<bool> IsFriend { get { return data.Attribute("friend") != null ? new Nullable<bool>(data.Attribute("friend").Value.ToBoolean()) : null; } }
 
         /// <summary>
-        /// determine whether the user is marking you as a contact or Not
+        /// determine whether the user is marking you as a contact or Not.
         /// </summary>
         public Nullable<bool> IsConsideringYouAsContact { get { return data.Attribute("revcontact") != null ? new Nullable<bool>(data.Attribute("revcontact").Value.ToBoolean()) : null; } }
 
         /// <summary>
-        /// determine whether the user is marking you as a family or Not
+        /// determine whether the user is marking you as a family or Not.
         /// </summary>
         public Nullable<bool> IsConsideringYouAsFriend { get { return data.Attribute("revfriend") != null ? new Nullable<bool>(data.Attribute("revfriend").Value.ToBoolean()) : null;  } }
 
         /// <summary>
-        /// determine whether the user is marking you as a friend or Not
+        /// determine whether the user is marking you as a friend or Not.
         /// </summary>
         public Nullable<bool> IsConsideringYouAsFamily { get { return data.Attribute("revfamily") != null ? new Nullable<bool>(data.Attribute("revfamily").Value.ToBoolean()) : null; } }
 
@@ -1521,7 +1521,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents  photo counts in a given time period
+    /// represents  photo counts in a given time period.
     /// </summary>
     public class PhotosCount
     {
@@ -1533,38 +1533,38 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the number of photo in this period
+        /// the number of photo in this period.
         /// </summary>
         public int Count { get; private set; }
 
         /// <summary>
-        /// start time of counting
+        /// start time of counting.
         /// </summary>
         public DateTime FromDate { get; private set; }
 
         /// <summary>
-        /// end time of counting
+        /// end time of counting.
         /// </summary>
         public DateTime ToDate { get; private set; }
     }
 
     /// <summary>
-    /// Tag Mode in Searching
+    /// Tag Mode in Searching.
     /// </summary>
     public enum TagMode
 	{
         /// <summary>
-        /// 'any' for an OR combination of tags
+        /// 'any' for an OR combination of tags.
         /// </summary>
         Any = 0,
         /// <summary>
-        /// 'all' for an AND combination
+        /// 'all' for an AND combination.
         /// </summary>
         All = 1
 	}
 
     /// <summary>
-    /// Geo Context Setting 
+    /// Geo Context Setting .
     /// </summary>
     public enum GeoContext
 	{
@@ -1583,22 +1583,22 @@ namespace MyFlickr.Rest
 	}
 
     /// <summary>
-    /// Radius Unit Setting
+    /// Radius Unit Setting.
     /// </summary>
     public enum RadiusUnits
     {
         /// <summary>
-        /// Miles
+        /// Miles.
         /// </summary>
         Mi = 0,
         /// <summary>
-        /// Kilometers
+        /// Kilometers.
         /// </summary>
         Km = 1
     }
 
     /// <summary>
-    /// represents collection of items
+    /// represents collection of items.
     /// </summary>
     public class ItemsCollection : IEnumerable<Item>
     {
@@ -1617,34 +1617,34 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the number of total pages
+        /// the number of total pages.
         /// </summary>
         public int Pages { get; private set; }
 
         /// <summary>
-        /// the number of current page
+        /// the number of current page.
         /// </summary>
         public int Page { get; private set; }
 
         /// <summary>
-        /// the number of items per page
+        /// the number of items per page.
         /// </summary>
         public int PerPage { get; private set; }
 
         /// <summary>
-        /// the Total Number of items 
+        /// the Total Number of items .
         /// </summary>
         public int Total { get; private set; }
 
         /// <summary>
-        /// Enumerable of Item Objects
+        /// Enumerable of Item Objects.
         /// </summary>
         public IEnumerable<Item> Items { get { return this.data.Elements("item").Select(item => new Item(this.authtkns,item)); } }
 
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Item> GetEnumerator()
         {
             foreach (var item in this.Items)
@@ -1654,7 +1654,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -1662,7 +1662,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents an item that has an activity
+    /// represents an item that has an activity.
     /// </summary>
     public class Item : IEnumerable<Event>
     {
@@ -1690,62 +1690,62 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Type of the Item
+        /// the Type of the Item.
         /// </summary>
         public ItemType Type { get; private set; }
 
         /// <summary>
-        /// the ID of the Item
+        /// the ID of the Item.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the Owner ID
+        /// the Owner ID.
         /// </summary>
         public string OwnerID { get; private set; }
 
         /// <summary>
-        /// the Owner Name
+        /// the Owner Name.
         /// </summary>
         public string OwnerName { get; private set; }
 
         /// <summary>
-        /// the Secret of the Item
+        /// the Secret of the Item.
         /// </summary>
         public string Secret { get; private set; }
 
         /// <summary>
-        /// the Server number which the item is on
+        /// the Server number which the item is on.
         /// </summary>
         public int Server { get; private set; }
 
         /// <summary>
-        /// The server Farm number which the item is on
+        /// The server Farm number which the item is on.
         /// </summary>
         public int Farm { get; private set; }
 
         /// <summary>
-        /// the Total Number of Comments on the Item
+        /// the Total Number of Comments on the Item.
         /// </summary>
         public int CommentsCount { get; private set; }
 
         /// <summary>
-        /// the Total Number of Notes on the Item , Could Be Null
+        /// the Total Number of Notes on the Item , Could Be Null.
         /// </summary>
         public Nullable<int> NotesCount { get; private set; }
 
         /// <summary>
-        /// the Total Number of Views of the Item
+        /// the Total Number of Views of the Item.
         /// </summary>
         public int ViewsCount { get; private set; }
 
         /// <summary>
-        /// the Total Number of favorites of this Item , Could Be Null
+        /// the Total Number of favorites of this Item , Could Be Null.
         /// </summary>
         public Nullable<int> FavesCount { get; private set; }
 
         /// <summary>
-        /// the Number of the Photos in the Photoset , Could Be Null
+        /// the Number of the Photos in the Photoset , Could Be Null.
         /// </summary>
         public Nullable<int> PhotosCount { get; private set; }
 
@@ -1755,14 +1755,14 @@ namespace MyFlickr.Rest
         public string Primary { get; private set; }
 
         /// <summary>
-        /// Enumerable of Event Objects that represents the Activity on the Item
+        /// Enumerable of Event Objects that represents the Activity on the Item.
         /// </summary>
         public IEnumerable<Event> Activities { get { return this.data.Element("activity").Elements("event").Select(evnt => new Event(this.authtkns,evnt)); } }
 
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Event> GetEnumerator()
         {
             foreach (var evnt in this.Activities)
@@ -1772,7 +1772,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -1827,7 +1827,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents an Event Info on an Item
+    /// represents an Event Info on an Item.
     /// </summary>
     public class Event
     {
@@ -1849,75 +1849,75 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the User that Created the Event
+        /// the User that Created the Event.
         /// </summary>
         public string UserID { get; private set; }
 
         /// <summary>
-        /// the Name of the User that Created the Event
+        /// the Name of the User that Created the Event.
         /// </summary>
         public string UserName { get; private set; }
 
         /// <summary>
-        /// the date when the Event was Created
+        /// the date when the Event was Created.
         /// </summary>
         public DateTime DateCreated { get; private set; }
 
         /// <summary>
-        /// the ID of the Comment , Could Be Null
+        /// the ID of the Comment , Could Be Null.
         /// </summary>
         public string CommentID { get; private set; }
 
         /// <summary>
-        /// the Content of the Event
+        /// the Content of the Event.
         /// </summary>
         public string Content { get; private set; }
 
         /// <summary>
-        /// the Type of the Event
+        /// the Type of the Event.
         /// </summary>
         public EventType type { get; private set; }
 
         /// <summary>
-        /// the Note ID , Could Be Null
+        /// the Note ID , Could Be Null.
         /// </summary>
         public string NoteID { get; private set; }
     }
 
     /// <summary>
-    /// represents the Type of an Event
+    /// represents the Type of an Event.
     /// </summary>
     public enum EventType 
     {
         /// <summary>
-        /// a Comment Event
+        /// a Comment Event.
         /// </summary>
         Comment = 0,
         /// <summary>
-        /// a Favorite Event
+        /// a Favorite Event.
         /// </summary>
         Favorite =1,
         /// <summary>
-        /// a Tag Addition
+        /// a Tag Addition.
         /// </summary>
         Tag =2,
         /// <summary>
-        /// a Note Addition
+        /// a Note Addition.
         /// </summary>
         Note =3
     }
 
     /// <summary>
-    /// represents the Item types
+    /// represents the Item types.
     /// </summary>
     public enum ItemType
     {
         /// <summary>
-        /// a photo
+        /// a photo.
         /// </summary>
         Photo = 0,
         /// <summary>
-        /// a Photoset
+        /// a Photoset.
         /// </summary>
         Photoset = 1
     }

@@ -4,7 +4,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// Extension Methods for Authenticator
+    /// Extension Methods for Authenticator.
     /// </summary>
     public static class SynchronousAuthenticator
     {
@@ -12,9 +12,9 @@ namespace MyFlickr.Rest
         /// Returns a frob and an Authentication Url to be used during authentication. This method call must be signed.
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="authenticator">instance</param>
-        /// <param name="accessPermission">the permission your want to acquires</param>
-        /// <returns>GetFrobResult object</returns>
+        /// <param name="authenticator">instance.</param>
+        /// <param name="accessPermission">the permission your want to acquires.</param>
+        /// <returns>GetFrobResult object.</returns>
         public static Frob GetFrob(this Authenticator authenticator,AccessPermission accessPermission)
         {
             FlickrSynchronousPrmitive<Frob> FSP = new FlickrSynchronousPrmitive<Frob>();
@@ -29,12 +29,12 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// Returns the credentials attached to an authentication token. This call must be signed
+        /// Returns the credentials attached to an authentication token. This call must be signed.
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="authenticator">instance</param>
-        /// <param name="authenticationToken">The authentication token to check</param>
-        /// <returns>AuthenticationTokens</returns>
+        /// <param name="authenticator">instance.</param>
+        /// <param name="authenticationToken">The authentication token to check.</param>
+        /// <returns>AuthenticationTokens Object.</returns>
         public static AuthenticationTokens CheckToken(this Authenticator authenticator, string authenticationToken)
         {
             FlickrSynchronousPrmitive<AuthenticationTokens> FSP = new FlickrSynchronousPrmitive<AuthenticationTokens>();
@@ -49,12 +49,12 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// Get the full authentication token for a mini-token. This method call must be signed
+        /// Get the full authentication token for a mini-token. This method call must be signed.
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="authenticator">instance</param>
-        /// <param name="miniToken">The mini-token typed in by a user. It should be 9 digits long. It may optionally contain dashes</param>
-        /// <returns>AuthenticationTokens</returns>
+        /// <param name="authenticator">instance.</param>
+        /// <param name="miniToken">The mini-token typed in by a user. It should be 9 digits long. It may optionally contain dashes.</param>
+        /// <returns>AuthenticationTokens Object.</returns>
         public static AuthenticationTokens GetFullToken(this Authenticator authenticator,string miniToken)
         {
             FlickrSynchronousPrmitive<AuthenticationTokens> FSP = new FlickrSynchronousPrmitive<AuthenticationTokens>();
@@ -72,9 +72,9 @@ namespace MyFlickr.Rest
         /// Returns the auth token for the given frob, if one has been attached. This method call must be signed.
         /// This method does not require authentication. 
         /// </summary>
-        /// <param name="authenticator">instance</param>
-        /// <param name="frob">The frob to check</param>
-        /// <returns>AuthenticationTokens object</returns>
+        /// <param name="authenticator">instance.</param>
+        /// <param name="frob">The frob to check.</param>
+        /// <returns>AuthenticationTokens object.</returns>
         public static AuthenticationTokens GetToken(this Authenticator authenticator,string frob)
         {
             FlickrSynchronousPrmitive<AuthenticationTokens> FSP = new FlickrSynchronousPrmitive<AuthenticationTokens>();

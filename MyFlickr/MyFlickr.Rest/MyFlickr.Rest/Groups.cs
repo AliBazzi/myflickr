@@ -7,16 +7,16 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents the Method that exist in flickr.groups namespace
+    /// represents the Method that exist in flickr.groups namespace.
     /// </summary>
     public class Groups
     {
         private readonly AuthenticationTokens authtkns;
 
         /// <summary>
-        /// Create Groups Object
+        /// Create Groups Object.
         /// </summary>
-        /// <param name="authenticationTokens">Authentication Tokens Object</param>
+        /// <param name="authenticationTokens">Authentication Tokens Object.</param>
         public Groups(AuthenticationTokens authenticationTokens)
         {
             if (authenticationTokens == null)
@@ -31,12 +31,12 @@ namespace MyFlickr.Rest
         /// <param name="text">The text to search for.</param>
         /// <param name="page">The page of results to return. If this argument is ommited, it defaults to 1. </param>
         /// <param name="perPage">Number of groups to return per page. If this argument is ommited, it defaults to 100. The maximum allowed value is 500.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token SearchAsync(string text,Nullable<int> page = null , Nullable<int> perPage= null )
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeSearchCompletedEvent(new EventArgs<GroupCollection>(token,new GroupCollection(this.authtkns,elm.Element("groups")))), 
                 e => this.InvokeSearchCompletedEvent( new EventArgs<GroupCollection>(token,e)), this.authtkns.SharedSecret, 
                 new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token),
@@ -59,7 +59,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a Collection of Groups
+    /// represents a Collection of Groups.
     /// </summary>
     public class GroupCollection : IEnumerable<Group>
     {
@@ -78,27 +78,27 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Total Number of group , could be Null
+        /// the Total Number of group , could be Null.
         /// </summary>
         public Nullable<int> Total { get; private set; }
 
         /// <summary>
-        /// the Number of groups per page , could be Null
+        /// the Number of groups per page , could be Null.
         /// </summary>
         public Nullable<int> PerPage { get; private set; }
 
         /// <summary>
-        /// the number of pages , could be Null
+        /// the number of pages , could be Null.
         /// </summary>
         public Nullable<int> Pages { get; private set; }
 
         /// <summary>
-        /// the current page number , could be Null
+        /// the current page number , could be Null.
         /// </summary>
         public Nullable<int> Page { get; private set; }
 
         /// <summary>
-        /// the Groups Objects
+        /// the Groups Objects.
         /// </summary>
         public IEnumerable<Group> Groups
         {
@@ -111,7 +111,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Group> GetEnumerator()
         {
             foreach (var group in this.Groups)
@@ -121,7 +121,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -129,7 +129,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a group Pool
+    /// represents a group Pool.
     /// </summary>
     public class Pool
     {
@@ -143,12 +143,12 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of the Group
+        /// the ID of the Group.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the Title of the Group
+        /// the Title of the Group.
         /// </summary>
         public string Title { get; private set; }
 
@@ -157,7 +157,7 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="language">The language of the group name and description to fetch. If the language is not found, the primary language of the group will be returned. Valid values are the same as in feeds.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetInfoAsync(string language = null)
         {
             Token token = Token.GenerateToken();
@@ -176,7 +176,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="photoID">The id of the photo to add to the group pool. The photo must belong to the calling user.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token AddAsync(string photoID)
         {
             if (string.IsNullOrEmpty(photoID))
@@ -199,7 +199,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="photoID">The id of the photo to remove from the group pool. The photo must either be owned by the calling user of the calling user must be an administrator of the group.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token RemoveAsync(string photoID)
         {
             if (string.IsNullOrEmpty(photoID))
@@ -223,15 +223,15 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="userID">The nsid of a user. Specifiying this parameter will retrieve for you only those photos that the user has contributed to the group pool.</param>
         /// <param name="tags">A tag to filter the pool with. At the moment only one tag at a time is supported.</param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPhotosAsync(string userID = null ,string tags = null ,string extras = null , Nullable<int> perPage= null ,Nullable<int> page = null)
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token,new PhotosCollection(this.authtkns,elm.Element("photos")))), 
                 e => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token,e)), this.authtkns.SharedSecret, 
                 new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token),
@@ -252,13 +252,13 @@ namespace MyFlickr.Rest
         ///By default returns all types.</param>
         /// <param name="perPage">Number of members to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetMembersListAsync(string membersTypes = null, Nullable<int> perPage = null, Nullable<int> page= null)
         {
             this.authtkns.ValidateGrantedPermission(AccessPermission.Read);
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetMembersListCompletedEvent(new EventArgs<MembersList>(token,new MembersList(elm.Element("members")))), 
                 e => this.InvokeGetMembersListCompletedEvent(new EventArgs<MembersList>(token,e)), this.authtkns.SharedSecret, 
                 new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token),
@@ -375,7 +375,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represent a Flickr Group
+    /// represent a Flickr Group.
     /// </summary>
     public class Group : Pool
     {
@@ -398,7 +398,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents Group Info
+    /// represents Group Info.
     /// </summary>
     public class GroupInfo
     {
@@ -419,42 +419,42 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID that identifies the group
+        /// the ID that identifies the group.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the name of the Group
+        /// the name of the Group.
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// description of the group
+        /// description of the group.
         /// </summary>
         public string Description { get; private set; }
 
         /// <summary>
-        /// the Server number which the icon of the group is on
+        /// the Server number which the icon of the group is on.
         /// </summary>
         public int Server { get; private set; }
 
         /// <summary>
-        /// The server Farm number which the icon of the group is on
+        /// The server Farm number which the icon of the group is on.
         /// </summary>
         public int Farm { get; private set; }
 
         /// <summary>
-        /// the Language of the Group , could be empty if not specified
+        /// the Language of the Group , could be empty if not specified.
         /// </summary>
         public string Language { get; private set; }
 
         /// <summary>
-        /// determine whether the  the Group pool is moderated by the calling user
+        /// determine whether the  the Group pool is moderated by the calling user.
         /// </summary>
         public bool IsPoolModerated { get; private set; }
 
         /// <summary>
-        /// the number of members in the group
+        /// the number of members in the group.
         /// </summary>
         public int MembersCount { get; private set; }
 
@@ -464,17 +464,17 @@ namespace MyFlickr.Rest
         public int Privacy { get; private set; }
 
         /// <summary>
-        /// holds info about group policy with content addition
+        /// holds info about group policy with content addition.
         /// </summary>
         public Throttle Throttle { get; private set; }
 
         /// <summary>
-        /// a Blast that is written by admin of the group , Could be Null
+        /// a Blast that is written by admin of the group , Could be Null.
         /// </summary>
         public Blast Blast { get; private set; }
 
         /// <summary>
-        /// the Restrictions of this group
+        /// the Restrictions of this group.
         /// </summary>
         public Restrictions Restrictions { get; private set; }
 
@@ -527,7 +527,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents Restrictions info
+    /// represents Restrictions info.
     /// </summary>
     public class Restrictions
     {
@@ -545,37 +545,37 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// determine whether you can Add Photos or Not
+        /// determine whether you can Add Photos or Not.
         /// </summary>
         public bool AcceptPhotos { get; private set; }
 
         /// <summary>
-        /// determine whether you can Add Videos or Not
+        /// determine whether you can Add Videos or Not.
         /// </summary>
         public bool AcceptVideos { get; private set; }
 
         /// <summary>
-        /// determine whether you can Add Images or Not
+        /// determine whether you can Add Images or Not.
         /// </summary>
         public bool AcceptImages { get; private set; }
 
         /// <summary>
-        /// determine whether you can Add Screens or Not
+        /// determine whether you can Add Screens or Not.
         /// </summary>
         public bool AcceptScreens { get; private set; }
 
         /// <summary>
-        /// determine whether you can Add Art or Not
+        /// determine whether you can Add Art or Not.
         /// </summary>
         public bool AcceptArt { get; private set; }
 
         /// <summary>
-        /// determine whether you can Add Safe content or Not
+        /// determine whether you can Add Safe content or Not.
         /// </summary>
         public bool AcceptSafe { get; private set; }
 
         /// <summary>
-        /// determine whether you can Add Moderate content or Not
+        /// determine whether you can Add Moderate content or Not.
         /// </summary>
         public bool AcceptModerate { get; private set; }
 
@@ -591,7 +591,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents Blast info
+    /// represents Blast info.
     /// </summary>
     public class Blast
     {
@@ -603,23 +603,23 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Content of blast
+        /// the Content of blast.
         /// </summary>
         public string Content { get; private set; }
 
         /// <summary>
-        /// the id of the User that wrote the blast
+        /// the id of the User that wrote the blast.
         /// </summary>
         public string UserID { get; private set; }
 
         /// <summary>
-        /// the date when the blast was added
+        /// the date when the blast was added.
         /// </summary>
         public DateTime DateAdded { get; private set; }
     }
 
     /// <summary>
-    /// represents throttling info
+    /// represents throttling info.
     /// </summary>
     public class Throttle
     {
@@ -631,7 +631,7 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the maximum allowed photos number to be added , Could be Null
+        /// the maximum allowed photos number to be added , Could be Null.
         /// </summary>
         public Nullable<int> count { get; private set; }
 
@@ -641,38 +641,38 @@ namespace MyFlickr.Rest
         public ThrottleMode Mode { get; private set; }
 
         /// <summary>
-        /// the remaining allowed number of photos to be added , Could be Null
+        /// the remaining allowed number of photos to be added , Could be Null.
         /// </summary>
         public Nullable<int> Remaining { get; private set; }
     }
 
     /// <summary>
-    /// the Throttling Mode
+    /// the Throttling Mode.
     /// </summary>
     public enum ThrottleMode
     {
         /// <summary>
-        /// Unlimited
+        /// Unlimited.
         /// </summary>
         None = 0,
         /// <summary>
-        /// Per day
+        /// Per day.
         /// </summary>
         Day = 1,
         /// <summary>
-        /// Per week
+        /// Per week.
         /// </summary>
         Week = 2,
         /// <summary>
-        /// Per month
+        /// Per month.
         /// </summary>
         Month = 3,
         /// <summary>
-        /// Addition is Disabled
+        /// Addition is Disabled.
         /// </summary>
         Disabled=4,
         /// <summary>
-        /// the limit is reached
+        /// the limit is reached.
         /// </summary>
         Ever=5
     }
@@ -702,7 +702,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a list of members in a group
+    /// represents a list of members in a group.
     /// </summary>
     public class MembersList : IEnumerable<Member>
     {
@@ -718,34 +718,34 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Total Number of members
+        /// the Total Number of members.
         /// </summary>
         public int Total { get; private set; }
 
         /// <summary>
-        /// the Number of members per page
+        /// the Number of members per page.
         /// </summary>
         public int PerPage { get; private set; }
 
         /// <summary>
-        /// the number of pages 
+        /// the number of pages .
         /// </summary>
         public int Pages { get; private set; }
 
         /// <summary>
-        /// the current page number
+        /// the current page number.
         /// </summary>
         public int Page { get; private set; }
 
         /// <summary>
-        /// Enumerable of members
+        /// Enumerable of members.
         /// </summary>
         public IEnumerable<Member> Members { get { return this.data.Elements("member").Select(elm => new Member(elm)); } }
 
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Member> GetEnumerator()
         {
             foreach (var member in this.Members)
@@ -755,7 +755,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -763,7 +763,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// Represent Member info in a Group
+    /// Represent Member info in a Group.
     /// </summary>
     public class Member
     {
@@ -777,27 +777,27 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of the member
+        /// the ID of the member.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the name of the Member
+        /// the name of the Member.
         /// </summary>
         public string UserName { get; private set; }
 
         /// <summary>
-        /// the server number that the icon of the user is on
+        /// the server number that the icon of the user is on.
         /// </summary>
         public int Server { get; private set; }
 
         /// <summary>
-        /// the server farm number that the icon of the user is on
+        /// the server farm number that the icon of the user is on.
         /// </summary>
         public int Farm { get; private set; }
 
         /// <summary>
-        /// the type of the member
+        /// the type of the member.
         /// </summary>
         public MemberType MemberType { get; private set; }
 
@@ -850,20 +850,20 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents member type options
+    /// represents member type options.
     /// </summary>
     public enum MemberType
     {
         /// <summary>
-        ///  usual member
+        ///  usual member.
         /// </summary>
         Member = 2,
         /// <summary>
-        /// a moderator
+        /// a moderator.
         /// </summary>
         Moderator = 3,
         /// <summary>
-        /// an Admin
+        /// an Admin.
         /// </summary>
         Admin = 4
     }

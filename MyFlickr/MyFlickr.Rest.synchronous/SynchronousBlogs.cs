@@ -5,7 +5,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// Extension Methods for Blogs
+    /// Extension Methods for Blogs.
     /// </summary>
     public static class SynchronousBlogs
     {
@@ -13,8 +13,8 @@ namespace MyFlickr.Rest
         /// Return a list of Flickr supported blogging services.
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="blogs"></param>
-        /// <returns>Enumerable of  BloggingService Objects</returns>
+        /// <param name="blogs">Instance.</param>
+        /// <returns>Enumerable of  BloggingService Objects.</returns>
         public static IEnumerable<BloggingService> GetServices(this Blogs blogs)
         {
             FlickrSynchronousPrmitive<IEnumerable<BloggingService>> FSP = new FlickrSynchronousPrmitive<IEnumerable<BloggingService>>();

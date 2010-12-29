@@ -3,7 +3,7 @@
 namespace MyFlickr.Core
 {
     /// <summary>
-    /// Token that represents a Ticket for the Caller , to Monitor his Request when it's done
+    /// Token that represents a Ticket for the Caller , to Monitor his Request when it's done.
     /// </summary>
     public class Token
     {

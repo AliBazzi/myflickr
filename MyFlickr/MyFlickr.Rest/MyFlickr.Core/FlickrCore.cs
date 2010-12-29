@@ -4,9 +4,26 @@ using System.Xml.Linq;
 
 namespace MyFlickr.Core
 {
-    internal static class FlickrCore
+    /// <summary>
+    /// the Core Class that holds the necessary Tools that Enables you To Invoke Flickr API.
+    /// </summary>
+    public static class FlickrCore
     {
-        public static Uri IntiateGetRequest(Action<XElement> downloadCallBack,Action<Exception> downloadErrorCallBack,string sharedSecret,params Parameter[] parameters)
+        /// <summary>
+        /// get or set the Proxy to be Used when calling Flickr API.
+        /// Note : the call to get; set ; is Unsafe .
+        /// </summary>
+        public static System.Net.IWebProxy Proxy { get; set; }
+
+        /// <summary>
+        /// Initiate Get HTTP Call Asynchronously.
+        /// </summary>
+        /// <param name="downloadCallBack">Call Back to Invoke when Downloading the Content of the Response Completes.</param>
+        /// <param name="downloadErrorCallBack">Call Back to Invoke when Error Occurs.</param>
+        /// <param name="sharedSecret">the Shared Secret of Your API Key on Flickr. can be Null.</param>
+        /// <param name="parameters">set of parameters to Pass to Flickr.</param>
+        /// <returns>Uri that will Be Invoked.</returns>
+        public static Uri InitiateGetRequest(Action<XElement> downloadCallBack,Action<Exception> downloadErrorCallBack,string sharedSecret,params Parameter[] parameters)
         {
             if (parameters == null)
                 throw new ArgumentNullException("parameters");
@@ -15,14 +32,22 @@ namespace MyFlickr.Core
             if (downloadErrorCallBack == null)
                 throw new ArgumentNullException("onErrorCallBack");
 
-            return new WebClient( (System.Net.DownloadStringCompletedEventArgs e) => {
+            return new WebClient(Proxy, (System.Net.DownloadStringCompletedEventArgs e) => {
                 if (e.Error == null)
                     XmlParsing(downloadCallBack, downloadErrorCallBack, e.Result);
                 else
                     downloadErrorCallBack.Invoke(e.Error);
             }).InitiateGetRequestAsync(UriHelper.BuildUri(parameters, sharedSecret));
         }
-        
+
+        /// <summary>
+        /// Initiate POST HTTP Call Asynchronously.
+        /// </summary>
+        /// <param name="downloadCallBack">Call Back to Invoke when Downloading the Content of the Response Completes.</param>
+        /// <param name="downloadErrorCallBack">Call Back to Invoke when Error Occurs.</param>
+        /// <param name="sharedSecret">the Shared Secret of Your API Key on Flickr. can be Null.</param>
+        /// <param name="parameters">set of parameters to Pass to Flickr.</param>
+        /// <returns>Uri that will Be Invoked.</returns>
         public static Uri InitiatePostRequest(Action<XElement> downloadCallBack, Action<Exception> downloadErrorCallBack, string sharedSecret, params Parameter[] parameters)
         {
             if (parameters == null)
@@ -32,7 +57,7 @@ namespace MyFlickr.Core
             if (downloadErrorCallBack == null)
                 throw new ArgumentNullException("onErrorCallBack");
 
-            return new WebClient((System.Net.UploadStringCompletedEventArgs e) =>
+            return new WebClient(Proxy,(System.Net.UploadStringCompletedEventArgs e) =>
             {
                 if (e.Error == null)
                     XmlParsing(downloadCallBack, downloadErrorCallBack, e.Result);

@@ -7,16 +7,16 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents the Methods that exist in flickr.machineTags namespace
+    /// represents the Methods that exist in flickr.machineTags namespace.
     /// </summary>
     public class MachineTags
     {
         private readonly string apiKey;
 
         /// <summary>
-        /// Create MavhineTags Object
+        /// Create MavhineTags Object.
         /// </summary>
-        /// <param name="apiKey">The API Key of your Application</param>
+        /// <param name="apiKey">The API Key of your Application.</param>
         public MachineTags(string apiKey)
         {
             if (string.IsNullOrEmpty(apiKey))
@@ -31,12 +31,12 @@ namespace MyFlickr.Rest
         /// <param name="nameSpace">Limit the list of predicates returned to those that have the following namespace.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPredicatesAsync(string nameSpace = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetPredicatesCompletedEvent(new EventArgs<PredicatesCollection>(token, new PredicatesCollection(elm.Element("predicates")))), 
                 e => this.InvokeGetPredicatesCompletedEvent(new EventArgs<PredicatesCollection>(token,e)), null,
                 new Parameter("api_key", this.apiKey), new Parameter("method", "flickr.machinetags.getPredicates"), 
@@ -52,12 +52,12 @@ namespace MyFlickr.Rest
         /// <param name="nameSpace">A namespace that all values should be restricted to.</param>
         /// <param name="predicate">A predicate that all values should be restricted to.</param>
         /// <param name="addedSince">Only return machine tags values that have been added since this timestamp, in epoch seconds. </param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetRecentValuesAsync(string nameSpace = null ,string predicate = null ,string addedSince = null)
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetRecentValuesCompletedEvent(new EventArgs<ValuesCollection>(token, new ValuesCollection(elm.Element("values")))),
                 e => this.InvokeGetRecentValuesCompletedEvent(new EventArgs<ValuesCollection>(token, e)), null,
                 new Parameter("api_key", this.apiKey), new Parameter("method", "flickr.machinetags.getRecentValues"), 
@@ -74,7 +74,7 @@ namespace MyFlickr.Rest
         /// <param name="predicate">The predicate that all values should be restricted to.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetValuesAsync(string nameSpace, string predicate, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             if (string.IsNullOrEmpty(nameSpace))
@@ -84,7 +84,7 @@ namespace MyFlickr.Rest
 
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetValuesCompletedEvent(new EventArgs<ValuesCollection>(token, new ValuesCollection(elm.Element("values")))),
                 e => this.InvokeGetValuesCompletedEvent(new EventArgs<ValuesCollection>(token, e)), null,
                 new Parameter("api_key", this.apiKey), new Parameter("method", "flickr.machinetags.getValues"), new Parameter("namespace", nameSpace),
@@ -101,12 +101,12 @@ namespace MyFlickr.Rest
         /// <param name="predicate">Limit the list of pairs returned to those that have the following predicate.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPairsAsync(string nameSpace = null, string predicate = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetPairsCompletedEvent(new EventArgs<PairsCollection>(token, new PairsCollection(elm.Element("pairs")))),
                 e => this.InvokeGetPairsCompletedEvent(new EventArgs<PairsCollection>(token, e)), null,
                 new Parameter("api_key", this.apiKey), new Parameter("method", "flickr.machinetags.getPairs"), new Parameter("namespace", nameSpace),
@@ -122,12 +122,12 @@ namespace MyFlickr.Rest
         /// <param name="predicate">Limit the list of namespaces returned to those that have the following predicate.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetNamespacesAsync(string predicate = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetNamespacesCompletedEvent(new EventArgs<NamespacesCollection>(token, new NamespacesCollection(elm.Element("namespaces")))),
                 e => this.InvokeGetNamespacesCompletedEvent(new EventArgs<NamespacesCollection>(token, e)), null,
                 new Parameter("api_key", this.apiKey), new Parameter("method", "flickr.machinetags.getNamespaces"),
@@ -196,7 +196,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a Collection of Predicates
+    /// represents a Collection of Predicates.
     /// </summary>
     public class PredicatesCollection : IEnumerable<Predicate>
     {
@@ -212,34 +212,34 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Current page
+        /// the Current page.
         /// </summary>
         public int Page { get; private set; }
 
         /// <summary>
-        /// the total number of pages
+        /// the total number of pages.
         /// </summary>
         public int Pages { get; private set; }
 
         /// <summary>
-        /// the number of predicates per page
+        /// the number of predicates per page.
         /// </summary>
         public int PerPage { get; private set; }
 
         /// <summary>
-        /// the total number of predicates
+        /// the total number of predicates.
         /// </summary>
         public int Total { get; private set; }
 
         /// <summary>
-        /// enumerable of Predicates
+        /// enumerable of Predicates.
         /// </summary>
         public IEnumerable<Predicate> Predicates { get { return this.data.Elements("predicate").Select(pred => new Predicate(pred)); } }
 
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Predicate> GetEnumerator()
         {
             foreach (var pred in this.Predicates)
@@ -249,7 +249,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -257,7 +257,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a Predicate Info
+    /// represents a Predicate Info.
     /// </summary>
     public class Predicate
     {
@@ -269,17 +269,17 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Number of Usage of this predicate
+        /// the Number of Usage of this predicate.
         /// </summary>
         public int Usage { get; private set; }
 
         /// <summary>
-        /// the Number of the Namespaces
+        /// the Number of the Namespaces.
         /// </summary>
         public int NameSpaces { get; private set; }
 
         /// <summary>
-        /// the Content of the Predicate
+        /// the Content of the Predicate.
         /// </summary>
         public string Value { get; private set; }
 
@@ -289,7 +289,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="left">instance</param>
         /// <param name="right">instance</param>
-        /// <returns>True or False</returns>
+        /// <returns>True or False.</returns>
         public static bool operator ==(Predicate left, Predicate right)
         {
             if (left is Predicate)
@@ -304,7 +304,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="left">instance</param>
         /// <param name="right">instance</param>
-        /// <returns>True or False</returns>
+        /// <returns>True or False.</returns>
         public static bool operator !=(Predicate left, Predicate right)
         {
             return !(left == right);
@@ -332,7 +332,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a Collection of Values
+    /// represents a Collection of Values.
     /// </summary>
     public class ValuesCollection : IEnumerable<Value>
     {
@@ -350,44 +350,44 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Current page
+        /// the Current page.
         /// </summary>
         public int Page { get; private set; }
 
         /// <summary>
-        /// the total number of pages
+        /// the total number of pages.
         /// </summary>
         public int Pages { get; private set; }
 
         /// <summary>
-        /// the number of values per page
+        /// the number of values per page.
         /// </summary>
         public int PerPage { get; private set; }
 
         /// <summary>
-        /// the total number of values
+        /// the total number of values.
         /// </summary>
         public int Total { get; private set; }
 
         /// <summary>
-        /// the Namespace
+        /// the Namespace.
         /// </summary>
         public string Namespace { get; private set; }
 
         /// <summary>
-        /// the predicate
+        /// the predicate.
         /// </summary>
         public string Predicate { get; private set; }
 
         /// <summary>
-        /// Enumerable of Value Objects
+        /// Enumerable of Value Objects.
         /// </summary>
         public IEnumerable<Value> Values { get { return this.data.Elements("value").Select(val => new Value(val)); } }
 
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Value> GetEnumerator()
         {
             foreach (var val in this.Values)
@@ -397,7 +397,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -405,7 +405,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a Value Info
+    /// represents a Value Info.
     /// </summary>
     public class Value
     {
@@ -420,32 +420,32 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Number of Usage
+        /// the Number of Usage.
         /// </summary>
         public int Usage { get; private set; }
 
         /// <summary>
-        /// the Namespace , Could Be Null
+        /// the Namespace , Could Be Null.
         /// </summary>
         public string NameSpace { get; private set; }
 
         /// <summary>
-        /// the Predicate , Could Be Null
+        /// the Predicate , Could Be Null.
         /// </summary>
         public string Predicate { get; private set; }
 
         /// <summary>
-        /// first date of addition , Could Be Null
+        /// first date of addition , Could Be Null.
         /// </summary>
         public Nullable<DateTime> FirstDate { get; private set; }
 
         /// <summary>
-        /// last date of Addition , Could Be Null
+        /// last date of Addition , Could Be Null.
         /// </summary>
         public Nullable<DateTime> LastDate { get; private set; }
 
         /// <summary>
-        /// the Content of the Value
+        /// the Content of the Value.
         /// </summary>
         public string Content { get; private set; }
 
@@ -498,7 +498,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a Collection of Pairs
+    /// represents a Collection of Pairs.
     /// </summary>
     public class PairsCollection : IEnumerable<Pair>
     {
@@ -514,34 +514,34 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Current page
+        /// the Current page.
         /// </summary>
         public int Page { get; private set; }
 
         /// <summary>
-        /// the total number of pages
+        /// the total number of pages.
         /// </summary>
         public int Pages { get; private set; }
 
         /// <summary>
-        /// the number of pairs per page
+        /// the number of pairs per page.
         /// </summary>
         public int PerPage { get; private set; }
 
         /// <summary>
-        /// the total number of pairs
+        /// the total number of pairs.
         /// </summary>
         public int Total { get; private set; }
 
         /// <summary>
-        /// Enumerable of Pair Objects
+        /// Enumerable of Pair Objects.
         /// </summary>
         public IEnumerable<Pair> Pairs { get { return this.data.Elements("pair").Select(pair => new Pair(pair)); } }
 
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Pair> GetEnumerator()
         {
             foreach (var pair in this.Pairs)
@@ -551,7 +551,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -559,7 +559,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents Pair Info
+    /// represents Pair Info.
     /// </summary>
     public class Pair
     {
@@ -571,22 +571,22 @@ namespace MyFlickr.Rest
             this.Usage = int.Parse(element.Attribute("usage").Value);
         }
         /// <summary>
-        /// the Namespace
+        /// the Namespace.
         /// </summary>
         public string NameSpace { get; private set; }
 
         /// <summary>
-        /// the Predicate
+        /// the Predicate.
         /// </summary>
         public string Predicate { get; private set; }
 
         /// <summary>
-        /// the Number of Usage
+        /// the Number of Usage.
         /// </summary>
         public int Usage { get; private set; }
 
         /// <summary>
-        /// the Value
+        /// the Value.
         /// </summary>
         public string Value { get; private set; }
 
@@ -639,7 +639,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a Collection of Namespaces
+    /// represents a Collection of Namespaces.
     /// </summary>
     public class NamespacesCollection : IEnumerable<Namespace>
     {
@@ -655,34 +655,34 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Current page
+        /// the Current page.
         /// </summary>
         public int Page { get; private set; }
 
         /// <summary>
-        /// the total number of pages
+        /// the total number of pages.
         /// </summary>
         public int Pages { get; private set; }
 
         /// <summary>
-        /// the number of namespaces per page
+        /// the number of namespaces per page.
         /// </summary>
         public int PerPage { get; private set; }
 
         /// <summary>
-        /// the total number of namespaces
+        /// the total number of namespaces.
         /// </summary>
         public int Total { get; private set; }
 
         /// <summary>
-        /// Enumerable of Namespace Objects
+        /// Enumerable of Namespace Objects.
         /// </summary>
         public IEnumerable<Namespace> Namespaces { get { return this.data.Elements("namespace").Select(ns => new Namespace(ns)); } }
 
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Namespace> GetEnumerator()
         {
             foreach (var ns in this.Namespaces)
@@ -692,7 +692,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -700,7 +700,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents Namespace Info
+    /// represents Namespace Info.
     /// </summary>
     public class Namespace
     {
@@ -712,17 +712,17 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Number of Predicates
+        /// the Number of Predicates.
         /// </summary>
         public int Predicates { get; private set; }
 
         /// <summary>
-        /// the number of Usage
+        /// the number of Usage.
         /// </summary>
         public int Usage { get; private set; }
 
         /// <summary>
-        /// the Value of Namespace
+        /// the Value of Namespace.
         /// </summary>
         public string Value { get; private set; }
 

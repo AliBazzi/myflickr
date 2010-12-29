@@ -7,7 +7,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents a collection of Flickr Collections
+    /// represents a collection of Flickr Collections.
     /// </summary>
     public class CollectionsList : IEnumerable<Collection>
     {
@@ -28,7 +28,7 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// Flickr Collections Objects
+        /// Flickr Collections Objects.
         /// </summary>
         public IEnumerable<Collection> Collections
         {
@@ -44,7 +44,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Collection> GetEnumerator()
         {
             foreach (var item in this.Collections)
@@ -54,7 +54,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -62,7 +62,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a Flickr Collection
+    /// represents a Flickr Collection.
     /// </summary>
     public class Collection
     {
@@ -80,12 +80,12 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// Flickr Collections List
+        /// Flickr Collections List.
         /// </summary>
         public CollectionsList Collections { get { return new CollectionsList(this.authTkns,this.data.Elements("collection")); } }
 
         /// <summary>
-        /// PhotoSets Objects
+        /// PhotoSets Objects.
         /// </summary>
         public IEnumerable<PhotoSetBasic> PhotosSets
         {
@@ -96,27 +96,27 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of the Collection
+        /// the ID of the Collection.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the Title of the Collection
+        /// the Title of the Collection.
         /// </summary>
         public string Title { get; private set; }
 
         /// <summary>
-        /// the Description of the collection
+        /// the Description of the collection.
         /// </summary>
         public string Description { get; private set; }
 
         /// <summary>
-        /// the URL of the large icon of this Collection , Note : could be relative path for a default when not set by the User
+        /// the URL of the large icon of this Collection , Note : could be relative path for a default when not set by the User.
         /// </summary>
         public string IconLarge { get; private set; }
 
         /// <summary>
-        /// the URL of the small icon of this Collection , Note : could be relative path for a default when not set by the User
+        /// the URL of the small icon of this Collection , Note : could be relative path for a default when not set by the User.
         /// </summary>
         public string IconSmall { get; private set; }
 
@@ -124,13 +124,13 @@ namespace MyFlickr.Rest
         /// Returns information for a single collection. Currently can only be called by the collection owner, this may change.
         /// This method requires authentication with 'read' permission.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetInfoAsync()
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetInfoCompletedEvent(new EventArgs<CollectionInfo>(token,new CollectionInfo(this.authTkns,elm.Element("collection")))), 
                 e => this.InvokeGetInfoCompletedEvent(new EventArgs<CollectionInfo>(token,e)), this.authTkns.SharedSecret,
                 new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.collections.getInfo"), 
@@ -219,52 +219,52 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of the Collection
+        /// the ID of the Collection.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the Title of the Collection
+        /// the Title of the Collection.
         /// </summary>
         public string Title { get; private set; }
 
         /// <summary>
-        /// the Description of the Collection
+        /// the Description of the Collection.
         /// </summary>
         public string Description { get; private set; }
 
         /// <summary>
-        /// the Number of Childs of this collection
+        /// the Number of Childs of this collection.
         /// </summary>
         public int ChildCount { get; private set; }
 
         /// <summary>
-        /// the Date where this Collection was Created
+        /// the Date where this Collection was Created.
         /// </summary>
         public DateTime DateCreated { get; private set; }
 
         /// <summary>
-        /// the Url of the Icon that represents this Collection (large) , Could Be Partial Url
+        /// the Url of the Icon that represents this Collection (large) , Could Be Partial Url.
         /// </summary>
         public string IconLarge { get; private set; }
 
         /// <summary>
-        /// the Url of the Icon that represents this Collection (small) , Could Be Partial Url
+        /// the Url of the Icon that represents this Collection (small) , Could Be Partial Url.
         /// </summary>
         public string IconSmall { get; private set; }
 
         /// <summary>
-        /// the Server Number , Could Be Null
+        /// the Server Number , Could Be Null.
         /// </summary>
         public Nullable<int> Server { get; private set; }
 
         /// <summary>
-        /// Secret of the Collection , Could Be Null
+        /// Secret of the Collection , Could Be Null.
         /// </summary>
         public string Secret { get; private set; }
 
         /// <summary>
-        /// Enumerable of Photos that Represents the Icon Photos of the Collection , Could Be Null
+        /// Enumerable of Photos that Represents the Icon Photos of the Collection , Could Be Null.
         /// </summary>
         public IEnumerable<Photo> IconPhotos { get; private set; }
 

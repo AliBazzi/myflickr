@@ -4,7 +4,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// Extension Methods for Collections
+    /// Extension Methods for Collections.
     /// </summary>
     public static class SynchronousCollections
     {
@@ -12,8 +12,8 @@ namespace MyFlickr.Rest
         /// Returns information for a single collection. Currently can only be called by the collection owner, this may change.
         /// This method requires authentication with 'read' permission.
         /// </summary>
-        /// <param name="collection"></param>
-        /// <returns>CollectionInfo Object</returns>
+        /// <param name="collection">Instance.</param>
+        /// <returns>CollectionInfo Object.</returns>
         public static CollectionInfo GetInfo(this Collection collection)
         {
             FlickrSynchronousPrmitive<CollectionInfo> FSP = new FlickrSynchronousPrmitive<CollectionInfo>();

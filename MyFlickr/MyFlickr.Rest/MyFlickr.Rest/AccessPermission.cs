@@ -2,24 +2,24 @@
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents Access Permission options
+    /// represents Access Permission options.
     /// </summary>
     public enum AccessPermission
     {
         /// <summary>
-        /// no permission
+        /// no permission.
         /// </summary>
         None=-1,
         /// <summary>
-        /// Read Permission
+        /// Read Permission.
         /// </summary>
         Read=0,
         /// <summary>
-        /// Write Permission
+        /// Write Permission.
         /// </summary>
         Write=1,
         /// <summary>
-        /// Delete Permission
+        /// Delete Permission.
         /// </summary>
         Delete=2
     }

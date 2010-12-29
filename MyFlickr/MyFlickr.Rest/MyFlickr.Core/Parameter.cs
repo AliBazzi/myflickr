@@ -3,25 +3,25 @@
 namespace MyFlickr.Core
 {
     /// <summary>
-    /// represents a parameter that is passed during the call of Flickr Method
+    /// represents a parameter that is passed during the call of Flickr Method.
     /// </summary>
     public class Parameter
     {
         /// <summary>
-        /// the name of the Parameter
+        /// the name of the Parameter.
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// the value of the parameter
+        /// the value of the parameter.
         /// </summary>
         public string Value { get; private set; }
 
         /// <summary>
-        /// Create a parameter object
+        /// Create a parameter object.
         /// </summary>
-        /// <param name="name">the name of the parameter</param>
-        /// <param name="value">te value of the parameter</param>
+        /// <param name="name">the name of the parameter.</param>
+        /// <param name="value">the value of the parameter.</param>
         public Parameter(string name, object value)
         {
             if (string.IsNullOrEmpty(name))
@@ -40,14 +40,14 @@ namespace MyFlickr.Core
         }
 
         /// <summary>
-        /// determine whether the Parameter should be dropped and not sent during the Method call or Not
+        /// determine whether the Parameter should be dropped and not sent during the Method call or Not.
         /// </summary>
         public bool ShouldBeDropped { get; private set; }
 
         /// <summary>
         /// Return string Representation of the Instance.
         /// </summary>
-        /// <returns>a String</returns>
+        /// <returns>a String.</returns>
         public override string ToString()
         {
             return this.ToString(false);
@@ -57,7 +57,7 @@ namespace MyFlickr.Core
         /// Return string Representation of the Instance.
         /// </summary>
         /// <param name="removeEquality">whether to Add the Equality or Not.</param>
-        /// <returns>a String</returns>
+        /// <returns>a String.</returns>
         public string ToString(bool removeEquality)
         {
             return string.Format("{0}{1}{2}",this.Name,removeEquality ? string.Empty :"=" ,this.Value);
