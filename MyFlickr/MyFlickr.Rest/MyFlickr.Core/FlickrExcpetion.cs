@@ -4,12 +4,12 @@ using System.Xml.Linq;
 namespace MyFlickr.Core
 {
     /// <summary>
-    /// Represents the Exception info that is Returned From Flickr
+    /// Represents the Exception info that is Returned From Flickr.
     /// </summary>
     public class FlickrException :Exception
     {
         /// <summary>
-        /// the Error Code
+        /// the Error Code.
         /// </summary>
         public int Code { get; private set; }
 

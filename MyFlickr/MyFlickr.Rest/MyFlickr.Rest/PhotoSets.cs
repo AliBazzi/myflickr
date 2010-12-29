@@ -7,7 +7,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents a collection of photosets
+    /// represents a collection of photosets.
     /// </summary>
     public class PhotoSetsCollection : IEnumerable<PhotoSet>
     {
@@ -22,12 +22,12 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the number of photosets in this collection
+        /// the number of photosets in this collection.
         /// </summary>
         public int PhotosSetsCount { get; private set; }
 
         /// <summary>
-        /// the Photosets Objects
+        /// the Photosets Objects.
         /// </summary>
         public IEnumerable<PhotoSet> PhotoSets
         {
@@ -40,7 +40,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<PhotoSet> GetEnumerator()
         {
             foreach (var photoset in this.PhotoSets)
@@ -50,7 +50,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -58,7 +58,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents photosSet Basic Information
+    /// represents photosSet Basic Information.
     /// </summary>
     public class PhotoSetBasic
     {
@@ -73,17 +73,17 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID that identifies the photoset
+        /// the ID that identifies the photoset.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the title of the photoset
+        /// the title of the photoset.
         /// </summary>
         public string Title { get; private set; }
 
         /// <summary>
-        /// the description of the photoset , could be Null
+        /// the description of the photoset , could be Null.
         /// </summary>
         public string Description { get; private set; }
 
@@ -91,7 +91,7 @@ namespace MyFlickr.Rest
         /// Returns the comments for a photoset.
         /// This method does not require authentication.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetCommentsListAsync()
         {
             Token token = Core.Token.GenerateToken();
@@ -111,7 +111,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="text">Text of the comment.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token AddCommentAsync(string text)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
@@ -132,7 +132,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="commentID">The id of the comment to delete from a photoset.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token DeleteCommentAsync(string commentID)
         {
             if (string.IsNullOrEmpty(commentID))
@@ -157,7 +157,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="commentID">The id of the comment to edit.</param>
         /// <param name="text">Update the comment to this text.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token EditCommentAsync(string commentID, string text)
         {
             if (string.IsNullOrEmpty(commentID))
@@ -182,7 +182,7 @@ namespace MyFlickr.Rest
         /// Delete a photoset.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token DeleteAsync()
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
@@ -201,7 +201,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="photoID">The id of the photo to add to the set.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token AddPhotoAsync(string photoID)
         {
             if (string.IsNullOrEmpty(photoID))
@@ -224,7 +224,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="photoID">The id of the photo to remove from the set.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token RemovePhotoAsync(string photoID)
         {
             if (string.IsNullOrEmpty(photoID))
@@ -247,7 +247,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="photoIDs">list of photo ids to remove from the photoset.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token RemovePhotosAsync(params string[] photoIDs)
         {
             if (photoIDs == null)
@@ -273,15 +273,15 @@ namespace MyFlickr.Rest
         /// <param name="privacyFilter">Return photos only matching a certain privacy level. This only applies when making an authenticated call to view a photoset you own.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 500. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <param name="mediaType">Filter results by media type. Possible values are all (default), photos or videos</param>
+        /// <param name="mediaType">Filter results by media type. Possible values are all (default), photos or videos.</param>
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPhotosAsync(string extras = null , Nullable<PrivacyFilter> privacyFilter = null ,
             Nullable<int> perPage = null, Nullable<int> page = null ,Nullable<MediaType> mediaType = null)
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authTkns, elm.Element("photoset")))),
                 e => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token,e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photosets.getPhotos"),new Parameter("api_key", this.authTkns.ApiKey),new Parameter("auth_token", this.authTkns.Token),
@@ -297,7 +297,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="primaryPhotoID">The id of the photo to use as the 'primary' photo for the set. This id must also be passed along in photo_ids list argument.</param>
         /// <param name="photosIDs">A comma-delimited list of photo ids to include in the set. They will appear in the set in the order sent. This list must contain the primary photo id. All photos must belong to the owner of the set. This list of photos replaces the existing list. Call flickr.photosets.addPhoto to append a photo to a set.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token EditPhotosAsync(string primaryPhotoID, string[] photosIDs)
         {
             if (string.IsNullOrEmpty(primaryPhotoID))
@@ -324,7 +324,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="title">The new title for the photoset.</param>
         /// <param name="description">A description of the photoset. May contain limited html.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token SetMetadataAsync(string title, string description = null)
         {
             if (string.IsNullOrEmpty(title))
@@ -347,7 +347,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="photoID">The id of the photo to set as primary.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token SetPrimaryPhotoAsync(string photoID)
         {
             if (string.IsNullOrEmpty(photoID))
@@ -370,7 +370,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="photosIDs">Ordered, comma-delimited list of photo ids. Photos that are not in the list will keep their original order.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token ReorderPhotosAsync(params string[] photosIDs)
         {
             if (photosIDs == null)
@@ -584,7 +584,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a user PhotosSet
+    /// represents a user PhotosSet.
     /// </summary>
     public class PhotoSet : PhotoSetBasic
     {
@@ -600,27 +600,27 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of default photo in this photoset
+        /// the ID of default photo in this photoset.
         /// </summary>
         public Int64 Primary { get; private set; }
 
         /// <summary>
-        /// the secret used to build the URL of the default photo in this photoset
+        /// the secret used to build the URL of the default photo in this photoset.
         /// </summary>
         public string Secret { get; private set; }
 
         /// <summary>
-        /// the number of server the default photo in this set resides on
+        /// the number of server the default photo in this set resides on.
         /// </summary>
         public int Server { get; private set; }
 
         /// <summary>
-        /// the number of servers farm the default photo in this set resides on
+        /// the number of servers farm the default photo in this set resides on.
         /// </summary>
         public int Farm { get; private set; }
 
         /// <summary>
-        /// the number of photos contained in this photoset
+        /// the number of photos contained in this photoset.
         /// </summary>
         public int PhotosCount { get; private set; }
 
@@ -632,19 +632,19 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents basic photoset info that are returned when creating a new one
+    /// represents basic photoset info that are returned when creating a new one.
     /// </summary>
     public class PhotoSetToken
     {
         private readonly AuthenticationTokens authtkns;
 
         /// <summary>
-        /// the ID of the photoset that created
+        /// the ID of the photoset that created.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the Url of the photoset that created
+        /// the Url of the photoset that created.
         /// </summary>
         public Uri Url { get; private set; }
 
@@ -656,9 +656,9 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// Get a Photoset Instance
+        /// Get a Photoset Instance.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token CreateInstanceAsync()
         {
             Token token = Token.GenerateToken();

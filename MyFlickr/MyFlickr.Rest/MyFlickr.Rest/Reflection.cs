@@ -7,16 +7,16 @@ using System.Xml.Linq;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents the Methods that exist in flickr.reflection namespace
+    /// represents the Methods that exist in flickr.reflection namespace.
     /// </summary>
     public class Reflection
     {
         private readonly string apiKey;
 
         /// <summary>
-        /// Create Instance of Reflection 
+        /// Create Instance of Reflection .
         /// </summary>
-        /// <param name="apiKey">The API Key of your Application</param>
+        /// <param name="apiKey">The API Key of your Application.</param>
         public Reflection(string apiKey)
         {
             if (string.IsNullOrEmpty(apiKey))
@@ -28,12 +28,12 @@ namespace MyFlickr.Rest
         /// Returns a list of available flickr API methods.
         /// This method does not require authentication.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetMethodsAsync()
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetMethodsCompletedEvent(new EventArgs<IEnumerable<Method>>(token,elm.Element("methods").Elements("method").Select(mthd=>new Method(mthd.Value)))), 
                 e => this.InvokeGetMethodsCompletedEvent(new EventArgs<IEnumerable<Method>>(token,e)),
                 null, new Parameter("api_key", this.apiKey), new Parameter("method", "flickr.reflection.getMethods"));
@@ -46,7 +46,7 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="methodName">The name of the method to fetch information for.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetMethodInfoAsync(string methodName)
         {
             if (string.IsNullOrEmpty(methodName))
@@ -54,7 +54,7 @@ namespace MyFlickr.Rest
 
             Token token = Token.GenerateToken();
 
-            Uri url = FlickrCore.IntiateGetRequest(
+            Uri url = FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetMethodInfoCompletedEvent(new EventArgs<MethodInfo>(token,new MethodInfo(elm))), 
                 e => this.InvokeGetMethodInfoCompletedEvent(new EventArgs<MethodInfo>(token,e)), null, 
                 new Parameter("api_key", this.apiKey), new Parameter("method", "flickr.reflection.getMethodInfo"), new Parameter("method_name", methodName));
@@ -89,12 +89,12 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a Method
+    /// represents a Method.
     /// </summary>
     public class Method
     {
         /// <summary>
-        /// the name of the Method
+        /// the name of the Method.
         /// </summary>
         public string Name { get; private set; }
 
@@ -109,7 +109,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="left">instance</param>
         /// <param name="right">instance</param>
-        /// <returns>True or False</returns>
+        /// <returns>True or False.</returns>
         public static bool operator ==(Method left, Method right)
         {
             if (left is Method)
@@ -152,7 +152,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a method info
+    /// represents a method info.
     /// </summary>
     public class MethodInfo
     {
@@ -171,47 +171,47 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Name of the Method
+        /// the Name of the Method.
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// Description of the method , could be Null
+        /// Description of the method , could be Null.
         /// </summary>
         public string Description { get; private set; }
 
         /// <summary>
-        /// determine whether the Call should be signed or Not
+        /// determine whether the Call should be signed or Not.
         /// </summary>
         public bool NeedsSigning { get; private set; }
 
         /// <summary>
-        ///  determine whether the User should be logged in before calling of the method or Not
+        ///  determine whether the User should be logged in before calling of the method or Not.
         /// </summary>
         public bool NeedsLogin { get; private set; }
 
         /// <summary>
-        /// the Required Permission that should be granted when calling this Method
+        /// the Required Permission that should be granted when calling this Method.
         /// </summary>
         public AccessPermission RequiredPermission { get; private set; }
 
         /// <summary>
-        /// the format of the response ,could be Null
+        /// the format of the response ,could be Null.
         /// </summary>
         public string Response { get; private set; }
 
         /// <summary>
-        /// explanation of the Method , Could Be Null
+        /// explanation of the Method , Could Be Null.
         /// </summary>
         public string Explanation { get; private set; }
 
         /// <summary>
-        /// Enumerable of parameters of the method
+        /// Enumerable of parameters of the method.
         /// </summary>
         public IEnumerable<Argument> Arguments { get; private set; }
 
         /// <summary>
-        /// Enumerable of possible Errors that could Occur while Calling the Method
+        /// Enumerable of possible Errors that could Occur while Calling the Method.
         /// </summary>
         public IEnumerable<Error> Errors { get; private set; }
 
@@ -264,7 +264,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents the argument Info
+    /// represents the argument Info.
     /// </summary>
     public class Argument
     {
@@ -276,17 +276,17 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Name of the Argument
+        /// the Name of the Argument.
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// determine whether the Argument is optional or Not
+        /// determine whether the Argument is optional or Not.
         /// </summary>
         public bool IsOptional { get; private set; }
 
         /// <summary>
-        /// a Description for the Argument
+        /// a Description for the Argument.
         /// </summary>
         public string Description { get; private set; }
 
@@ -339,7 +339,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents an Error info
+    /// represents an Error info.
     /// </summary>
     public class Error
     {
@@ -351,17 +351,17 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Message of the Error
+        /// the Message of the Error.
         /// </summary>
         public string Message { get; private set; }
 
         /// <summary>
-        /// the Code of the Error
+        /// the Code of the Error.
         /// </summary>
         public int Code { get; private set; }
 
         /// <summary>
-        /// the Description of the Error
+        /// the Description of the Error.
         /// </summary>
         public string Description { get; private set; }
 

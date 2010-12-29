@@ -28,6 +28,7 @@ namespace MyFlickr.Rest
             throw eventArgs.Excpetion;
         }
     }
+
     internal static class TokenExtensions
     {
         public static void IfEqualSetValueandResume<Result>(this Token left, FlickrSynchronousPrmitive<Result> FSP,EventArgs<Result> args)

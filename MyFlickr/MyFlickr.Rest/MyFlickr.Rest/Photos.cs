@@ -7,7 +7,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents a collection of photos
+    /// represents a collection of photos.
     /// </summary>
     public class PhotosCollection : IEnumerable<Photo>
     {
@@ -26,27 +26,27 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Current page
+        /// the Current page.
         /// </summary>
         public int Page { get; private set; }
 
         /// <summary>
-        /// the total number of pages
+        /// the total number of pages.
         /// </summary>
         public int Pages { get; private set; }
 
         /// <summary>
-        /// the number of photos per page
+        /// the number of photos per page.
         /// </summary>
         public int PerPage { get; private set; }
 
         /// <summary>
-        /// the total number of photos
+        /// the total number of photos.
         /// </summary>
         public int Total { get; private set; }
 
         /// <summary>
-        /// the photos objects
+        /// the photos objects.
         /// </summary>
         public IEnumerable<Photo> Photos
         {
@@ -62,7 +62,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Photo> GetEnumerator()
         {
             foreach (var photo in this.Photos)
@@ -72,7 +72,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -80,7 +80,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a Photo information
+    /// represents a Photo information.
     /// </summary>
     public class Photo
     {
@@ -122,77 +122,77 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// determine if the Photo is primary in the set or Not , Could be Null
+        /// determine if the Photo is primary in the set or Not , Could be Null.
         /// </summary>
         public Nullable<bool> IsPrimary { get; private set; }
 
         /// <summary>
-        /// determine if the Photo could be seen only by friends, Could be Null
+        /// determine if the Photo could be seen only by friends, Could be Null.
         /// </summary>
         public Nullable<bool> IsFriend { get; private set; }
 
         /// <summary>
-        /// determine if the Photo could be seen only by family, Could be Null
+        /// determine if the Photo could be seen only by family, Could be Null.
         /// </summary>
         public Nullable<bool> IsFamily { get; private set; }
 
         /// <summary>
-        /// determine if the Photo is Public, Could be Null
+        /// determine if the Photo is Public, Could be Null.
         /// </summary>
         public Nullable<bool> IsPublic { get; private set; }
 
         /// <summary>
-        /// determine whether the photo has comment in a given gallery or Not , Could be Null
+        /// determine whether the photo has comment in a given gallery or Not , Could be Null.
         /// </summary>
         public Nullable<bool> HasComment { get; private set; }
 
         /// <summary>
-        /// get the Comment of photo in a given gallery , Could Be Null
+        /// get the Comment of photo in a given gallery , Could Be Null.
         /// </summary>
         public string Comment { get; private set; }
 
         /// <summary>
-        /// The ID of the photo
+        /// The ID of the photo.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the title of the photo
+        /// the title of the photo.
         /// </summary>
         public string Title { get; private set; }
 
         /// <summary>
-        /// the owner ID
+        /// the owner ID.
         /// </summary>
         public string OwnerID { get; private set; }
 
         /// <summary>
-        /// this string is used in the building of photo URL
+        /// this string is used in the building of photo URL.
         /// </summary>
         public string Secret { get; private set; }
 
         /// <summary>
-        /// the Server number which the photo is on
+        /// the Server number which the photo is on.
         /// </summary>
         public int Server { get; private set; }
 
         /// <summary>
-        /// The server Farm number which the photo is on
+        /// The server Farm number which the photo is on.
         /// </summary>
         public int Farm { get; private set; }
 
         /// <summary>
-        /// the date when this photo was added to the group , Could be Null
+        /// the date when this photo was added to the group , Could be Null.
         /// </summary>
         public Nullable<DateTime> DateAdded { get; private set; }
 
         /// <summary>
-        /// the name of the Owner of the Photo , Could be Null
+        /// the name of the Owner of the Photo , Could be Null.
         /// </summary>
         public string OwnerName { get; private set; }
 
         /// <summary>
-        /// Get the URL that leads to the Photo Web page on Flickr
+        /// Get the URL that leads to the Photo Web page on Flickr.
         /// </summary>
         /// <returns></returns>
         public Uri GetPhotoWebPageURL()
@@ -204,7 +204,7 @@ namespace MyFlickr.Rest
         /// Adds a photo to a user's favorites list.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token AddToFavoriteAsync()
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
@@ -224,7 +224,7 @@ namespace MyFlickr.Rest
         /// Remove a photo from a user's favorites list.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token RemoveFromFavoriteAsync()
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
@@ -244,25 +244,15 @@ namespace MyFlickr.Rest
         /// Retrieves a list of EXIF/TIFF/GPS tags for a given photo. The calling user must have permission to view the photo.
         /// This method does not require authentication.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetExifAsync()
         {
             Token token = Core.Token.GenerateToken();
-            if (this.authTkns.AccessPermission > AccessPermission.None)
-            {
-                FlickrCore.IntiateGetRequest(
-                    elm => this.InvokeGetExifCompletedEvent(new EventArgs<IEnumerable<Exif>>(token,elm.Element("photo").Elements("exif").Select(exif=>new Exif(exif)))),
-                    e => this.InvokeGetExifCompletedEvent(new EventArgs<IEnumerable<Exif>>(token,e)), this.authTkns.SharedSecret,
-                    new Parameter("method", "flickr.photos.getExif"), new Parameter("api_key", this.authTkns.ApiKey),
-                    new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID));
-            }
-            else
-            {
-                FlickrCore.IntiateGetRequest(
-                    elm => this.InvokeGetExifCompletedEvent(new EventArgs<IEnumerable<Exif>>(token, elm.Element("photo").Elements("exif").Select(exif => new Exif(exif)))),
-                    e => this.InvokeGetExifCompletedEvent(new EventArgs<IEnumerable<Exif>>(token, e)), null,
-                    new Parameter("method", "flickr.photos.getExif"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("photo_id", this.ID));
-            }
+            FlickrCore.InitiateGetRequest(
+                elm => this.InvokeGetExifCompletedEvent(new EventArgs<IEnumerable<Exif>>(token,elm.Element("photo").Elements("exif").Select(exif=>new Exif(exif)))),
+                e => this.InvokeGetExifCompletedEvent(new EventArgs<IEnumerable<Exif>>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.getExif"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID));
             return token;
         }
 
@@ -272,29 +262,17 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="page">Number of users to return per page. If this argument is omitted, it defaults to 10. The maximum allowed value is 50.</param>
         /// <param name="perPage">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetFavoritesAsync(Nullable<int> page = null, Nullable<int> perPage = null)
         {
             Token token = Core.Token.GenerateToken();
-
-            if (this.authTkns.AccessPermission > AccessPermission.None)
-            {
-                FlickrCore.IntiateGetRequest(
-                    elm => this.InvokeGetFavoritesCompletedEvent(new EventArgs<IEnumerable<Person>>(token, elm.Element("photo").Elements("person").Select(person => new Person(person)))),
-                    e => this.InvokeGetFavoritesCompletedEvent(new EventArgs<IEnumerable<Person>>(token, e)), this.authTkns.SharedSecret,
-                    new Parameter("method", "flickr.photos.getFavorites"), new Parameter("api_key", this.authTkns.ApiKey),
-                    new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID),
-                    new Parameter("page",page),new Parameter("per_page",perPage));
-            }
-            else
-            {
-                FlickrCore.IntiateGetRequest(
-                    elm => this.InvokeGetFavoritesCompletedEvent(new EventArgs<IEnumerable<Person>>(token, elm.Element("photo").Elements("person").Select(person => new Person(person)))),
-                    e => this.InvokeGetFavoritesCompletedEvent(new EventArgs<IEnumerable<Person>>(token, e)), null,
-                    new Parameter("method", "flickr.photos.getFavorites"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("photo_id", this.ID),
-                    new Parameter("page", page), new Parameter("per_page", perPage));
-            }
-
+            FlickrCore.InitiateGetRequest(
+                elm => this.InvokeGetFavoritesCompletedEvent(new EventArgs<IEnumerable<Person>>(token, elm.Element("photo").Elements("person").Select(person => new Person(person)))),
+                e => this.InvokeGetFavoritesCompletedEvent(new EventArgs<IEnumerable<Person>>(token, e)), this.authTkns.SharedSecret,
+                new Parameter("method", "flickr.photos.getFavorites"), new Parameter("api_key", this.authTkns.ApiKey),
+                new Parameter("auth_token", this.authTkns.Token), new Parameter("photo_id", this.ID),
+                new Parameter("page",page),new Parameter("per_page",perPage));
+            
             return token;
         }
 
@@ -307,7 +285,7 @@ namespace MyFlickr.Rest
         /// <param name="blogPassword">The password for the blog (used when the blog does not have a stored password).</param>
         /// <param name="blogID">The id of the blog to post to.</param>
         /// <param name="service">A Flickr supported blogging service. Instead of passing a blog id you can pass a service id and we'll post to the first blog of that service we find.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token PostPhotoToBlogAsync(string title, string description, string blogPassword = null, Nullable<Int64> blogID = null, string service = null)
         {
             if (string.IsNullOrEmpty(title))
@@ -333,12 +311,12 @@ namespace MyFlickr.Rest
         /// Get information about a photo. The calling user must have permission to view the photo.
         /// This method does not require authentication.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetInfoAsync()
         {
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetInfoCompletedEvent(new EventArgs<PhotoInfo>(token,new PhotoInfo(elm.Element("photo")))),
                 e => this.InvokeGetInfoCompletedEvent(new EventArgs<PhotoInfo>(token,e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photos.getInfo"), new Parameter("api_key", this.authTkns.ApiKey),
@@ -352,7 +330,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="tags">The tags to add to the photo.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token AddTagAsync(string tags)
         {
             if (string.IsNullOrEmpty(tags))
@@ -376,7 +354,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="tagID">The tag to remove from the photo. This parameter should contain a tag id, as returned by flickr.photos.getInfo.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token RemoveTagAsync(string tagID)
         {
             if (string.IsNullOrEmpty(tagID))
@@ -400,14 +378,14 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'read' permission.
         /// the Photo Should belong to the calling user.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPermissionsAsync()
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
 
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetPermissionsCompletedEvent(new EventArgs<Permissions>(token,new Permissions(elm.Element("perms")))), 
                 e => this.InvokeGetPermissionsCompletedEvent(new EventArgs<Permissions>(token,e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photos.getPerms"), new Parameter("api_key", this.authTkns.ApiKey), new Parameter("photo_id", this.ID)
@@ -426,7 +404,7 @@ namespace MyFlickr.Rest
         /// <param name="isFamily">true to make the photo visible to family when private, false to not.</param>
         /// <param name="commentPermission">who can add comments to the photo and it's notes.</param>
         /// <param name="addMetadataPermission">who can add notes and tags to the photo.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token SetPermissionsAsync(bool isPublic,bool isFriend , bool isFamily,CommentPermission commentPermission, AddMetadataPermission addMetadataPermission)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
@@ -451,7 +429,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="title">The title for the photo.</param>
         /// <param name="description">The description for the photo.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token SetMetaAsync(string title, string description)
         {
             if (title == null)
@@ -479,7 +457,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="safetyLevel">The safety level of the photo.</param>
         /// <param name="isHidden">Whether or not to additionally hide the photo from public searches. Must be either True for Yes or false for No.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token SetSafetyLevelAsync(SafetyLevel safetyLevel , Nullable<bool> isHidden = null) 
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
@@ -504,7 +482,7 @@ namespace MyFlickr.Rest
         /// <param name="datePosted">The date the photo was uploaded to flickr . more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="dateTaken">The date the photo was taken . more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
         /// <param name="dateTakenGranularity">The granularity of the date the photo was taken. more info about formats Flickr Accepts for  date : http://www.flickr.com/services/api/misc.dates.html </param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token SetDatesAsync(string datePosted = null, string dateTaken = null, string dateTakenGranularity = null)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
@@ -527,7 +505,7 @@ namespace MyFlickr.Rest
         /// the Photo Should belong to the calling user.
         /// </summary>
         /// <param name="contentType">The content type of the photo. Must be one of: Photo, Screenshot, andOther , Only .</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token SetContentTypeAsync(ContentType contentType)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
@@ -548,7 +526,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'delete' permission.
         /// the Photo Should belong to the calling user.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token DeleteAsync()
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Delete);
@@ -567,12 +545,12 @@ namespace MyFlickr.Rest
         /// Returns next and previous photos for a photo in a photostream.
         /// This method does not require authentication.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetContextAsync()
         {
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetContextCompletedEvent(new EventArgs<PhotoContext>(token,new PhotoContext(this.authTkns,elm))),
                 e => this.InvokeGetContextCompletedEvent(new EventArgs<PhotoContext>(token,e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photos.getContext"), new Parameter("api_key", this.authTkns.ApiKey),
@@ -586,7 +564,7 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="photosetID">The id of the photoset for which to fetch the photo's context.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetContextinSetAsync(string photosetID)
         {
             if (string.IsNullOrEmpty(photosetID))
@@ -594,7 +572,7 @@ namespace MyFlickr.Rest
 
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetContextCompletedEvent(new EventArgs<PhotoContext>(token, new PhotoContext(this.authTkns, elm))),
                 e => this.InvokeGetContextCompletedEvent(new EventArgs<PhotoContext>(token, e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photosets.getContext"), new Parameter("api_key", this.authTkns.ApiKey),
@@ -608,7 +586,7 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="GroupID">The nsid of the group who's pool to fetch the photo's context for.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetContextAsync(string GroupID)
         {
             if (string.IsNullOrEmpty(GroupID))
@@ -628,12 +606,12 @@ namespace MyFlickr.Rest
         /// Returns all visible sets and pools the photo belongs to.
         /// This method does not require authentication.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetAllContextsAsync()
         {
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetAllContextsCompletedEvent(new EventArgs<PhotoContexts>(token,new PhotoContexts(this.authTkns,elm))),
                 e => this.InvokeGetAllContextsCompletedEvent(new EventArgs<PhotoContexts>(token,e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photos.getAllContexts"), new Parameter("auth_token", this.authTkns.Token)
@@ -646,12 +624,12 @@ namespace MyFlickr.Rest
         /// Returns the available sizes for a photo. The calling user must have permission to view the photo.
         /// This method does not require authentication.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetSizesAsync()
         {
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetSizesCompletedEvent(new EventArgs<IEnumerable<Size>>(token,elm.Element("sizes").Elements("size").Select(size=> new Size(size)))),
                 e => this.InvokeGetSizesCompletedEvent(new EventArgs<IEnumerable<Size>>(token,e)), this.authTkns.SharedSecret,
                 new Parameter("method", "flickr.photos.getSizes"), new Parameter("api_key", this.authTkns.ApiKey),
@@ -669,7 +647,7 @@ namespace MyFlickr.Rest
         /// <param name="height">The height of the note.</param>
         /// <param name="width">The width of the note.</param>
         /// <param name="text">The description of the note</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token AddNoteAync(int x, int y, int height, int width, string text)
         {
             if (string.IsNullOrEmpty(text))
@@ -694,7 +672,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="noteID">The id of the note to delete.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token DeleteNoteAsync(string noteID)
         {
             if (string.IsNullOrEmpty(noteID))
@@ -721,7 +699,7 @@ namespace MyFlickr.Rest
         /// <param name="height">The height of the note</param>
         /// <param name="width">The width of the note.</param>
         /// <param name="text">The description of the note.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token EditNoteAsync(string noteID, int x, int y, int height, int width, string text)
         {
             if (string.IsNullOrEmpty(noteID))
@@ -750,7 +728,7 @@ namespace MyFlickr.Rest
         /// <param name="y">The top-most pixel co-ordinate of the box around the person.</param>
         /// <param name="height">The height (in pixels) of the box around the person.</param>
         /// <param name="width">The width (in pixels) of the box around the person.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token AddPersonAync(string personID, Nullable<int> x = null, Nullable<int> y = null, Nullable<int> height = null, Nullable<int> width = null)
         {
             if (string.IsNullOrEmpty(personID))
@@ -775,7 +753,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="personID">The NSID of the person to remove from the photo.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token RemovePersonAsync(string personID)
         {
             if (string.IsNullOrEmpty(personID))
@@ -799,7 +777,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="personID">The NSID of the person whose bounding box you want to remove.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token RemovePersonCoordsAsync(string personID)
         {
             if (string.IsNullOrEmpty(personID))
@@ -827,7 +805,7 @@ namespace MyFlickr.Rest
         /// <param name="y">The top-most pixel co-ordinate of the box around the person.</param>
         /// <param name="height">The width (in pixels) of the box around the person.</param>
         /// <param name="width">The width (in pixels) of the box around the person.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token EditPersonCoordsAsync(string personID, int x, int y, int height, int width)
         {
             if (string.IsNullOrEmpty(personID))
@@ -851,12 +829,12 @@ namespace MyFlickr.Rest
         /// Get a list of people in a given photo.
         /// This method does not require authentication.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPersonsListAsync()
         {
             Token token = Core.Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetPersonsListCompletedEvent(new EventArgs<IEnumerable<PersonInPhoto>>(token,
                     elm.Element("people").Elements("person").Select(person=>new PersonInPhoto(person)))),
                 e => this.InvokeGetPersonsListCompletedEvent(new EventArgs<IEnumerable<PersonInPhoto>>(token,e)), this.authTkns.SharedSecret,
@@ -872,7 +850,7 @@ namespace MyFlickr.Rest
         /// the Photo Should belong to the calling user.
         /// </summary>
         /// <param name="degrees">The amount of degrees by which to rotate the photo (clockwise) from it's current orientation. Valid values are 90, 180 and 270.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token RotateAsync(Degrees degrees)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
@@ -893,7 +871,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="text">Text of the comment.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token AddCommentAsync(string text)
         {
             if (string.IsNullOrEmpty(text))
@@ -917,7 +895,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="commentID">The id of the comment to delete.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token DeleteCommentAsync(string commentID)
         {
             if (string.IsNullOrEmpty(commentID))
@@ -942,7 +920,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="commentID">The id of the comment to edit.</param>
         /// <param name="text">Update the comment to this text.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token EditCommentAsync(string commentID, string text)
         {
             if (string.IsNullOrEmpty(commentID))
@@ -969,7 +947,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="minCommentDate">Minimum date that a a comment was added. The date should be in the form of a unix timestamp.</param>
         /// <param name="maxCommentDate">Maximum date that a comment was added. The date should be in the form of a unix timestamp.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetCommentsListAsync(string minCommentDate = null, string maxCommentDate = null)
         {
             Token token = Core.Token.GenerateToken();
@@ -991,12 +969,12 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="perPage">Number of galleries to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetGalleriesListAsync(Nullable<int> perPage = null, Nullable<int> page = null)
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetGalleriesCompletedEvent(new EventArgs<GalleriesCollection>(token, new GalleriesCollection(this.authTkns, elm.Element("galleries")))), 
                 e => this.InvokeGetGalleriesCompletedEvent(new EventArgs<GalleriesCollection>(token,e)), this.authTkns.SharedSecret, 
                 new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token),
@@ -1011,7 +989,7 @@ namespace MyFlickr.Rest
         /// This method requires authentication with 'write' permission.
         /// </summary>
         /// <param name="licenseID">The license to apply, or 0 (zero) to remove the current license. Note : as of this writing the "no known copyright restrictions" license (7) is not a valid argument.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token SetLicenseAsync(int licenseID)
         {
             this.authTkns.ValidateGrantedPermission(AccessPermission.Write);
@@ -1441,7 +1419,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a Collection of photos that a user appears in
+    /// represents a Collection of photos that a user appears in.
     /// </summary>
     public class PhotosOfUserCollection : IEnumerable<Photo>
     {
@@ -1461,32 +1439,32 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the number of total pages , could be null when called without signing
+        /// the number of total pages , could be null when called without signing.
         /// </summary>
         public Nullable<int> Pages { get; private set; }
 
         /// <summary>
-        /// the number of current page
+        /// the number of current page.
         /// </summary>
         public int Page { get; private set; }
 
         /// <summary>
-        /// the number of photos per page
+        /// the number of photos per page.
         /// </summary>
         public int PerPage { get; private set; }
 
         /// <summary>
-        /// determine whether there exists a next page , Could be Null when called with signing
+        /// determine whether there exists a next page , Could be Null when called with signing.
         /// </summary>
         public Nullable<bool> HasNextPage { get; private set; }
 
         /// <summary>
-        /// the Total Number of photos , Could be null when called with no Signing
+        /// the Total Number of photos , Could be null when called with no Signing.
         /// </summary>
         public Nullable<int> Total { get; private set; }
 
         /// <summary>
-        /// Photos Objects
+        /// Photos Objects.
         /// </summary>
         public IEnumerable<Photo> Photos
         {
@@ -1499,7 +1477,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Photo> GetEnumerator()
         {
             foreach (var photo in this.Photos)
@@ -1509,7 +1487,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -1517,7 +1495,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// Represents an Exif piece of information , http://en.wikipedia.org/wiki/Exchangeable_image_file_format
+    /// Represents an Exif piece of information , http://en.wikipedia.org/wiki/Exchangeable_image_file_format .
     /// </summary>
     public class Exif
     {
@@ -1532,32 +1510,32 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the tag space this Exif is belong to
+        /// the tag space this Exif is belong to.
         /// </summary>
         public string TagSpace { get; private set; }
 
         /// <summary>
-        /// the tag space ID this Exif is belong to
+        /// the tag space ID this Exif is belong to.
         /// </summary>
         public int TagSpaceID { get; private set; }
 
         /// <summary>
-        /// the Tag name
+        /// the Tag name.
         /// </summary>
         public string Tag { get; private set; }
 
         /// <summary>
-        /// the name of label
+        /// the name of label.
         /// </summary>
         public string Label { get; private set; }
 
         /// <summary>
-        /// the Raw value of the Tag
+        /// the Raw value of the Tag.
         /// </summary>
         public string Raw { get; private set; }
 
         /// <summary>
-        /// contains a pretty-formatted version of the tag where available, Could Be Null
+        /// contains a pretty-formatted version of the tag where available, Could Be Null.
         /// </summary>
         public string Clean { get; private set; }
 
@@ -1610,7 +1588,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents person information that added a photo to his favorite list
+    /// represents person information that added a photo to his favorite list.
     /// </summary>
     public class Person
     {
@@ -1622,17 +1600,17 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of the Person
+        /// the ID of the Person.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the user name of the person
+        /// the user name of the person.
         /// </summary>
         public string UserName { get; private set; }
 
         /// <summary>
-        /// the date where the user added the photo to his favorite list
+        /// the date where the user added the photo to his favorite list.
         /// </summary>
         public DateTime FaveDate { get; private set; }
 
@@ -1685,7 +1663,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents Information of a Photo
+    /// represents Information of a Photo.
     /// </summary>
     public class PhotoInfo
     {
@@ -1697,37 +1675,37 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of the Photo
+        /// the ID of the Photo.
         /// </summary>
         public string ID { get { return data.Attribute("id").Value; } }
 
         /// <summary>
-        /// the Secret of the Photo
+        /// the Secret of the Photo.
         /// </summary>
         public string Secret { get { return this.data.Attribute("secret").Value; } }
 
         /// <summary>
-        /// the Number of Server that photo resides on
+        /// the Number of Server that photo resides on.
         /// </summary>
         public int Server { get { return int.Parse(this.data.Attribute("server").Value); } }
         
         /// <summary>
-        /// the Number of Server Farm that photo resides on
+        /// the Number of Server Farm that photo resides on.
         /// </summary>
         public int Farm { get { return int.Parse(this.data.Attribute("farm").Value); } }
 
         /// <summary>
-        /// the Date when the photo was Uploaded
+        /// the Date when the photo was Uploaded.
         /// </summary>
         public DateTime DateUploaded { get {return new DateTime(1970,1,1,0,0,0,0).AddSeconds(double.Parse(this.data.Attribute("dateuploaded").Value)); } }
 
         /// <summary>
-        /// determine whether the Photo is Favorited by You or Not
+        /// determine whether the Photo is Favorited by You or Not.
         /// </summary>
         public bool IsFavorite { get { return this.data.Attribute("isfavorite").Value.ToBoolean(); } }
 
         /// <summary>
-        /// the License Number that this photo is Under
+        /// the License Number that this photo is Under.
         /// </summary>
         public int License { get { return int.Parse(this.data.Attribute("license").Value); } }
 
@@ -1737,137 +1715,137 @@ namespace MyFlickr.Rest
         public int Rotation { get { return int.Parse(this.data.Attribute("rotation").Value); } }
 
         /// <summary>
-        /// The Original Secret of the photo , Could Be Null
+        /// The Original Secret of the photo , Could Be Null.
         /// </summary>
         public string OriginalSecret { get { return this.data.Attribute("originalsecret") != null ? this.data.Attribute("originalsecret").Value : null; } }
 
         /// <summary>
-        /// the Original format of the photo file , could Be Null
+        /// the Original format of the photo file , could Be Null.
         /// </summary>
         public string OriginalFormat { get { return this.data.Attribute("originalformat") != null ? this.data.Attribute("originalformat").Value : null; } }
 
         /// <summary>
-        /// the Number of Views of the photos
+        /// the Number of Views of the photos.
         /// </summary>
         public int Views { get { return int.Parse(this.data.Attribute("views").Value); } }
 
         /// <summary>
-        /// the Type of the Photo ( video , photo ). I Know , you can laugh now :)
+        /// the Type of the Photo ( video , photo ).
         /// </summary>
         public string Media { get { return this.data.Attribute("media").Value; } }
 
         /// <summary>
-        /// the Title of the Photo
+        /// the Title of the Photo.
         /// </summary>
         public string Title { get { return this.data.Element("title").Value; } }
 
         /// <summary>
-        /// the Description of the photo
+        /// the Description of the photo.
         /// </summary>
         public string Description { get { return this.data.Element("description").Value; } }
 
         /// <summary>
-        /// determine whether the photo is Public or Not
+        /// determine whether the photo is Public or Not.
         /// </summary>
         public bool IsPublic { get { return this.data.Element("visibility").Attribute("ispublic").Value.ToBoolean(); } }
 
         /// <summary>
-        /// determine whether the photo is Friend or Not
+        /// determine whether the photo is Friend or Not.
         /// </summary>
         public bool IsFriend { get { return this.data.Element("visibility").Attribute("isfriend").Value.ToBoolean(); } }
 
         /// <summary>
-        /// determine whether the photo is Family or Not
+        /// determine whether the photo is Family or Not.
         /// </summary>
         public bool IsFamily { get { return this.data.Element("visibility").Attribute("isfamily").Value.ToBoolean(); } }
 
         /// <summary>
-        /// The date when the photo was posted
+        /// The date when the photo was posted.
         /// </summary>
         public DateTime DatePosted { get { return new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(double.Parse(this.data.Element("dates").Attribute("posted").Value)); } }
         
         /// <summary>
-        /// the date when the photo was taken
+        /// the date when the photo was taken.
         /// </summary>
         public DateTime DateTaken { get { return DateTime.Parse(this.data.Element("dates").Attribute("taken").Value); } }
         
         /// <summary>
-        /// the date when the photo was updated
+        /// the date when the photo was updated.
         /// </summary>
         public DateTime LastUpdate { get { return new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(double.Parse(this.data.Element("dates").Attribute("lastupdate").Value)); } }
         
         /// <summary>
-        /// the Taken Granularity
+        /// the Taken Granularity.
         /// </summary>
         public int TakenGranularity { get { return int.Parse(this.data.Element("dates").Attribute("takengranularity").Value); } }
 
         /// <summary>
-        /// the permission to comment , could be Null
+        /// the permission to comment , could be Null.
         /// </summary>
         public Nullable<int> PermissionComment { get { return this.data.Element("permissions") != null ? new Nullable<int>(int.Parse(this.data.Element("permissions").Attribute("permcomment").Value)) : null; } }
 
         /// <summary>
-        /// the permission to add metadata , could be Null
+        /// the permission to add metadata , could be Null.
         /// </summary>
         public Nullable<int> PermissionAddMetadata { get { return this.data.Element("permissions") != null ? new Nullable<int>(int.Parse(this.data.Element("permissions").Attribute("permaddmeta").Value)) : null; } }
 
         /// <summary>
-        /// determine whether you can comment on the photo or Not
+        /// determine whether you can comment on the photo or Not.
         /// </summary>
         public bool CanComment { get { return this.data.Element("editability").Attribute("cancomment").Value.ToBoolean(); } }
         
         /// <summary>
-        /// determine whether you can Add Metadata for the photo or Not
+        /// determine whether you can Add Metadata for the photo or Not.
         /// </summary>
         public bool CanAddMeta { get { return this.data.Element("editability").Attribute("canaddmeta").Value.ToBoolean(); } }
 
         /// <summary>
-        /// determine whether the Public can Comment or Not
+        /// determine whether the Public can Comment or Not.
         /// </summary>
         public bool PublicCanComment { get { return this.data.Element("publiceditability").Attribute("cancomment").Value.ToBoolean(); } }
         
         /// <summary>
-        /// determine whether the Public can add Metadata or Not
+        /// determine whether the Public can add Metadata or Not.
         /// </summary>
         public bool PublicCanAddMeta { get { return this.data.Element("publiceditability").Attribute("canaddmeta").Value.ToBoolean(); } }
 
         /// <summary>
-        /// determine whether you can Download the original file of the photo or Not
+        /// determine whether you can Download the original file of the photo or Not.
         /// </summary>
         public bool CanDownload { get { return this.data.Element("usage").Attribute("candownload").Value.ToBoolean(); } }
 
         /// <summary>
-        /// determine whether you can blog the photo or Not
+        /// determine whether you can blog the photo or Not.
         /// </summary>
         public bool CanBlog { get { return this.data.Element("usage").Attribute("canblog").Value.ToBoolean(); } }
 
         /// <summary>
-        /// determine whether you can Print the photo or Not
+        /// determine whether you can Print the photo or Not.
         /// </summary>
         public bool CanPrint { get { return this.data.Element("usage").Attribute("canprint").Value.ToBoolean(); } }
 
         /// <summary>
-        /// determine whether you can Share the photo or Not
+        /// determine whether you can Share the photo or Not.
         /// </summary>
         public bool CanShare { get { return this.data.Element("usage").Attribute("canshare").Value.ToBoolean(); } }
 
         /// <summary>
-        /// The Number of Comments
+        /// The Number of Comments.
         /// </summary>
         public int CommentsCount { get { return int.Parse(this.data.Element("comments").Value); } }
 
         /// <summary>
-        /// The Notes on the Photo
+        /// The Notes on the Photo.
         /// </summary>
         public IEnumerable<Note> Notes { get { return this.data.Element("notes").Elements("note").Select(note => new Note(note)); } }
 
         /// <summary>
-        /// the Tags of the Photos
+        /// the Tags of the Photos.
         /// </summary>
         public IEnumerable<Tag> Tags { get { return this.data.Element("tags").Elements("tag").Select(tag => new Tag(tag)); } }
 
         /// <summary>
-        /// The Location of the Photo , Could Be Null
+        /// The Location of the Photo , Could Be Null.
         /// </summary>
         public Location Location { get { return this.data.Element("location") != null ? new Location(this.data.Element("location")) : null ; } }
 
@@ -1892,9 +1870,14 @@ namespace MyFlickr.Rest
         public Nullable<bool> GeoPermissionsIsFamily { get { return this.data.Element("geoperms") != null ? new Nullable<bool>(this.data.Element("geoperms").Attribute("isfamily").Value.ToBoolean()) : null; } }
 
         /// <summary>
-        /// the Urls of the Photo
+        /// the Urls of the Photo.
         /// </summary>
         public IEnumerable<URL> Urls { get { return this.data.Element("urls").Elements("url").Select(url => new URL(url)); } }
+
+        /// <summary>
+        /// Represents Video Info , If the Photo is a Video , So Could be Null.
+        /// </summary>
+        public Video Video { get { return this.data.Element("video") != null ? new Video(this.data.Element("video")) : null; } }
 
         #region Equality
         /// <summary>
@@ -1945,7 +1928,53 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// Represents the Photo Owner Info
+    /// Represents Video info.
+    /// </summary>
+    public class Video
+    {
+        internal Video(XElement element)
+        {
+            this.Duration = int.Parse(element.Attribute("duration").Value);
+            this.Height = int.Parse(element.Attribute("height").Value);
+            this.Width = int.Parse(element.Attribute("width").Value);
+            this.IsReady = element.Attribute("ready").Value.ToBoolean();
+            this.IsPending = element.Attribute("pending").Value.ToBoolean();
+            this.IsFailed = element.Attribute("failed").Value.ToBoolean();
+        }
+
+        /// <summary>
+        /// determine whether the Video is Ready or Not.
+        /// </summary>
+        public bool IsReady { get; private set; }
+
+        /// <summary>
+        /// determine whether the Video is Still in Processing or Not.
+        /// </summary>
+        public bool IsPending { get; private set; }
+
+        /// <summary>
+        /// determine whether the Video processing has Failed or Not.
+        /// </summary>
+        public bool IsFailed { get; private set; }
+
+        /// <summary>
+        /// the Duration of the Video , In Seconds.
+        /// </summary>
+        public int Duration { get; private set; }
+
+        /// <summary>
+        /// the Width of the Video.
+        /// </summary>
+        public int Width { get; private set; }
+
+        /// <summary>
+        /// the Height of the Video.
+        /// </summary>
+        public int Height { get; private set; }
+    }
+
+    /// <summary>
+    /// Represents the Photo Owner Info.
     /// </summary>
     public class Owner
     {
@@ -1956,22 +1985,22 @@ namespace MyFlickr.Rest
             this.data = element;
         }
         /// <summary>
-        /// th ID of the Owner
+        /// the ID of the Owner.
         /// </summary>
         public string ID { get { return this.data.Attribute("nsid").Value; } }
 
         /// <summary>
-        /// the UserName of the Owner
+        /// the UserName of the Owner.
         /// </summary>
         public string UserName { get { return this.data.Attribute("username").Value; } }
 
         /// <summary>
-        /// the Real Name of the Owner
+        /// the Real Name of the Owner.
         /// </summary>
         public string RealName { get { return this.data.Attribute("realname").Value; } }
 
         /// <summary>
-        /// the location of the owner
+        /// the location of the owner.
         /// </summary>
         public string Location { get { return this.data.Attribute("location").Value; } }
 
@@ -2024,7 +2053,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a Note on a Photo
+    /// represents a Note on a Photo.
     /// </summary>
     public class Note
     {
@@ -2041,42 +2070,42 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of the Note
+        /// the ID of the Note.
         /// </summary>
         public string ID { get; private set;}
 
         /// <summary>
-        /// the Author ID that Created the Note
+        /// the Author ID that Created the Note.
         /// </summary>
         public string AuthorID { get; private set; }
 
         /// <summary>
-        /// the Author name that Created the Note
+        /// the Author name that Created the Note.
         /// </summary>
         public string AuthorName { get; private set; }
 
         /// <summary>
-        /// the X Value
+        /// the X Value.
         /// </summary>
         public int X { get; private set; }
 
         /// <summary>
-        /// the Y value
+        /// the Y Value.
         /// </summary>
         public int Y { get; private set; }
 
         /// <summary>
-        /// the height of the Note Box
+        /// the height of the Note Box.
         /// </summary>
         public int Height { get; private set; }
         
         /// <summary>
-        /// the Width of the Note Box
+        /// the Width of the Note Box.
         /// </summary>
         public int Width { get; private set; }
 
         /// <summary>
-        /// the Note Content
+        /// the Note Content.
         /// </summary>
         public string Content { get; private set; }
 
@@ -2129,7 +2158,7 @@ namespace MyFlickr.Rest
     }
     
     /// <summary>
-    /// Represents a Tag on a Photo
+    /// Represents a Tag on a Photo.
     /// </summary>
     public class Tag
     {
@@ -2143,22 +2172,22 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// The ID of the Tag
+        /// The ID of the Tag.
         /// </summary>
         public string ID { get; private set;}
 
         /// <summary>
-        /// the Author ID that Add the Tag to the Photo
+        /// the Author ID that Add the Tag to the Photo.
         /// </summary>
         public string AuthorID { get; private set; }
 
         /// <summary>
-        /// the raw value that represents the Tag
+        /// the raw value that represents the Tag.
         /// </summary>
         public string Raw { get; private set; }
 
         /// <summary>
-        /// the value of the Tag
+        /// the value of the Tag.
         /// </summary>
         public string Content { get; private set; }
 
@@ -2216,7 +2245,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents the location information of the photo
+    /// represents the location information of the photo.
     /// </summary>
     public class Location
     {
@@ -2228,73 +2257,73 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// The Latitude Value
+        /// The Latitude Value.
         /// </summary>
         public double Latitude { get { return double.Parse(this.data.Attribute("latitude").Value); } }
 
         /// <summary>
-        /// the Longitude Value
+        /// the Longitude Value.
         /// </summary>
         public double Longitude { get { return double.Parse(this.data.Attribute("longitude").Value); } }
 
         /// <summary>
-        /// Accuracy Value
+        /// Accuracy Value.
         /// </summary>
         public int Accuracy { get { return int.Parse(this.data.Attribute("accuracy").Value); } }
 
         /// <summary>
-        /// Context Value
+        /// Context Value.
         /// </summary>
         public int Context { get { return int.Parse(this.data.Attribute("context").Value); } }
 
         /// <summary>
-        /// the Place ID
+        /// the Place ID.
         /// </summary>
         public string PlaceID { get { return this.data.Attribute("place_id").Value; } }
         
         /// <summary>
-        /// the where on Earth ID
+        /// the where on Earth ID.
         /// </summary>
         public string WoeID { get { return this.data.Attribute("woeid").Value; } }
 
         /// <summary>
-        /// the neighborhood 
+        /// the neighborhood .
         /// </summary>
         public string Neighbourhood { get { return this.data.Element("neighbourhood ").Value; } }
 
         /// <summary>
-        /// the Locality place ID
+        /// the Locality place ID.
         /// </summary>
         public string LocalityPlaceID { get { return this.data.Element("locality").Element("place_id").Value; } }
 
         /// <summary>
-        /// the Locality Where on Earth ID
+        /// the Locality Where on Earth ID.
         /// </summary>
         public string LocalityWoeID { get { return this.data.Element("locality").Element("woeid").Value; } }
 
         /// <summary>
-        /// the Region Place ID
+        /// the Region Place ID.
         /// </summary>
         public string RegionPlaceID { get { return this.data.Element("region").Element("place_id").Value;} }
 
         /// <summary>
-        /// the Region Where on Earth ID
+        /// the Region Where on Earth ID.
         /// </summary>
         public string RegionWoeID { get { return this.data.Element("region").Element("woeid").Value; } }
 
         /// <summary>
-        /// the Country Place ID
+        /// the Country Place ID.
         /// </summary>
         public string CountryPlaceID { get { return this.data.Element("country").Element("place_id").Value;} }
 
         /// <summary>
-        /// the Country Where on Earth ID
+        /// the Country Where on Earth ID.
         /// </summary>
         public string CountryWoeID { get { return this.data.Element("country").Element("woeid").Value;} }
     }
     
     /// <summary>
-    /// Represents a Photo URL
+    /// Represents a Photo URL.
     /// </summary>
     public class URL
     {
@@ -2305,19 +2334,19 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// The Url Type
+        /// The Url Type.
         /// </summary>
         public string Type { get; private set; }
 
         /// <summary>
-        /// The Actual Url Value
+        /// The Actual Url Value.
         /// </summary>
         public string Value { get; private set; }
 
         /// <summary>
         /// Return String Representation of the Instance.
         /// </summary>
-        /// <returns>a String</returns>
+        /// <returns>a String.</returns>
         public override string ToString()
         {
             return this.Value;
@@ -2372,7 +2401,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a set of permissions on a photo
+    /// represents a set of permissions on a photo.
     /// </summary>
     public class Permissions
     {
@@ -2386,27 +2415,27 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// can be Seen by Friends
+        /// can be Seen by Friends.
         /// </summary>
         public bool IsFriend { get; private set; }
 
         /// <summary>
-        /// can be seen by Public
+        /// can be seen by Public.
         /// </summary>
         public bool IsPublic { get; private set; }
 
         /// <summary>
-        /// can be Seen by Family
+        /// can be Seen by Family.
         /// </summary>
         public bool IsFamily { get; private set; }
 
         /// <summary>
-        /// Determine whether you can Add Comment
+        /// Determine whether you can Add Comment.
         /// </summary>
         public CommentPermission CommentPermission { get; private set; }
 
         /// <summary>
-        /// Determine whether you can Add Metadata Info
+        /// Determine whether you can Add Metadata Info.
         /// </summary>
         public AddMetadataPermission AddMetadataPermission { get; private set; }
     }
@@ -2417,19 +2446,19 @@ namespace MyFlickr.Rest
     public enum CommentPermission
     {
         /// <summary>
-        /// nobody / just the owner
+        /// nobody / just the owner.
         /// </summary>
         NoBody = 0,
         /// <summary>
-        /// friends and family
+        /// friends and family.
         /// </summary>
         FriendsAndFamily = 1,
         /// <summary>
-        /// contacts
+        /// contacts.
         /// </summary>
         Contacts = 2,
         /// <summary>
-        /// every body on Flickr
+        /// every body on Flickr.
         /// </summary>
         Everybody =3
     }
@@ -2440,19 +2469,19 @@ namespace MyFlickr.Rest
     public enum AddMetadataPermission
     {
         /// <summary>
-        /// nobody / just the owner
+        /// nobody / just the owner.
         /// </summary>
         NoBody = 0,
         /// <summary>
-        /// friends and family
+        /// friends and family.
         /// </summary>
         FriendsAndFamily = 1,
         /// <summary>
-        /// contacts
+        /// contacts.
         /// </summary>
         Contacts = 2,
         /// <summary>
-        /// every body on Flickr
+        /// every body on Flickr.
         /// </summary>
         Everybody = 3
     }
@@ -2463,21 +2492,21 @@ namespace MyFlickr.Rest
     public enum SafetyLevel
     {
         /// <summary>
-        /// for safe
+        /// for safe.
         /// </summary>
         Safe = 1,
         /// <summary>
-        /// for moderate
+        /// for moderate.
         /// </summary>
         Moderate = 2,
         /// <summary>
-        /// for restricted
+        /// for restricted.
         /// </summary>
         Restricted = 3
     }
 
     /// <summary>
-    /// represent a photo context
+    /// represent a photo context.
     /// </summary>
     public class PhotoContext
     {
@@ -2495,24 +2524,24 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// previous photo in the Current Context, Could be Null when there is no Previous Photo
+        /// previous photo in the Current Context, Could be Null when there is no Previous Photo.
         /// </summary>
         public NeighborPhoto PreviousPhoto { get; private set; }
 
         /// <summary>
-        /// next photo in the current context , Could be Null when there is no Next Photo
+        /// next photo in the current context , Could be Null when there is no Next Photo.
         /// </summary>
         public NeighborPhoto NextPhoto { get; private set; }
 
         /// <summary>
-        /// the total number of photos in the current Context
+        /// the total number of photos in the current Context.
         /// </summary>
         public int Count { get; private set; }
 
     }
 
     /// <summary>
-    /// represents a neighbor photo in the current context
+    /// represents a neighbor photo in the current context.
     /// </summary>
     public class NeighborPhoto
     {
@@ -2530,52 +2559,52 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Thumb URL of this photo
+        /// the Thumb URL of this photo.
         /// </summary>
         public Uri ThumbURL { get; private set; }
 
         /// <summary>
-        /// the type of the media (video , photo)
+        /// the type of the media (video , photo).
         /// </summary>
         public string Media { get; private set; }
 
         /// <summary>
-        /// the license number
+        /// the license number.
         /// </summary>
         public int License { get; private set; }
 
         /// <summary>
-        /// determine whether this photo is Favorited by you or Not , Could Be Null
+        /// determine whether this photo is Favorited by you or Not , Could Be Null.
         /// </summary>
         public Nullable<bool> IsFavorite { get; private set; }
         
         /// <summary>
-        /// the ID of the Photo
+        /// the ID of the Photo.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// this string is used to in the building of photo URL
+        /// this string is used to in the building of photo URL.
         /// </summary>
         public string Secret { get; private set; }
 
         /// <summary>
-        /// the Title of the photo
+        /// the Title of the photo.
         /// </summary>
         public string Title { get; private set; }
 
         /// <summary>
-        /// the Server number which the photo is on
+        /// the Server number which the photo is on.
         /// </summary>
         public int Server { get; private set; }
 
         /// <summary>
-        /// The server Farm number which the photo is on
+        /// The server Farm number which the photo is on.
         /// </summary>
         public int Farm { get; private set; }
 
         /// <summary>
-        /// relative path for the photo in the Photostream of the Owner
+        /// relative path for the photo in the Photostream of the Owner.
         /// </summary>
         public string URL { get; private set; }
 
@@ -2628,7 +2657,7 @@ namespace MyFlickr.Rest
     }
     
     /// <summary>
-    /// represents a collection of sets and pools that a photo is contained in
+    /// represents a collection of sets and pools that a photo is contained in..
     /// </summary>
     public class PhotoContexts
     {
@@ -2639,18 +2668,18 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// Enumerable of Group Pools
+        /// Enumerable of Group Pools.
         /// </summary>
         public IEnumerable<Pool> Pools { get; private set; }
 
         /// <summary>
-        /// Enumerable of Sets
+        /// Enumerable of Sets.
         /// </summary>
         public IEnumerable<PhotoSetBasic> Sets { get; private set; }
     }
 
     /// <summary>
-    /// represents a Size of a Photo
+    /// represents a Size of a Photo.
     /// </summary>
     public class Size
     {
@@ -2665,38 +2694,38 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// The Size category , Given in the Label
+        /// The Size category , Given in the Label.
         /// </summary>
         public string Label { get; private set; }
 
         /// <summary>
-        /// the Width of the Photo
+        /// the Width of the Photo.
         /// </summary>
         public int Width { get; private set; }
 
         /// <summary>
-        /// the Height of the Photo
+        /// the Height of the Photo.
         /// </summary>
         public int Height { get; private set; }
 
         /// <summary>
-        /// the Type of the Media (photo, Video)
+        /// the Type of the Media (photo, Video).
         /// </summary>
         public string Media { get; private set; }
 
         /// <summary>
-        /// the Source file URL
+        /// the Source file URL.
         /// </summary>
         public Uri Source { get; private set; }
 
         /// <summary>
-        /// the URL of the Photo Size Page
+        /// the URL of the Photo Size Page.
         /// </summary>
         public Uri Url { get; private set; }
     }
     
     /// <summary>
-    /// represents information of a person in a photo
+    /// represents information of a person in a photo.
     /// </summary>
     public class PersonInPhoto
     {
@@ -2716,57 +2745,57 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of the person
+        /// the ID of the person.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the User Name of the person in the photo
+        /// the User Name of the person in the photo.
         /// </summary>
         public string UserName { get; private set; }
 
         /// <summary>
-        /// the real name of the person
+        /// the real name of the person.
         /// </summary>
         public string RealName { get; private set; }
 
         /// <summary>
-        /// the number of icon server
+        /// the number of icon server.
         /// </summary>
         public int IconServer { get; private set; }
 
         /// <summary>
-        /// the number of icon server Farm
+        /// the number of icon server Farm.
         /// </summary>
         public int Farm { get; private set; }
 
         /// <summary>
-        ///the Path Alias (used when Generating Urls ) , Could be Empty when not set by the user
+        ///the Path Alias (used when Generating Urls ) , Could be Empty when not set by the user.
         /// </summary>
         public string PathAlias { get; private set; }
 
         /// <summary>
-        /// the ID of the User Add the Person to the photo
+        /// the ID of the User Add the Person to the photo.
         /// </summary>
         public string AddedByID { get; private set; }
 
         /// <summary>
-        /// the X of Person Box in the photo , Could Be Null
+        /// the X of Person Box in the photo , Could Be Null.
         /// </summary>
         public Nullable<int> X { get; private set; }
 
         /// <summary>
-        /// the Y of the Person Box in the photo , Could Be Null
+        /// the Y of the Person Box in the photo , Could Be Null.
         /// </summary>
         public Nullable<int> Y { get; private set; }
 
         /// <summary>
-        /// the height of the Person Box in the  photo , Could Be Null
+        /// the height of the Person Box in the  photo , Could Be Null.
         /// </summary>
         public Nullable<int> Height { get; private set; }
 
         /// <summary>
-        ///  the Width of the Person Box in the  photo  , Could Be Null
+        ///  the Width of the Person Box in the  photo  , Could Be Null.
         /// </summary>
         public Nullable<int> Width { get; private set; }
 
@@ -2819,26 +2848,26 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// rotation setting
+    /// rotation setting.
     /// </summary>
     public enum Degrees
     {
         /// <summary>
-        /// 90 degrees
+        /// 90 degrees.
         /// </summary>
         NinetyDegrees = 90,
         /// <summary>
-        /// 180 degrees
+        /// 180 degrees.
         /// </summary>
         OneHundredAndEightyDegrees = 180 ,
         /// <summary>
-        /// 270 degrees
+        /// 270 degrees.
         /// </summary>
         TwoHundredAndseventyDegress = 270 
     }
 
     /// <summary>
-    /// represents a Comment on photo or photos set
+    /// represents a Comment on photo or photos set.
     /// </summary>
     public class Comment
     {
@@ -2852,32 +2881,32 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of the Comment
+        /// the ID of the Comment.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the ID of the User that Created the Comment
+        /// the ID of the User that Created the Comment.
         /// </summary>
         public string AuthorID { get; private set; }
 
         /// <summary>
-        /// the name of the user that created the Comment
+        /// the name of the user that created the Comment.
         /// </summary>
         public string AuthorName { get; private set; }
 
         /// <summary>
-        /// the date when the comment was created
+        /// the date when the comment was created.
         /// </summary>
         public DateTime DateCreated { get; private set; }
 
         /// <summary>
-        /// the permalink that leads to the comment directly in the photo page on Flickr
+        /// the permalink that leads to the comment directly in the photo page on Flickr.
         /// </summary>
         public Uri PermaLink { get; private set; }
 
         /// <summary>
-        /// the Content of the Comment
+        /// the Content of the Comment.
         /// </summary>
         public string Text { get; private set; }
 

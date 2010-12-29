@@ -6,7 +6,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents the Methods that exist in flickr.test namespace
+    /// represents the Methods that exist in flickr.test namespace.
     /// </summary>
     public class Test
     {
@@ -15,7 +15,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Create Test Object
         /// </summary>
-        /// <param name="authenticationTokens">Authentication Tokens</param>
+        /// <param name="authenticationTokens">Authentication Tokens.</param>
         public Test(AuthenticationTokens authenticationTokens)
         {
             if (authenticationTokens == null)
@@ -27,8 +27,8 @@ namespace MyFlickr.Rest
         /// A testing method which echo's all parameters back in the response.
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="parameters">set of parameters </param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <param name="parameters">set of parameters .</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token EchoAsync(params Parameter[] parameters)
         {
             Token token = Token.GenerateToken();
@@ -37,7 +37,7 @@ namespace MyFlickr.Rest
             if (parameters != null)
                 list.AddRange(parameters);
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeEchoCompletedEvent(new EventArgs<IEnumerable<Parameter>>(token,elm.Elements().Select(par=>new Parameter(par.Name.LocalName,par.Value)))), 
                 e => this.InvokeEchoCompletedEvent(new EventArgs<IEnumerable<Parameter>>(token,e)), this.authtkns.SharedSecret, list.ToArray());
 
@@ -48,13 +48,13 @@ namespace MyFlickr.Rest
         /// Null test.
         /// This method requires authentication with 'read' permission.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token NullAsync()
         {
             this.authtkns.ValidateGrantedPermission(AccessPermission.Read);
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeNullCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)),
                 e => this.InvokeNullCompletedEvent(new EventArgs<NoReply>(token,e)), this.authtkns.SharedSecret, 
                 new Parameter("method", "flickr.test.null"), new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token));
@@ -66,13 +66,13 @@ namespace MyFlickr.Rest
         /// A testing method which checks if the caller is logged in then returns their username.
         /// This method requires authentication with 'read' permission.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token LoginAsync()
         {
             this.authtkns.ValidateGrantedPermission(AccessPermission.Read);
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeLoginCompletedEvent(new EventArgs<Tuple<string,string>>
                     (token,new Tuple<string,string>(elm.Element("user").Attribute("id").Value,elm.Element("user").Element("username").Value))), 
                 e => this.InvokeLoginCompletedEvent(new EventArgs<Tuple<string,string>>(token,e)), this.authtkns.SharedSecret,

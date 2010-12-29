@@ -5,7 +5,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// Extension Methods for Commons
+    /// Extension Methods for Commons.
     /// </summary>
     public static class SynchronousCommons
     {
@@ -13,8 +13,8 @@ namespace MyFlickr.Rest
         /// Retrieves a list of the current Commons institutions.
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="commons"></param>
-        /// <returns>Enumerable of Institution Objects</returns>
+        /// <param name="commons">Instance.</param>
+        /// <returns>Enumerable of Institution Objects.</returns>
         public static IEnumerable<Institution> GetInstitutions(this Commons commons)
         {
             FlickrSynchronousPrmitive<IEnumerable<Institution>> FSP = new FlickrSynchronousPrmitive<IEnumerable<Institution>>();

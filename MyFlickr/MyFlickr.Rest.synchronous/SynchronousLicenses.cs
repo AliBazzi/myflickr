@@ -5,7 +5,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// Extension Methods for Licenses
+    /// Extension Methods for Licenses.
     /// </summary>
     public static class SynchronousLicenses
     {
@@ -13,8 +13,8 @@ namespace MyFlickr.Rest
         /// Fetches a list of available photo licenses for Flickr.
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="licenses"></param>
-        /// <returns>Enumerable of License Objects</returns>
+        /// <param name="licenses">Instance.</param>
+        /// <returns>Enumerable of License Objects.</returns>
         public static IEnumerable<License> GetInfo(this Licenses licenses)
         {
             FlickrSynchronousPrmitive<IEnumerable<License>> FSP = new FlickrSynchronousPrmitive<IEnumerable<License>>();

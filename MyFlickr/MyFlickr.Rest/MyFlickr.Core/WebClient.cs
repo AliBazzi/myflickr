@@ -6,13 +6,13 @@ namespace MyFlickr.Core
     {
         private System.Net.WebClient wc;
 
-        private WebClient()
+        private WebClient(System.Net.IWebProxy proxy)
         {
-            this.wc = new System.Net.WebClient() { Encoding = System.Text.UnicodeEncoding.UTF8 };
+            this.wc = new System.Net.WebClient() { Encoding = System.Text.UnicodeEncoding.UTF8 , Proxy = proxy};
         }
 
-        public WebClient(Action<System.Net.DownloadStringCompletedEventArgs> callBack)
-            :this()
+        public WebClient(System.Net.IWebProxy proxy, Action<System.Net.DownloadStringCompletedEventArgs> callBack)
+            :this(proxy)
         {
             if (callBack == null)
                 throw new ArgumentNullException("callBack");
@@ -20,8 +20,8 @@ namespace MyFlickr.Core
             this.wc.DownloadStringCompleted += new System.Net.DownloadStringCompletedEventHandler((o,e) => { callBack.Invoke(e); ((System.Net.WebClient)o).Dispose(); });
         }
 
-        public WebClient(Action<System.Net.UploadStringCompletedEventArgs> callBack)
-            : this()
+        public WebClient(System.Net.IWebProxy proxy, Action<System.Net.UploadStringCompletedEventArgs> callBack)
+            : this(proxy)
         {
             if (callBack == null)
                 throw new ArgumentNullException("callBack");

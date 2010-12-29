@@ -7,7 +7,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents a collection of galleries
+    /// represents a collection of galleries.
     /// </summary>
     public class GalleriesCollection : IEnumerable<Gallery>
     {
@@ -26,27 +26,27 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the Total Number of Galleries
+        /// the Total Number of Galleries.
         /// </summary>
         public int Total { get; private set; }
 
         /// <summary>
-        /// the Number of Galleries per page
+        /// the Number of Galleries per page.
         /// </summary>
         public int PerPage { get; private set; }
 
         /// <summary>
-        /// the number of pages
+        /// the number of pages.
         /// </summary>
         public int Pages { get; private set; }
 
         /// <summary>
-        /// the current page number
+        /// the current page number.
         /// </summary>
         public int Page { get; private set; }
 
         /// <summary>
-        /// the Galleries Objects
+        /// the Galleries Objects.
         /// </summary>
         public IEnumerable<Gallery> Galleries
         {
@@ -59,7 +59,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Gallery> GetEnumerator()
         {
             foreach (var gallery in this.Galleries)
@@ -69,7 +69,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -77,7 +77,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a gallery
+    /// represents a gallery.
     /// </summary>
     public class Gallery
     {
@@ -102,67 +102,67 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of the Gallery
+        /// the ID of the Gallery.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// the URL that leads to the page of the gallery on Flickr
+        /// the URL that leads to the page of the gallery on Flickr.
         /// </summary>
         public Uri Url { get; private set; }
 
         /// <summary>
-        /// The Owner ID of the Gallery 
+        /// The Owner ID of the Gallery .
         /// </summary>
         public string OwnerID { get; private set; }
 
         /// <summary>
-        /// the ID of the primary photo of the gallery
+        /// the ID of the primary photo of the gallery.
         /// </summary>
         public string Primary { get; private set; }
 
         /// <summary>
-        /// the number of photos in this gallery
+        /// the number of photos in this gallery.
         /// </summary>
         public int PhotosCount { get; private set; }
 
         /// <summary>
-        /// the number of videos in this gallery
+        /// the number of videos in this gallery.
         /// </summary>
         public int VideosCount { get; private set; }
 
         /// <summary>
-        /// the number of server farm that the primary photo of this gallery resides on
+        /// the number of server farm that the primary photo of this gallery resides on.
         /// </summary>
         public Nullable<int> Farm { get; private set; }
 
         /// <summary>
-        /// the number of server that the primary photo of this gallery resides on
+        /// the number of server that the primary photo of this gallery resides on.
         /// </summary>
         public Nullable<int> Server { get; private set; }
 
         /// <summary>
-        /// the secret used to build the URL of primary photo of this gallery
+        /// the secret used to build the URL of primary photo of this gallery.
         /// </summary>
         public string Secret { get; private set; }
 
         /// <summary>
-        /// the Date and time of the creation of this gallery
+        /// the Date and time of the creation of this gallery.
         /// </summary>
         public DateTime DateCreated { get; private set; }
 
         /// <summary>
-        /// the Date and time of the last modification of this gallery
+        /// the Date and time of the last modification of this gallery.
         /// </summary>
         public DateTime DateUpdated { get; private set; }
 
         /// <summary>
-        /// the Title of this gallery
+        /// the Title of this gallery.
         /// </summary>
         public string Title { get; private set; }
 
         /// <summary>
-        /// the Description of this gallery , could Be Null
+        /// the Description of this gallery , could Be Null.
         /// </summary>
         public string Description { get; private set; }
 
@@ -170,9 +170,9 @@ namespace MyFlickr.Rest
         /// Add a photo to a gallery.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <param name="photoID">The photo ID to add to the gallery</param>
+        /// <param name="photoID">The photo ID to add to the gallery.</param>
         /// <param name="comment">A short comment or story to accompany the photo.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token AddPhotoAsync(string photoID, string comment = null)
         {
             if (string.IsNullOrEmpty(photoID))
@@ -196,7 +196,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="title">The new title for the gallery.</param>
         /// <param name="description">The new description for the gallery.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token EditMetadataAsync(string title, string description=null)
         {
             if (string.IsNullOrEmpty(title))
@@ -221,7 +221,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="photoID">The photo ID to edit in the gallery.</param>
         /// <param name="comment">The comment .</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token EditPhotoAsync(string photoID, string comment)
         {
             if (string.IsNullOrEmpty(photoID))
@@ -246,15 +246,15 @@ namespace MyFlickr.Rest
         /// Return the list of photos for a gallery.
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPhotosAsync(string extras = null,Nullable<int> perPage = null, Nullable<int> page = null)
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, new PhotosCollection(this.authtkns, elm.Element("photos")))),
                 e => this.InvokeGetPhotosCompletedEvent(new EventArgs<PhotosCollection>(token, e)), this.authtkns.SharedSecret,
                 new Parameter("method", "flickr.galleries.getPhotos"), new Parameter("api_key", this.authtkns.ApiKey), 
@@ -270,7 +270,7 @@ namespace MyFlickr.Rest
         /// </summary>
         /// <param name="primaryPhotoID">The id of the photo to use as the 'primary' photo for the gallery.</param>
         /// <param name="photosIDs">A comma-delimited list of photo ids to include in the gallery. They will appear in the set in the order sent. This list must contain the primary photo id. This list of photos replaces the existing list.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token EditPhotosAsync(string primaryPhotoID, params string[] photosIDs)
         {
             if (string.IsNullOrEmpty(primaryPhotoID))
@@ -281,7 +281,7 @@ namespace MyFlickr.Rest
             this.authtkns.ValidateGrantedPermission(AccessPermission.Write);
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeEditPhotosCompletedEvent(new EventArgs<NoReply>(token,NoReply.Empty)), 
                 e => this.InvokeEditPhotosCompletedEvent(new EventArgs<NoReply>(token,e)), this.authtkns.SharedSecret, 
                 new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token),new Parameter("gallery_id",this.ID),
@@ -398,7 +398,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents information of a newly created Gallery
+    /// represents information of a newly created Gallery.
     /// </summary>
     public class GalleryToken
     {
@@ -412,24 +412,24 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of the newly created Gallery
+        /// the ID of the newly created Gallery.
         /// </summary>
         public string ID { get; private set; }
 
         /// <summary>
-        /// Partial of the Url of the newly created gallery
+        /// Partial of the Url of the newly created gallery.
         /// </summary>
         public string Url { get; private set; }
 
         /// <summary>
         /// Get an Instance of the newly created Gallery
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token CreateInstanceAsync()
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeCreateInstanceCompletedEvent(new EventArgs<Gallery>(token,new Gallery(this.authTkns,elm.Element("gallery")))), 
                 e => this.InvokeCreateInstanceCompletedEvent(new EventArgs<Gallery>(token,e)), this.authTkns.SharedSecret,
                 new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token), 
@@ -454,9 +454,9 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Determine whether Two Instances of GalleryToken Are Equal or Not.
         /// </summary>
-        /// <param name="left">instance</param>
-        /// <param name="right">instance</param>
-        /// <returns>True or False</returns>
+        /// <param name="left">instance.</param>
+        /// <param name="right">instance.</param>
+        /// <returns>True or False.</returns>
         public static bool operator ==(GalleryToken left, GalleryToken right)
         {
             if (left is GalleryToken)
@@ -469,8 +469,8 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Determine whether Two Instances of GalleryToken Are Not Equal or Not.
         /// </summary>
-        /// <param name="left">instance</param>
-        /// <param name="right">instance</param>
+        /// <param name="left">instance.</param>
+        /// <param name="right">instance.</param>
         /// <returns>True or False</returns>
         public static bool operator !=(GalleryToken left, GalleryToken right)
         {
@@ -490,7 +490,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Serve as Hash Function for a Particular Type.
         /// </summary>
-        /// <returns>Hashed Value</returns>
+        /// <returns>Hashed Value.</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();

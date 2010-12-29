@@ -5,7 +5,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// Extension Methods for PhotoSet
+    /// Extension Methods for PhotoSet.
     /// </summary>
     public static class SynchronousPhotoSets
     {
@@ -13,8 +13,8 @@ namespace MyFlickr.Rest
         /// Returns the comments for a photoset.
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="photoset"></param>
-        /// <returns>Enumerable of comments</returns>
+        /// <param name="photoset">Instance.</param>
+        /// <returns>Enumerable of comments.</returns>
         public static IEnumerable<Comment> GetCommentsList(this PhotoSetBasic photoset)
         {
             FlickrSynchronousPrmitive<IEnumerable<Comment>> FSP = new FlickrSynchronousPrmitive<IEnumerable<Comment>>();
@@ -32,9 +32,9 @@ namespace MyFlickr.Rest
         /// Add a comment to a photoset.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <param name="photoset"></param>
+        /// <param name="photoset">Instance.</param>
         /// <param name="text">Text of the comment.</param>
-        /// <returns>the ID of the Added Comment</returns>
+        /// <returns>the ID of the Added Comment.</returns>
         public static string AddComment(this PhotoSetBasic photoset,string text)
         {
             FlickrSynchronousPrmitive<string> FSP = new FlickrSynchronousPrmitive<string>();
@@ -52,9 +52,9 @@ namespace MyFlickr.Rest
         /// Delete a photoset comment as the currently authenticated user.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <param name="photoset"></param>
+        /// <param name="photoset">Instance.</param>
         /// <param name="commentID">The id of the comment to delete from a photoset.</param>
-        /// <returns>NoReply Represents Void</returns>
+        /// <returns>NoReply Represents Void.</returns>
         public static NoReply DeleteComment(this PhotoSetBasic photoset, string commentID)
         {
             FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
@@ -72,10 +72,10 @@ namespace MyFlickr.Rest
         /// Edit the text of a comment as the currently authenticated user.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <param name="photoset"></param>
+        /// <param name="photoset">Instance.</param>
         /// <param name="commentID">The id of the comment to edit.</param>
         /// <param name="text">Update the comment to this text.</param>
-        /// <returns>NoReply Represents Void</returns>
+        /// <returns>NoReply Represents Void.</returns>
         public static NoReply EditComment(this PhotoSetBasic photoset, string commentID, string text)
         {
             FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
@@ -93,8 +93,8 @@ namespace MyFlickr.Rest
         /// Delete a photoset.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <param name="photoset"></param>
-        /// <returns>NoReply Represents Void</returns>
+        /// <param name="photoset">Instance.</param>
+        /// <returns>NoReply Represents Void.</returns>
         public static NoReply Delete(this PhotoSetBasic photoset)
         {
             FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
@@ -109,10 +109,10 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// Get a Photoset Instance
+        /// Get a Photoset Instance.
         /// </summary>
-        /// <param name="PST"></param>
-        /// <returns>PhotoSet Object</returns>
+        /// <param name="PST">Instance.</param>
+        /// <returns>PhotoSet Object.</returns>
         public static PhotoSet CreateInstance(this PhotoSetToken PST)
         {
             FlickrSynchronousPrmitive<PhotoSet> FSP = new FlickrSynchronousPrmitive<PhotoSet>();
@@ -130,9 +130,9 @@ namespace MyFlickr.Rest
         /// Add a photo to the end of an existing photoset.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <param name="photoset"></param>
+        /// <param name="photoset">Instance.</param>
         /// <param name="photoID">The id of the photo to add to the set.</param>
-        /// <returns>NoReply Represents Void</returns>
+        /// <returns>NoReply Represents Void.</returns>
         public static NoReply AddPhoto(this PhotoSetBasic photoset,string photoID)
         {
             FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
@@ -150,9 +150,9 @@ namespace MyFlickr.Rest
         /// Remove a photo from a photoset.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <param name="photoset"></param>
+        /// <param name="photoset">Instance.</param>
         /// <param name="photoID">The id of the photo to remove from the set.</param>
-        /// <returns>NoReply Represents Void</returns>
+        /// <returns>NoReply Represents Void.</returns>
         public static NoReply RemovePhoto(this PhotoSetBasic photoset, string photoID)
         {
             FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
@@ -170,9 +170,9 @@ namespace MyFlickr.Rest
         /// Remove multiple photos from a photoset.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <param name="photoset"></param>
+        /// <param name="photoset">Instance.</param>
         /// <param name="photoIDs">list of photo ids to remove from the photoset.</param>
-        /// <returns>NoReply Represents Void</returns>
+        /// <returns>NoReply Represents Void.</returns>
         public static NoReply RemovePhotos(this PhotoSetBasic photoset,params string[] photoIDs)
         {
             FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
@@ -190,13 +190,13 @@ namespace MyFlickr.Rest
         /// Get the list of photos in a set.
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="photoset"></param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o</param>
+        /// <param name="photoset">Instance.</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o.</param>
         /// <param name="privacyFilter">Return photos only matching a certain privacy level. This only applies when making an authenticated call to view a photoset you own.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 500. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
         /// <param name="mediaType">Filter results by media type. Possible values are all (default), photos or videos</param>
-        /// <returns></returns>
+        /// <returns>PhotosCollection Object.</returns>
         public static PhotosCollection GetPhotos(this PhotoSetBasic photoset, string extras = null, Nullable<PrivacyFilter> privacyFilter = null,
             Nullable<int> perPage = null, Nullable<int> page = null, Nullable<MediaType> mediaType = null)
         {
@@ -215,10 +215,10 @@ namespace MyFlickr.Rest
         /// Modify the photos in a photoset. Use this method to add, remove and re-order photos.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <param name="photoset"></param>
+        /// <param name="photoset">Instance.</param>
         /// <param name="primaryPhotoID">The id of the photo to use as the 'primary' photo for the set. This id must also be passed along in photo_ids list argument.</param>
         /// <param name="photosIDs">A comma-delimited list of photo ids to include in the set. They will appear in the set in the order sent. This list must contain the primary photo id. All photos must belong to the owner of the set. This list of photos replaces the existing list. Call flickr.photosets.addPhoto to append a photo to a set.</param>
-        /// <returns>NoReply Represents Void</returns>
+        /// <returns>NoReply Represents Void.</returns>
         public static NoReply EditPhotos(this PhotoSetBasic photoset, string primaryPhotoID, string[] photosIDs)
         {
             FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
@@ -236,10 +236,10 @@ namespace MyFlickr.Rest
         /// Modify the meta-data for a photoset.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <param name="photoset"></param>
+        /// <param name="photoset">Instance.</param>
         /// <param name="title">The new title for the photoset.</param>
         /// <param name="description">A description of the photoset. May contain limited html.</param>
-        /// <returns>NoReply Represents Void</returns>
+        /// <returns>NoReply Represents Void.</returns>
         public static NoReply SetMetadata(this PhotoSetBasic photoset,string title, string description = null)
         {
             FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
@@ -257,9 +257,9 @@ namespace MyFlickr.Rest
         /// Set photoset primary photo.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <param name="photoset"></param>
+        /// <param name="photoset">Instance.</param>
         /// <param name="photoID">The id of the photo to set as primary.</param>
-        /// <returns>NoReply Represents Void</returns>
+        /// <returns>NoReply Represents Void.</returns>
         public static NoReply SetPrimaryPhoto(this PhotoSetBasic photoset, string photoID)
         {
             FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
@@ -277,9 +277,9 @@ namespace MyFlickr.Rest
         /// Reorder photos in the photoset.
         /// This method requires authentication with 'write' permission.
         /// </summary>
-        /// <param name="photoset"></param>
+        /// <param name="photoset">Instance.</param>
         /// <param name="photosIDs">Ordered, comma-delimited list of photo ids. Photos that are not in the list will keep their original order.</param>
-        /// <returns>NoReply Represents Void</returns>
+        /// <returns>NoReply Represents Void.</returns>
         public static NoReply ReorderPhotos(this PhotoSetBasic photoset, params string[] photosIDs)
         {
             FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();

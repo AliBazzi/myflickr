@@ -7,16 +7,16 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents the Methods that exist in flickr.panda namespace
+    /// represents the Methods that exist in flickr.panda namespace.
     /// </summary>
     public class Panda
     {
         private readonly AuthenticationTokens authtkns;
 
         /// <summary>
-        /// Create Panda Object
+        /// Create Panda Object.
         /// </summary>
-        /// <param name="authenticationTokens"></param>
+        /// <param name="authenticationTokens">Authentication Tokens object.</param>
         public Panda(AuthenticationTokens authenticationTokens)
         {
             if (authenticationTokens == null)
@@ -28,12 +28,12 @@ namespace MyFlickr.Rest
         /// Return a list of Flickr pandas, from whom you can request photos using the flickr.panda.getPhotos API method. 
         /// This method does not require authentication.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetListAsync()
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetListCompletedEvent(new EventArgs<IEnumerable<string>>(token, elm.Element("pandas").Elements("panda").Select(pnda => pnda.Value))),
                 e => this.InvokeGetListCompletedEvent(new EventArgs<IEnumerable<string>>(token, e)), this.authtkns.SharedSecret,
                 new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token), new Parameter("method", "flickr.panda.getList"));
@@ -46,10 +46,10 @@ namespace MyFlickr.Rest
         /// This method does not require authentication.
         /// </summary>
         /// <param name="pandaName">The name of the panda to ask for photos from.</param>
-        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o</param>
+        /// <param name="extras">A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o.</param>
         /// <param name="perPage">Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500.</param>
         /// <param name="page">The page of results to return. If this argument is omitted, it defaults to 1.</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetPhotosAsync(string pandaName, string extras = null, Nullable<int> perPage = null, Nullable<int> page = null)
         {
             if (string.IsNullOrEmpty(pandaName))
@@ -57,7 +57,7 @@ namespace MyFlickr.Rest
 
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetPhotosCompletedEvent(new EventArgs<PandaPhotosCollection>(token,new PandaPhotosCollection(this.authtkns,elm.Element("photos")))),
                 e => this.InvokeGetPhotosCompletedEvent(new EventArgs<PandaPhotosCollection>(token,e)), this.authtkns.SharedSecret,
                 new Parameter("api_key", this.authtkns.ApiKey), new Parameter("auth_token", this.authtkns.Token), new Parameter("method", "flickr.panda.getPhotos"),
@@ -91,7 +91,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a photo collection
+    /// represents a photo collection.
     /// </summary>
     public class PandaPhotosCollection : IEnumerable<Photo>
     {
@@ -137,7 +137,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Photo> GetEnumerator()
         {
             foreach (var photo in this.Photos)
@@ -147,7 +147,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();

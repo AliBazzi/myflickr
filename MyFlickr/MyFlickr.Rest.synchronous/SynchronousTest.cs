@@ -5,7 +5,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// Extension Methods for Test
+    /// Extension Methods for Test.
     /// </summary>
     public static class SynchronousTest
     {
@@ -13,9 +13,9 @@ namespace MyFlickr.Rest
         /// A testing method which echo's all parameters back in the response.
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="test"></param>
-        /// <param name="parameters">set of parameters </param>
-        /// <returns>Enumerable of Parameters</returns>
+        /// <param name="test">Instance.</param>
+        /// <param name="parameters">set of parameters.</param>
+        /// <returns>Enumerable of Parameters.</returns>
         public static IEnumerable<Parameter> Echo(this Test test,params Parameter[] parameters)
         {
             FlickrSynchronousPrmitive<IEnumerable<Parameter>> FSP = new FlickrSynchronousPrmitive<IEnumerable<Parameter>>();
@@ -33,8 +33,8 @@ namespace MyFlickr.Rest
         /// /// Null test.
         /// This method requires authentication with 'read' permission.
         /// </summary>
-        /// <param name="test"></param>
-        /// <returns></returns>
+        /// <param name="test">Instance.</param>
+        /// <returns>NoReply Represents Void.</returns>
         public static NoReply Null(this Test test)
         {
             FlickrSynchronousPrmitive<NoReply> FSP = new FlickrSynchronousPrmitive<NoReply>();
@@ -52,8 +52,8 @@ namespace MyFlickr.Rest
         /// A testing method which checks if the caller is logged in then returns their username.
         /// This method requires authentication with 'read' permission.
         /// </summary>
-        /// <param name="test"></param>
-        /// <returns>Tuple that holds the ID and the Username</returns>
+        /// <param name="test">Instance.</param>
+        /// <returns>Tuple that holds the ID and the Username.</returns>
         public static Tuple<string, string> Login(this Test test)
         {
             FlickrSynchronousPrmitive<Tuple<string, string>> FSP = new FlickrSynchronousPrmitive<Tuple<string, string>>();

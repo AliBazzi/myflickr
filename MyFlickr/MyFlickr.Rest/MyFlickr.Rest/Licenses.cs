@@ -7,7 +7,7 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents the Method that exist in flickr.Licenses namespace
+    /// represents the Method that exist in flickr.Licenses namespace.
     /// </summary>
     public class Licenses
     {
@@ -16,7 +16,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Create Licenses Object
         /// </summary>
-        /// <param name="apiKey">API Key of your Application</param>
+        /// <param name="apiKey">API Key of your Application.</param>
         public Licenses(string apiKey)
         {
             if (string.IsNullOrEmpty(apiKey))
@@ -28,12 +28,12 @@ namespace MyFlickr.Rest
         /// Fetches a list of available photo licenses for Flickr.
         /// This method does not require authentication.
         /// </summary>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetInfoAsync()
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(
+            FlickrCore.InitiateGetRequest(
                 elm => this.InvokeGetInfoCompletedEvent(new EventArgs<IEnumerable<License>>(token,
                     elm.Element("licenses").Elements("license").Select(lic => new License(lic)))), 
                 e => this.InvokeGetInfoCompletedEvent(new EventArgs<IEnumerable<License>>(token,e)), null, 
@@ -56,7 +56,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// represents a License Info
+    /// represents a License Info.
     /// </summary>
     public class License
     {
@@ -68,17 +68,17 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the ID of the License
+        /// the ID of the License.
         /// </summary>
         public int ID { get; private set; }
 
         /// <summary>
-        /// the Name of the License
+        /// the Name of the License.
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// the Url of the License descriptor , Could Be Empty
+        /// the Url of the License descriptor , Could Be Empty.
         /// </summary>
         public Uri Url { get; private set; }
 

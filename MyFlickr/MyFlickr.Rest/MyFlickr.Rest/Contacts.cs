@@ -6,7 +6,7 @@ using System.Xml.Linq;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// represents a list of contact
+    /// represents a list of contact.
     /// </summary>
     public class ContactsList : IEnumerable<Contact>
     {
@@ -22,27 +22,27 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the page number
+        /// the page number.
         /// </summary>
         public int Page { get; private set; }
 
         /// <summary>
-        /// the available pages
+        /// the available pages.
         /// </summary>
         public int Pages { get; private set; }
 
         /// <summary>
-        /// the number of contacts per page
+        /// the number of contacts per page.
         /// </summary>
         public int PerPage { get; private set; }
 
         /// <summary>
-        /// the total number of contacts
+        /// the total number of contacts.
         /// </summary>
         public int Total { get; private set; }
 
         /// <summary>
-        /// the contacts objects
+        /// the contacts objects.
         /// </summary>
         public IEnumerable<Contact> Contacts
         {
@@ -55,7 +55,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         public IEnumerator<Contact> GetEnumerator()
         {
             foreach (var contact in this.Contacts)
@@ -65,7 +65,7 @@ namespace MyFlickr.Rest
         /// <summary>
         /// Returns Enumerator for the Current Instance.
         /// </summary>
-        /// <returns>an Enumerator</returns>
+        /// <returns>an Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -73,7 +73,7 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// Represents the Contact information
+    /// Represents the Contact information.
     /// </summary>
     public class Contact
     {
@@ -91,47 +91,47 @@ namespace MyFlickr.Rest
         }
 
         /// <summary>
-        /// the User ID of the Contact
+        /// the User ID of the Contact.
         /// </summary>
         public string UserID { get; private set; }
 
         /// <summary>
-        /// the real Name of the Contact , Could be Null
+        /// the real Name of the Contact , Could be Null.
         /// </summary>
         public string RealName { get; private set; }
 
         /// <summary>
-        /// the Name of the Contact
+        /// the Name of the Contact.
         /// </summary>
         public string UserName { get; private set; }
 
         /// <summary>
-        /// is the contact marked as friend , could be Null
+        /// is the contact marked as friend , could be Null.
         /// </summary>
         public Nullable<bool> IsFriend { get; private set; }
 
         /// <summary>
-        /// is the contact marked as family , could be Null
+        /// is the contact marked as family , could be Null.
         /// </summary>
         public Nullable<bool> IsFamily { get; private set; }
 
         /// <summary>
-        /// the number of icon server
+        /// the number of icon server.
         /// </summary>
         public int IconServer { get; private set; }
 
         /// <summary>
-        /// the contact is ignored , Could Be Null
+        /// the contact is ignored , Could Be Null.
         /// </summary>
         public Nullable<bool> IsIgnored { get; private set; }
 
         /// <summary>
-        ///the Path Alias (used when Generating Urls ) , Could be Empty when not set by the user
+        ///the Path Alias (used when Generating Urls ) , Could be Empty when not set by the user.
         /// </summary>
         public string PathAlias { get; private set; }
 
         /// <summary>
-        /// the Number of photos Uploaded recently by the Contact , Could Be null
+        /// the Number of photos Uploaded recently by the Contact , Could Be null.
         /// </summary>
         public Nullable<int> PhotosUploaded { get; private set; }
 
@@ -184,24 +184,24 @@ namespace MyFlickr.Rest
     }
 
     /// <summary>
-    /// The Filters that could be Applied on Contacts List when getting them
+    /// The Filters that could be Applied on Contacts List when getting them.
     /// </summary>
     public enum ContactFilter
     {
         /// <summary>
-        /// the contact is Friend
+        /// the contact is Friend.
         /// </summary>
         Friends = 0,
         /// <summary>
-        /// the contact is Family
+        /// the contact is Family.
         /// </summary>
         Family = 1,
         /// <summary>
-        /// the contact is both friend and family
+        /// the contact is both friend and family.
         /// </summary>
         Both = 2,
         /// <summary>
-        /// the contact is neither family nor friend
+        /// the contact is neither family nor friend.
         /// </summary>
         Niether = 3
     }

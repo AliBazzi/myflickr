@@ -4,25 +4,25 @@ using MyFlickr.Core;
 namespace MyFlickr.Rest
 {
     /// <summary>
-    /// Allows you to Authenticate your Application , or Check if the authentication is still valid
+    /// Allows you to Authenticate your Application , or Check if the authentication is still valid.
     /// </summary>
     public class Authenticator
     {
         /// <summary>
-        /// Flickr API application key
+        /// Flickr API application key.
         /// </summary>
         public string ApiKey { get; private set; }
 
         /// <summary>
-        /// A shared secret for the api key that is issued by flickr
+        /// A shared secret for the api key that is issued by flickr.
         /// </summary>
         public string SharedSecret { get; private set; }
 
         /// <summary>
-        /// Create an Authenticator Object
+        /// Create an Authenticator Object.
         /// </summary>
-        /// <param name="apiKey">Your API application key</param>
-        /// <param name="sharedSecret">A shared secret for the api key that is issued by flickr</param>
+        /// <param name="apiKey">Your API application key.</param>
+        /// <param name="sharedSecret">A shared secret for the api key that is issued by flickr.</param>
         public Authenticator(string apiKey, string sharedSecret)
         {
             if (string.IsNullOrEmpty(apiKey))
@@ -39,15 +39,15 @@ namespace MyFlickr.Rest
         /// this Method is an Asynchronous Call
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="accessPermission">the permission your want to acquires</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <param name="accessPermission">the permission your want to acquires.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetFrobAsync(AccessPermission accessPermission) 
         {
             accessPermission.ValidateRange();            
 
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest((element) =>
+            FlickrCore.InitiateGetRequest((element) =>
             {
                 var frob = element.Element("frob").Value;
                 var url = UriHelper.CalculateRedirectionUrl(this.SharedSecret , new Parameter("api_key", this.ApiKey) ,
@@ -66,8 +66,8 @@ namespace MyFlickr.Rest
         /// this Method is an Asynchronous Call
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="frob">The frob to check</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <param name="frob">The frob to check.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetTokenAsync(string frob)
         {
             if (string.IsNullOrEmpty(frob))
@@ -75,7 +75,7 @@ namespace MyFlickr.Rest
 
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(element =>
+            FlickrCore.InitiateGetRequest(element =>
                 {
                     this.InvokeGetTokenCompleted(new EventArgs<AuthenticationTokens>(token ,new AuthenticationTokens
                              (this.ApiKey,this.SharedSecret,element.Element("auth").Element("token").Value
@@ -96,13 +96,13 @@ namespace MyFlickr.Rest
         /// this Method is an Asynchronous Call
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="authenticationToken">The authentication token to check</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <param name="authenticationToken">The authentication token to check.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token CheckTokenAsync(string authenticationToken)
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(element =>
+            FlickrCore.InitiateGetRequest(element =>
             {
                 this.InvokeCheckTokenCompleted(new EventArgs<AuthenticationTokens>(token, new AuthenticationTokens
                          (this.ApiKey,this.SharedSecret,element.Element("auth").Element("token").Value
@@ -123,13 +123,13 @@ namespace MyFlickr.Rest
         /// this Method is an Asynchronous Call
         /// This method does not require authentication.
         /// </summary>
-        /// <param name="miniToken">The mini-token typed in by a user. It should be 9 digits long. It may optionally contain dashes</param>
-        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised</returns>
+        /// <param name="miniToken">The mini-token typed in by a user. It should be 9 digits long. It may optionally contain dashes.</param>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
         public Token GetFullTokenAsync(string miniToken)
         {
             Token token = Token.GenerateToken();
 
-            FlickrCore.IntiateGetRequest(element =>
+            FlickrCore.InitiateGetRequest(element =>
             {
                 this.InvokeGetFullTokenCompleted(new EventArgs<AuthenticationTokens>(token, new AuthenticationTokens
                          (this.ApiKey,this.SharedSecret,element.Element("auth").Element("token").Value
