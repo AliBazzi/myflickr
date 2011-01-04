@@ -49,6 +49,7 @@
     <Compile Include="SynchronousCommons.cs" />
     <Compile Include="SynchronousInterestingness.cs" />
     <Compile Include="SynchronousMachineTags.cs" />
+    <Compile Include="SynchronousSearch.cs" />
     <Compile Include="SynchronousTest.cs" />
     <Compile Include="SynchronousAuthenticator.cs" />
     <Compile Include="FlickrSynchronousPrmitive.cs" />

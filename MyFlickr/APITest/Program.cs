@@ -254,13 +254,7 @@ namespace APITest
         static void Main(string[] args)
         {
             Data data = new Serialization<Data>().Deserialize("C:\\data.xml");
-            var user = new Authenticator(data.apiKey, data.sharedSecret).CheckToken(data.token).CreateUserInstance();
-            foreach (var photo in user.GetPhotos())
-            {
-                photo.SetSafetyLevelCompleted+=new EventHandler<EventArgs<NoReply>>((o,e)=>Console.WriteLine(string.Format("{0},{1}",((Photo)o).Title,e.Successful)));
-                photo.SetSafetyLevelAsync(SafetyLevel.Safe, false);
-            }
-            Console.ReadLine();
         }
+
     }
 }

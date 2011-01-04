@@ -74,7 +74,7 @@ namespace MyFlickr.Rest.Tests
         public void GetPhotosTest2()
         {
             var res = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance()
-                .GetPhotos(contentType: ContentType.Photos,privacyFilter:PrivacyFilter.VisibleToFriendsandFamilyOnly);
+                .GetPhotos(contentType: ContentType.Photos,privacyFilter:PrivacyFilter.FriendsandFamilyOnly);
             foreach (var photo in res) { }
         }
 
@@ -417,6 +417,48 @@ namespace MyFlickr.Rest.Tests
 
                 }
             }
+        }
+
+        [TestMethod]
+        public void GetContentTypeTest() 
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var type = user.GetContentType();
+        }
+
+        [TestMethod]
+        public void GetGeoPermsTest()
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var perms = user.GetGeoPerms(); 
+        }
+
+        [TestMethod]
+        public void GetHiddenTest()
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var res = user.GetHidden();
+        }
+
+        [TestMethod]
+        public void GetPrivacyTest()
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var res = user.GetPrivacy();
+        }
+
+        [TestMethod]
+        public void GetSafetyLevelTest()
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var res = user.GetSafetyLevel(); 
+        }
+
+        [TestMethod]
+        public void GetUploadStatusTest()
+        {
+            var user = new Authenticator(this.data.apiKey, this.data.sharedSecret).CheckToken(this.data.token).CreateUserInstance();
+            var res = user.GetUploadStatus();
         }
     }
 }
