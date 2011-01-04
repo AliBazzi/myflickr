@@ -44,12 +44,15 @@ groups.pools:5/5
 	* flickr.groups.pools.remove
 	* flickr.groups.pools.getPhotos
 
-people:5
+people:8/8
+	* flickr.people.findByEmail
+	* flickr.people.findByUsername
     * flickr.people.getInfo
     * flickr.people.getPhotos
     * flickr.people.getPhotosOf
     * flickr.people.getPublicGroups
     * flickr.people.getPublicPhotos
+	* flickr.people.getUploadStatus
 
 photos:25/26
     * flickr.photos.getExif
@@ -74,11 +77,11 @@ photos:25/26
 	* flickr.photos.getContactsPhotos
 	* flickr.photos.getContext
 	* flickr.photos.getAllContexts
-	* flickr.photos.setTags : will not Implements it cause doesn't differ from addTags
+	* flickr.photos.setTags :I will not Implements it , cause it doesn't differ from addTags
 	* flickr.photos.getSizes
+	* flickr.photos.search
 	________________________________
 	* flickr.photos.getRecent
-	* flickr.photos.search : Done , Not Added Yet , Don't Forget That (the Right place is missing )
 
 photos.notes 3/3
     * flickr.photos.notes.add
@@ -174,6 +177,13 @@ commons 1/1
 activity 2/2
     * flickr.activity.userComments
     * flickr.activity.userPhotos
+
+prefs 5/5
+    * flickr.prefs.getContentType
+    * flickr.prefs.getGeoPerms
+    * flickr.prefs.getHidden
+    * flickr.prefs.getPrivacy
+    * flickr.prefs.getSafetyLevel
 
 
 

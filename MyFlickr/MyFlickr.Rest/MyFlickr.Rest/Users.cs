@@ -845,7 +845,182 @@ namespace MyFlickr.Rest
             return token;
         }
 
+        /// <summary>
+        /// Returns the default content type preference for the user.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
+        public Token GetContentTypeAsync()
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.InitiateGetRequest(
+                elm => this.InvokeGetContentTypeCompletedEvent(new EventArgs<ContentType>(token,(ContentType)int.Parse(elm.Element("person").Attribute("content_type").Value))), 
+                e => this.InvokeGetContentTypeCompletedEvent(new EventArgs<ContentType>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("method", "flickr.prefs.getContentType"),new Parameter("auth_token",this.authTkns.Token));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Returns the default privacy level for geographic information attached to the user's photos and whether or not the user has chosen to use geo-related EXIF information to automatically geotag their photos.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
+        public Token GetGeoPermsAsync()
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.InitiateGetRequest(elm => this.InvokeGetGeoPermsCompletedEvent(new EventArgs<Tuple<GeoPermissions,ImportGeoExif>>(token,
+                new Tuple<GeoPermissions,ImportGeoExif>((GeoPermissions)int.Parse(elm.Element("person").Attribute("geoperms").Value),
+                    (ImportGeoExif)int.Parse(elm.Element("person").Attribute("importgeoexif").Value)))), 
+                e => this.InvokeGetGeoPermsCompletedEvent(new EventArgs<Tuple<GeoPermissions,ImportGeoExif>>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token), new Parameter("method", "flickr.prefs.getGeoPerms"));
+            
+            return token;
+        }
+
+        /// <summary>
+        /// Returns the default hidden preference for the user.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
+        public Token GetHiddenAsync()
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.InitiateGetRequest(
+                elm => this.InvokeGetHiddenCompletedEvent(new EventArgs<int>(token,int.Parse(elm.Element("person").Attribute("hidden").Value))), 
+                e => this.InvokeGetHiddenCompletedEvent(new EventArgs<int>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token), new Parameter("method", "flickr.prefs.getHidden"));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Returns the default privacy level preference for the user.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
+        public Token GetPrivacyAsync()
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.InitiateGetRequest(
+                elm => this.InvokeGetPrivacyCompletedEvent(new EventArgs<PrivacyFilter>(token, (PrivacyFilter)int.Parse(elm.Element("person").Attribute("privacy").Value))),
+                e => this.InvokeGetPrivacyCompletedEvent(new EventArgs<PrivacyFilter>(token, e)), this.authTkns.SharedSecret,
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token), new Parameter("method", "flickr.prefs.getPrivacy"));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Returns the default safety level preference for the user.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
+        public Token GetSafetyLevelAsync()
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.InitiateGetRequest(
+                elm => this.InvokeGetSafetyLevelCompletedEvent(new EventArgs<SafetyLevel>(token, (SafetyLevel)int.Parse(elm.Element("person").Attribute("safety_level").Value))),
+                e => this.InvokeGetSafetyLevelCompletedEvent(new EventArgs<SafetyLevel>(token, e)), this.authTkns.SharedSecret,
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token), new Parameter("method", "flickr.prefs.getSafetyLevel"));
+
+            return token;
+        }
+
+        /// <summary>
+        /// Returns information for the calling user related to photo uploads.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <returns>Token that represents unique identifier that identifies your Call when the corresponding Event is raised.</returns>
+        public Token GetUploadStatusAsync()
+        {
+            this.authTkns.ValidateGrantedPermission(AccessPermission.Read);
+            Token token = Token.GenerateToken();
+
+            FlickrCore.InitiateGetRequest(
+                elm => this.InvokeGetUploadStatusCompletedEvent(new EventArgs<UploadStatus>(token,new UploadStatus(elm.Element("user")))), 
+                e => this.InvokeGetUploadStatusCompletedEvent(new EventArgs<UploadStatus>(token,e)), this.authTkns.SharedSecret,
+                new Parameter("api_key", this.authTkns.ApiKey), new Parameter("auth_token", this.authTkns.Token), new Parameter("method", "flickr.people.getUploadStatus"));
+
+            return token;
+        }
+
         #region Events
+        private void InvokeGetUploadStatusCompletedEvent(EventArgs<UploadStatus> args)
+        {
+            if (this.GetUploadStatusCompleted != null)
+            {
+                this.GetUploadStatusCompleted.Invoke(this, args);
+            }
+        }
+        /// <summary>
+        /// Raised when GetUploadStatusAsync call is Finished.
+        /// </summary>
+        public event EventHandler<EventArgs<UploadStatus>> GetUploadStatusCompleted;
+        private void InvokeGetSafetyLevelCompletedEvent(EventArgs<SafetyLevel> args)
+        {
+            if (this.GetSafetyLevelCompleted != null)
+            {
+                this.GetSafetyLevelCompleted.Invoke(this, args);
+            }
+        }
+        /// <summary>
+        /// Raised when GetSafetyLevelAsync call is Finished.
+        /// </summary>
+        public event EventHandler<EventArgs<SafetyLevel>> GetSafetyLevelCompleted;
+        private void InvokeGetPrivacyCompletedEvent(EventArgs<PrivacyFilter> args)
+        {
+            if (this.GetPrivacyCompleted != null)
+            {
+                this.GetPrivacyCompleted.Invoke(this, args);
+            }
+        }
+        /// <summary>
+        /// Raised when GetPrivacyAsync call is Finished.
+        /// </summary>
+        public event EventHandler<EventArgs<PrivacyFilter>> GetPrivacyCompleted;
+        private void InvokeGetHiddenCompletedEvent(EventArgs<int> args)
+        {
+            if (this.GetHiddenCompleted != null)
+            {
+                this.GetHiddenCompleted.Invoke(this, args);
+            }
+        }
+        /// <summary>
+        /// Raised when GetHiddenAsync call is Finished.
+        /// </summary>
+        public event EventHandler<EventArgs<int>> GetHiddenCompleted;
+        private void InvokeGetGeoPermsCompletedEvent(EventArgs<Tuple<GeoPermissions,ImportGeoExif>> args)
+        {
+            if (this.GetGeoPermsCompleted != null)
+            {
+                this.GetGeoPermsCompleted.Invoke(this, args);
+            }
+        }
+        /// <summary>
+        /// Raised when GetGeoPermsAsync call is Finished.
+        /// </summary>
+        public event EventHandler<EventArgs<Tuple<GeoPermissions,ImportGeoExif>>> GetGeoPermsCompleted;
+        private void InvokeGetContentTypeCompletedEvent(EventArgs<ContentType> args)
+        {
+            if (this.GetContentTypeCompleted != null)
+            {
+                this.GetContentTypeCompleted.Invoke(this, args);
+            }
+        }
+        /// <summary>
+        /// Raised when GetContentTypeAsync call is Finished.
+        /// </summary>
+        public event EventHandler<EventArgs<ContentType>> GetContentTypeCompleted;
         private void InvokeGetCommentsActivitiesCompletedEvent(EventArgs<ItemsCollection> args)
         {
             if (this.GetCommentsActivitiesCompleted != null)
@@ -1247,23 +1422,23 @@ namespace MyFlickr.Rest
         /// <summary>
         /// public photos.
         /// </summary>
-        PublicPhotos =1 ,
+        Public =1 ,
         /// <summary>
         /// private photos visible to friends.
         /// </summary>
-        VisibleToFriendsOnly = 2,
+        FriendsOnly = 2,
         /// <summary>
         /// private photos visible to family.
         /// </summary>
-        VisibleToFamilyOnly = 3,
+        FamilyOnly = 3,
         /// <summary>
         /// private photos visible to friends and family.
         /// </summary>
-        VisibleToFriendsandFamilyOnly = 4,
+        FriendsandFamilyOnly = 4,
         /// <summary>
         /// completely private photos.
         /// </summary>
-        PrivatePhotos = 5
+        Private = 5
     }
 
     /// <summary>
@@ -1956,5 +2131,187 @@ namespace MyFlickr.Rest
                     throw new ArgumentException("value");
             }
         }
+    }
+
+    /// <summary>
+    /// represents Geo Permission options.
+    /// </summary>
+    public enum GeoPermissions
+    {
+        /// <summary>
+        /// No default set.
+        /// </summary>
+        Default = 0,
+        /// <summary>
+        /// Public.
+        /// </summary>
+        Public = 1,
+        /// <summary>
+        /// Contacts Only.
+        /// </summary>
+        ContactsOnly = 2,
+        /// <summary>
+        /// Friends and Family only.
+        /// </summary>
+        FriendsAndFamilyOnly = 3,
+        /// <summary>
+        /// Friends Only.
+        /// </summary>
+        FriendsOnly=4,
+        /// <summary>
+        /// Family Only.
+        /// </summary>
+        FamilyOnly = 5,
+        /// <summary>
+        /// Private.
+        /// </summary>
+        Private =6
+    }
+
+    /// <summary>
+    /// Possible values for whether or not geo-related EXIF information will be used to geotag a photo .
+    /// </summary>
+    public enum ImportGeoExif
+    {
+        /// <summary>
+        /// Geo-related EXIF information will be ignored.
+        /// </summary>
+        Ignored = 0,
+        /// <summary>
+        /// Geo-related EXIF information will be used to try and geotag photos on upload.
+        /// </summary>
+        Used = 1
+    }
+
+    /// <summary>
+    /// represents the information of Upload status that is related to a User.
+    /// </summary>
+    public class UploadStatus
+    {
+        internal UploadStatus(XElement element)
+        {
+            this.UploadedVideos = int.Parse(element.Element("videos").Attribute("uploaded").Value);
+            this.RemainigVideos = element.Element("videos").Attribute("remaining").Value;
+            this.CreatedSets = element.Element("sets").Attribute("created").Value;
+            this.RemainigSets = element.Element("sets").Attribute("remaining").Value;
+            this.IsPro = element.Attribute("ispro").Value.ToBoolean();
+            this.Bandwidth = new Bandwidth(element.Element("bandwidth"));
+            this.FileSize = new FileSize(element.Element("filesize"));
+        }
+
+        /// <summary>
+        /// the Uploaded Videos Count.
+        /// </summary>
+        public int UploadedVideos { get; private set; }
+
+        /// <summary>
+        /// the Remaining Videos Count , Could be a Word that describes the Attribute.
+        /// </summary>
+        public string RemainigVideos { get; private set; }
+
+        /// <summary>
+        /// the Created Sets.Could Be Empty.
+        /// </summary>
+        public string CreatedSets { get; private set; }
+
+        /// <summary>
+        /// the Remaining Sets.
+        /// </summary>
+        public string RemainigSets { get; private set; }
+
+        /// <summary>
+        /// Determine whether the user is a Pro or Not.
+        /// </summary>
+        public bool IsPro { get; private set; }
+
+        /// <summary>
+        /// object that holds an information about the Bandwidth.
+        /// </summary>
+        public Bandwidth Bandwidth { get; private set; }
+
+        /// <summary>
+        /// an Object that represents the FileSize Info.
+        /// </summary>
+        public FileSize FileSize { get; private set; }
+    }
+
+    /// <summary>
+    /// represents the bandwidth info.
+    /// </summary>
+    public class Bandwidth
+    {
+        internal Bandwidth(XElement element)
+        {
+            this.MaxBytes = long.Parse(element.Attribute("maxbytes").Value);
+            this.UsedBytes = long.Parse(element.Attribute("usedbytes").Value);
+            this.MaxKB = long.Parse(element.Attribute("maxkb").Value);
+            this.UsedKB = long.Parse(element.Attribute("usedkb").Value);
+            this.RemainingBytes = long.Parse(element.Attribute("remainingbytes").Value);
+            this.RemainingKB = long.Parse(element.Attribute("remainingkb").Value);
+            this.IsUnLimited = element.Attribute("unlimited").Value.ToBoolean();
+        }
+
+        /// <summary>
+        /// Max Bytes.
+        /// </summary>
+        public long MaxBytes { get; private set; }
+
+        /// <summary>
+        /// Max MB.
+        /// </summary>
+        public long MaxKB { get; private set; }
+
+        /// <summary>
+        /// Used Bytes.
+        /// </summary>
+        public long UsedBytes { get; private set; }
+
+        /// <summary>
+        /// Used KB.
+        /// </summary>
+        public long UsedKB { get; private set; }
+
+        /// <summary>
+        /// Remaining Bytes.
+        /// </summary>
+        public long RemainingBytes { get; private set; }
+
+        /// <summary>
+        /// Remaining KB.
+        /// </summary>
+        public long RemainingKB { get; private set; }
+
+        /// <summary>
+        /// Determine Whether the Bandwidth is unlimited for this user or Not.
+        /// </summary>
+        public bool IsUnLimited { get; private set; }
+    }
+
+    /// <summary>
+    /// represents FileSize info.
+    /// </summary>
+    public class FileSize
+    {
+        internal FileSize(XElement element)
+        {
+            this.MaxBytes = long.Parse(element.Attribute("maxbytes").Value);
+            this.MaxKB = long.Parse(element.Attribute("maxkb").Value);
+            this.MaxMB = int.Parse(element.Attribute("maxmb").Value);
+        }
+
+        /// <summary>
+        /// Max Bytes.
+        /// </summary>
+        public long MaxBytes { get; private set; }
+
+        /// <summary>
+        /// Max KB.
+        /// </summary>
+        public long MaxKB { get; private set; }
+
+        /// <summary>
+        /// Max MB.
+        /// </summary>
+        public int MaxMB { get; private set; }
     }
 }

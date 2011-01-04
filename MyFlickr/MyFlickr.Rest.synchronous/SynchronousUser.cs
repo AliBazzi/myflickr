@@ -755,5 +755,119 @@ namespace MyFlickr.Rest
 
             return FSP.ResultHolder.ReturnOrThrow();
         }
+
+        /// <summary>
+        /// Returns the default content type preference for the user.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user">Instance.</param>
+        /// <returns>Content Type.</returns>
+        public static ContentType GetContentType(this User user)
+        {
+            FlickrSynchronousPrmitive<ContentType> FSP = new FlickrSynchronousPrmitive<ContentType>();
+
+            Action<object, EventArgs<ContentType>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetContentTypeCompleted += new EventHandler<EventArgs<ContentType>>(handler);
+            FSP.Token = user.GetContentTypeAsync();
+            FSP.WaitForAsynchronousCall();
+            user.GetContentTypeCompleted -= new EventHandler<EventArgs<ContentType>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns the default privacy level for geographic information attached to the user's photos and whether or not the user has chosen to use geo-related EXIF information to automatically geotag their photos.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user">Instance.</param>
+        /// <returns>Tuple that holds the GeoPermission and ImportGeoExif.</returns>
+        public static Tuple<GeoPermissions, ImportGeoExif> GetGeoPerms(this User user)
+        {
+            FlickrSynchronousPrmitive<Tuple<GeoPermissions, ImportGeoExif>> FSP = new FlickrSynchronousPrmitive<Tuple<GeoPermissions, ImportGeoExif>>();
+
+            Action<object, EventArgs<Tuple<GeoPermissions, ImportGeoExif>>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetGeoPermsCompleted += new EventHandler<EventArgs<Tuple<GeoPermissions, ImportGeoExif>>>(handler);
+            FSP.Token = user.GetGeoPermsAsync();
+            FSP.WaitForAsynchronousCall();
+            user.GetGeoPermsCompleted -= new EventHandler<EventArgs<Tuple<GeoPermissions, ImportGeoExif>>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns the default hidden preference for the user.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user">Instance.</param>
+        /// <returns>integer that represent Hidden.</returns>
+        public static int GetHidden(this User user)
+        {
+            FlickrSynchronousPrmitive<int> FSP = new FlickrSynchronousPrmitive<int>();
+
+            Action<object, EventArgs<int>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetHiddenCompleted += new EventHandler<EventArgs<int>>(handler);
+            FSP.Token = user.GetHiddenAsync();
+            FSP.WaitForAsynchronousCall();
+            user.GetHiddenCompleted -= new EventHandler<EventArgs<int>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns the default privacy level preference for the user.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user">Instance.</param>
+        /// <returns>Privacy Filter.</returns>
+        public static PrivacyFilter GetPrivacy(this User user)
+        {
+            FlickrSynchronousPrmitive<PrivacyFilter> FSP = new FlickrSynchronousPrmitive<PrivacyFilter>();
+
+            Action<object, EventArgs<PrivacyFilter>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetPrivacyCompleted += new EventHandler<EventArgs<PrivacyFilter>>(handler);
+            FSP.Token = user.GetPrivacyAsync();
+            FSP.WaitForAsynchronousCall();
+            user.GetPrivacyCompleted -= new EventHandler<EventArgs<PrivacyFilter>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow();
+        }
+
+        /// <summary>
+        /// Returns the default safety level preference for the user.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user">Instance.</param>
+        /// <returns>Safety Level.</returns>
+        public static SafetyLevel GetSafetyLevel(this User user)
+        {
+            FlickrSynchronousPrmitive<SafetyLevel> FSP = new FlickrSynchronousPrmitive<SafetyLevel>();
+
+            Action<object, EventArgs<SafetyLevel>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetSafetyLevelCompleted += new EventHandler<EventArgs<SafetyLevel>>(handler);
+            FSP.Token = user.GetSafetyLevelAsync();
+            FSP.WaitForAsynchronousCall();
+            user.GetSafetyLevelCompleted -= new EventHandler<EventArgs<SafetyLevel>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow(); 
+        }
+
+        /// <summary>
+        /// Returns information for the calling user related to photo uploads.
+        /// This method requires authentication with 'read' permission.
+        /// </summary>
+        /// <param name="user">Instance.</param>
+        /// <returns>UploadStatus Object.</returns>
+        public static UploadStatus GetUploadStatus(this User user)
+        {
+            FlickrSynchronousPrmitive<UploadStatus> FSP = new FlickrSynchronousPrmitive<UploadStatus>();
+
+            Action<object, EventArgs<UploadStatus>> handler = (o, e) => e.Token.IfEqualSetValueandResume(FSP, e);
+            user.GetUploadStatusCompleted += new EventHandler<EventArgs<UploadStatus>>(handler);
+            FSP.Token = user.GetUploadStatusAsync();
+            FSP.WaitForAsynchronousCall();
+            user.GetUploadStatusCompleted -= new EventHandler<EventArgs<UploadStatus>>(handler);
+
+            return FSP.ResultHolder.ReturnOrThrow(); 
+        }
     }
 }
