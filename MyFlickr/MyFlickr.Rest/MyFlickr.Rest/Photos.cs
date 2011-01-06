@@ -107,6 +107,10 @@ namespace MyFlickr.Rest
             this.Comment = element.Element("comment") != null ? element.Element("comment").Value : null;
             this.DateAdded = element.Attribute("dateadded") != null ? new Nullable<DateTime>(double.Parse(element.Attribute("dateadded").Value).ToDateTimeFromUnix()) : null;
             this.OwnerName = element.Attribute("ownername") != null ? element.Attribute("ownername").Value : null;
+            this.Stats = element.Element("stats") != null ? new Tuple<int, int, int>
+                (int.Parse(element.Element("stats").Attribute("views").Value),
+                 int.Parse(element.Element("stats").Attribute("comments").Value),
+                 int.Parse(element.Element("stats").Attribute("favorites").Value)) : null;
         }
 
         internal Photo(AuthenticationTokens authTkns, XElement element, string ownerID)
@@ -120,6 +124,11 @@ namespace MyFlickr.Rest
             this.Farm = int.Parse(element.Attribute("farm").Value);
             this.IsPrimary = element.Attribute("isprimary").Value.ToBoolean();
         }
+
+        /// <summary>
+        /// Tuple that holds the Number of Views, the number of  Comments, the Number of Favorites, could Be Null.
+        /// </summary>
+        public Tuple<int, int, int> Stats { get; private set; }
 
         /// <summary>
         /// determine if the Photo is primary in the set or Not , Could be Null.

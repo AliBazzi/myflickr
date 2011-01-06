@@ -67,6 +67,7 @@
     <Compile Include="ReflectionTest.cs" />
     <Compile Include="SearchTest.cs" />
     <Compile Include="Serialization.cs" />
+    <Compile Include="StatsTest.cs" />
     <Compile Include="TestTest.cs" />
     <Compile Include="UrlsTest.cs" />
     <Compile Include="UserTest.cs" />
