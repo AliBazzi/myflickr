@@ -185,5 +185,23 @@ prefs 5/5
     * flickr.prefs.getPrivacy
     * flickr.prefs.getSafetyLevel
 
+stats 15/15
+    * flickr.stats.getCollectionDomains
+    * flickr.stats.getCollectionReferrers
+    * flickr.stats.getCollectionStats
+    * flickr.stats.getCSVFiles
+    * flickr.stats.getPhotoDomains
+    * flickr.stats.getPhotoReferrers
+    * flickr.stats.getPhotoStats
+    * flickr.stats.getPhotosetDomains
+    * flickr.stats.getPhotosetReferrers
+    * flickr.stats.getPhotosetStats
+    * flickr.stats.getPhotostreamDomains
+    * flickr.stats.getPhotostreamReferrers
+    * flickr.stats.getPhotostreamStats
+    * flickr.stats.getTotalViews
+    * flickr.stats.getPopularPhotos
+
+
 
 
