@@ -62,6 +62,7 @@
     <Compile Include="MyFlickr.Rest\Reflection.cs" />
     <Compile Include="MyFlickr.Rest\Search.cs" />
     <Compile Include="MyFlickr.Rest\Stats.cs" />
+    <Compile Include="MyFlickr.Rest\Tags.cs" />
     <Compile Include="MyFlickr.Rest\Test.cs" />
     <Compile Include="MyFlickr.Rest\Urls.cs" />
     <Compile Include="StringExtensions.cs" />
